@@ -2,6 +2,7 @@ package gex
 
 import (
 	`io`
+	`os`
 )
 
 type (
@@ -11,8 +12,8 @@ type (
 
 	options struct {
 		args       []string
-		stdout     io.Writer
-		stderr     io.Writer
+		outs       []io.Writer
+		errs       []io.Writer
 		dir        string
 		envs       []*env
 		systemEnvs bool
@@ -24,6 +25,13 @@ type (
 
 func defaultOptions() *options {
 	return &options{
+		outs: []io.Writer{
+			os.Stdout,
+		},
+		errs: []io.Writer{
+			os.Stderr,
+		},
+
 		systemEnvs: true,
 		async:      false,
 	}

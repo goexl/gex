@@ -21,5 +21,5 @@ func Stderr(stderr io.Writer) *optionStderr {
 }
 
 func (s *optionStderr) apply(options *options) {
-	options.stderr = s.stderr
+	options.errs = append(options.errs, s.stderr)
 }

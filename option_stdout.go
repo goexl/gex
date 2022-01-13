@@ -21,5 +21,5 @@ func Stdout(stdout io.Writer) *optionStdout {
 }
 
 func (s *optionStdout) apply(options *options) {
-	options.stdout = s.stdout
+	options.outs = append(options.errs, s.stdout)
 }

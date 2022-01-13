@@ -17,6 +17,6 @@ func Terminal() *optionTerminal {
 }
 
 func (t *optionTerminal) apply(options *options) {
-	options.stdout = os.Stdout
-	options.stderr = os.Stderr
+	options.outs = append(options.outs, os.Stdout)
+	options.errs = append(options.errs, os.Stderr)
 }
