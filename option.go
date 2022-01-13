@@ -10,16 +10,20 @@ type (
 	}
 
 	options struct {
-		args   []string
-		stdout io.Writer
-		stderr io.Writer
-		dir    string
-		env    []string
+		args       []string
+		stdout     io.Writer
+		stderr     io.Writer
+		dir        string
+		envs       []*env
+		systemEnvs bool
 
 		async bool
 	}
 )
 
 func defaultOptions() *options {
-	return &options{}
+	return &options{
+		systemEnvs: true,
+		async:      false,
+	}
 }
