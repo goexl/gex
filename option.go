@@ -17,7 +17,8 @@ type (
 		envs       []*env
 		systemEnvs bool
 
-		async bool
+		async   bool
+		checker checker
 	}
 )
 
