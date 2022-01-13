@@ -7,7 +7,7 @@ type optionArgs struct {
 }
 
 // Args 配置命令运行的参数
-func Args(args []string) *optionArgs {
+func Args(args ...string) *optionArgs {
 	return &optionArgs{
 		args: args,
 	}

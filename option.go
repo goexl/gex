@@ -13,6 +13,10 @@ type (
 		args   []string
 		stdout io.Writer
 		stderr io.Writer
+		dir    string
+		env    []string
+
+		async bool
 	}
 )
 
