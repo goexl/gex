@@ -31,6 +31,15 @@ func PathMatchChecker(pattern string) *optionChecker {
 	}
 }
 
+// RegexpChecker 正则表达式检查器
+func RegexpChecker(regexp string) *optionChecker {
+	return &optionChecker{
+		checker: &regexpChecker{
+			regexp: regexp,
+		},
+	}
+}
+
 func (c *optionChecker) apply(options *options) {
 	options.checker = c.checker
 }
