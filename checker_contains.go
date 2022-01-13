@@ -8,10 +8,10 @@ type containsChecker struct {
 	contains string
 }
 
-func (c *containsChecker) check(all string, line string) (checked bool, err error) {
-	checked = strings.Contains(line, c.contains)
+func (cc *containsChecker) check(all string, line string) (checked bool, err error) {
+	checked = strings.Contains(line, cc.contains)
 	if !checked && `` != all {
-		checked = strings.Contains(all, c.contains)
+		checked = strings.Contains(all, cc.contains)
 	}
 
 	return
