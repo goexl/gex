@@ -1,6 +1,9 @@
 package gex
 
-var _ option = (*optionSystemEnvs)(nil)
+var (
+	_        = DisableSystemEnvs
+	_ option = (*optionSystemEnvs)(nil)
+)
 
 type optionSystemEnvs struct{}
 

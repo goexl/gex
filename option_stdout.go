@@ -4,7 +4,10 @@ import (
 	`io`
 )
 
-var _ option = (*optionStdout)(nil)
+var (
+	_        = Stdout
+	_ option = (*optionStdout)(nil)
+)
 
 type optionStdout struct {
 	stdout io.Writer

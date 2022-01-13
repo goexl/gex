@@ -4,7 +4,10 @@ import (
 	`io`
 )
 
-var _ option = (*optionStderr)(nil)
+var (
+	_        = Stderr
+	_ option = (*optionStderr)(nil)
+)
 
 type optionStderr struct {
 	stderr io.Writer

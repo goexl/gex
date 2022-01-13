@@ -4,7 +4,10 @@ import (
 	`os`
 )
 
-var _ option = (*optionTerminal)(nil)
+var (
+	_        = Terminal
+	_ option = (*optionTerminal)(nil)
+)
 
 type optionTerminal struct{}
 

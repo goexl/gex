@@ -1,6 +1,9 @@
 package gex
 
-var _ option = (*optionArgs)(nil)
+var (
+	_        = Args
+	_ option = (*optionArgs)(nil)
+)
 
 type optionArgs struct {
 	args []string

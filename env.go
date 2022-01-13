@@ -1,5 +1,7 @@
 package gex
 
+var _ = NewEnv
+
 type env struct {
 	key   string
 	value string

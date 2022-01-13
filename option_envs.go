@@ -1,6 +1,9 @@
 package gex
 
-var _ option = (*optionEnvs)(nil)
+var (
+	_        = Envs
+	_ option = (*optionEnvs)(nil)
+)
 
 type optionEnvs struct {
 	envs []*env

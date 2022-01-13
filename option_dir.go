@@ -1,6 +1,9 @@
 package gex
 
-var _ option = (*optionDir)(nil)
+var (
+	_        = Dir
+	_ option = (*optionDir)(nil)
+)
 
 type optionDir struct {
 	dir string

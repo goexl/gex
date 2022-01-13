@@ -1,6 +1,12 @@
 package gex
 
-var _ option = (*optionChecker)(nil)
+var (
+	_        = Checker
+	_        = ContainsChecker
+	_        = PathMatchChecker
+	_        = RegexpChecker
+	_ option = (*optionChecker)(nil)
+)
 
 type optionChecker struct {
 	checker checker

@@ -1,6 +1,10 @@
 package gex
 
-var _ option = (*optionAsync)(nil)
+var (
+	_        = Async
+	_        = Sync
+	_ option = (*optionAsync)(nil)
+)
 
 type optionAsync struct {
 	async bool
