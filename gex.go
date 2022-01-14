@@ -80,18 +80,30 @@ func Run(command string, opts ...option) (code int, err error) {
 	return
 }
 
-func read(pipe io.ReadCloser, wg *sync.WaitGroup, readType readType, options *options) {
-	// 无论如何，结束时，都将等待计数减一
-	defer wg.Done()
+func read(pipe io.ReadCloser, checker *sync.WaitGroup, readType readType, options *options) {
+	var err error
+
+	// 分情况计数减一
+	// 如果是读取到结尾了，不能减少计数，会导致计数为负的异常
+	// 如果结束时，无错误，无论如何，计数都减一
+	defer func() {
+		if nil == err {
+			checker.Done()
+		} else if io.EOF != err {
+			panic(err)
+		}
+	}()
 
 	reader := bufio.NewReader(pipe)
-	line, err := reader.ReadString(enterChar)
+	var line string
+	line, err = reader.ReadString(enterChar)
 
 	for nil == err {
 		go write(line, readType, options)
 
 		if nil != options.checker {
-			if checked, checkErr := options.checker.check(line); nil != checkErr || checked {
+			var checked bool
+			if checked, err = options.checker.check(line); nil != err || checked {
 				break
 			}
 		}
