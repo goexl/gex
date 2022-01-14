@@ -2,6 +2,7 @@ package gex
 
 var (
 	_        = Checker
+	_        = EqualChecker
 	_        = ContainsChecker
 	_        = PathMatchChecker
 	_        = RegexpChecker
@@ -16,6 +17,21 @@ type optionChecker struct {
 func Checker(checker checker) *optionChecker {
 	return &optionChecker{
 		checker: checker,
+	}
+}
+
+// EqualChecker 字符串全等检查器
+func EqualChecker(equal string, opts ...checkerOption) *optionChecker {
+	_options := defaultCheckerOptions()
+	for _, opt := range opts {
+		opt.applyChecker(_options)
+	}
+
+	return &optionChecker{
+		checker: &equalChecker{
+			equal: equal,
+			cache: _options.cache,
+		},
 	}
 }
 
