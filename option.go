@@ -5,6 +5,8 @@ import (
 	`os`
 )
 
+var _ = NewOptions
+
 type (
 	option interface {
 		apply(options *options)
@@ -19,9 +21,16 @@ type (
 		systemEnvs bool
 
 		async   bool
+		wait    bool
 		checker checker
+		charset string
 	}
 )
+
+// NewOptions 快捷方法，因为 option 接口不对外开放
+func NewOptions(opts ...option) []option {
+	return opts
+}
 
 func defaultOptions() *options {
 	return &options{

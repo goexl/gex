@@ -6,8 +6,8 @@ import (
 	`io`
 	`os`
 	`os/exec`
-	`strings`
 	`sync`
+	`syscall`
 )
 
 const enterChar = '\n'
@@ -51,17 +51,30 @@ func Run(command string, opts ...option) (code int, err error) {
 		return
 	}
 
-	wg := new(sync.WaitGroup)
-	wg.Add(2)
+	checkerGroup := new(sync.WaitGroup)
+	// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
+	checkerGroup.Add(1)
 
 	// 读取输出流数据
-	go read(stdout, wg, readTypeStdout, _options)
+	go read(stdout, checkerGroup, readTypeStdout, _options)
 	// 读取错误流数据
-	go read(stderr, wg, readTypeStderr, _options)
+	go read(stderr, checkerGroup, readTypeStderr, _options)
+
+	// 如果有检查器，等待检查器结束
+	if nil != _options.checker {
+		checkerGroup.Wait()
+	}
 
 	// 如果是同步模式，等待命令执行完成
 	if !_options.async {
-		wg.Wait()
+		// 取得退出代码
+		if err = cmd.Wait(); err != nil {
+			if exitErr, ok := err.(*exec.ExitError); ok {
+				if status, statsOk := exitErr.Sys().(syscall.WaitStatus); statsOk {
+					code = status.ExitStatus()
+				}
+			}
+		}
 	}
 
 	return
@@ -74,13 +87,11 @@ func read(pipe io.ReadCloser, wg *sync.WaitGroup, readType readType, options *op
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(enterChar)
 
-	var sb strings.Builder
 	for nil == err {
-		sb.WriteString(line)
 		go write(line, readType, options)
 
 		if nil != options.checker {
-			if checked, checkErr := options.checker.check(sb.String(), line); nil != checkErr || checked {
+			if checked, checkErr := options.checker.check(line); nil != checkErr || checked {
 				break
 			}
 		}
