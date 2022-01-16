@@ -6,7 +6,7 @@ import (
 
 var (
 	_ = NewEnv
-	_ = ParseEnv
+	_ = ParseEnvs
 )
 
 type env struct {
@@ -22,15 +22,19 @@ func NewEnv(key string, value string) *env {
 	}
 }
 
-// ParseEnv 解析环境变量
-func ParseEnv(from string) (_env *env) {
-	data := strings.Split(from, `=`)
-	if 2 != len(data) {
-		return
-	}
-	_env = &env{
-		key:   data[0],
-		value: data[1],
+// ParseEnvs 解析环境变量
+func ParseEnvs(from ...string) (envs []*env) {
+	envs = make([]*env, 0, len(from))
+	for _, _env := range from {
+		data := strings.Split(_env, `=`)
+		if 2 != len(data) {
+			continue
+		}
+
+		envs = append(envs, &env{
+			key:   data[0],
+			value: data[1],
+		})
 	}
 
 	return
