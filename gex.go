@@ -106,14 +106,16 @@ func waitCommand(exit *sync.WaitGroup, cmd *exec.Cmd, code *int, err error, opti
 }
 
 func read(pipe io.ReadCloser, checker *sync.WaitGroup, readType readType, options *options) {
+	done := false
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(enterChar)
 	for nil == err {
 		go write(line, readType, options)
 
 		if nil != options.checker {
-			if checked, _ := options.checker.check(line); checked {
+			if checked, _ := options.checker.check(line); checked && !done {
 				checker.Done()
+				done = true
 			}
 		}
 		line, err = reader.ReadString(enterChar)
