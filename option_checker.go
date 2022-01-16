@@ -4,6 +4,8 @@ var (
 	_        = Checker
 	_        = EqualChecker
 	_        = ContainsChecker
+	_        = ContainsAllChecker
+	_        = ContainsAnyChecker
 	_        = PathMatchChecker
 	_        = RegexpChecker
 	_ option = (*optionChecker)(nil)
@@ -46,6 +48,36 @@ func ContainsChecker(contains string, opts ...checkerOption) *optionChecker {
 		checker: &containsChecker{
 			contains: contains,
 			cache:    _options.cache,
+		},
+	}
+}
+
+// ContainsAllChecker 字符串包含检查器
+func ContainsAllChecker(items []string, opts ...checkerOption) *optionChecker {
+	_options := defaultCheckerOptions()
+	for _, opt := range opts {
+		opt.applyChecker(_options)
+	}
+
+	return &optionChecker{
+		checker: &containsAllChecker{
+			items: items,
+			cache: _options.cache,
+		},
+	}
+}
+
+// ContainsAnyChecker 字符串包含检查器
+func ContainsAnyChecker(items []string, opts ...checkerOption) *optionChecker {
+	_options := defaultCheckerOptions()
+	for _, opt := range opts {
+		opt.applyChecker(_options)
+	}
+
+	return &optionChecker{
+		checker: &containsAnyChecker{
+			items: items,
+			cache: _options.cache,
 		},
 	}
 }
