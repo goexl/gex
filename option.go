@@ -20,10 +20,11 @@ type (
 		envs       []*env
 		systemEnvs bool
 
-		async   bool
-		wait    bool
-		checker checker
-		charset string
+		async     bool
+		wait      bool
+		checker   checker
+		collector collector
+		charset   string
 	}
 )
 

@@ -6,8 +6,9 @@ import (
 	`io`
 	`os`
 	`os/exec`
-	`sync`
 	`syscall`
+
+	`github.com/storezhang/guc`
 )
 
 const enterChar = '\n'
@@ -51,7 +52,7 @@ func Run(command string, opts ...option) (code int, err error) {
 		return
 	}
 
-	checkerGroup := new(sync.WaitGroup)
+	checkerGroup := new(guc.WaitGroup)
 	// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
 	checkerGroup.Add(1)
 
@@ -60,50 +61,27 @@ func Run(command string, opts ...option) (code int, err error) {
 	// 读取错误流数据
 	go read(stderr, checkerGroup, readTypeStderr, _options)
 
-	exitGroup := new(sync.WaitGroup)
-	exitGroup.Add(2)
-
 	// 如果有检查器，等待检查器结束
-	go waitChecker(exitGroup, checkerGroup, _options)
+	if nil != _options.checker {
+		checkerGroup.Wait()
+	}
+
 	// 如果是同步模式，等待命令执行完成
-	go waitCommand(exitGroup, cmd, &code, err, _options)
-	exitGroup.Wait()
+	if !_options.async {
+		// 取得退出代码
+		if err = cmd.Wait(); err != nil {
+			if exitErr, ok := err.(*exec.ExitError); ok {
+				if status, statsOk := exitErr.Sys().(syscall.WaitStatus); statsOk {
+					code = status.ExitStatus()
+				}
+			}
+		}
+	}
 
 	return
 }
 
-func waitChecker(exit *sync.WaitGroup, checker *sync.WaitGroup, options *options) {
-	defer func() {
-		exit.Done()
-	}()
-
-	if nil == options.checker {
-		return
-	}
-	checker.Wait()
-}
-
-func waitCommand(exit *sync.WaitGroup, cmd *exec.Cmd, code *int, err error, options *options) {
-	defer func() {
-		exit.Done()
-	}()
-
-	if options.async {
-		return
-	}
-
-	// 取得退出代码
-	if err = cmd.Wait(); err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
-			if status, statsOk := exitErr.Sys().(syscall.WaitStatus); statsOk {
-				*code = status.ExitStatus()
-				err = nil
-			}
-		}
-	}
-}
-
-func read(pipe io.ReadCloser, checker *sync.WaitGroup, readType readType, options *options) {
+func read(pipe io.ReadCloser, checker *guc.WaitGroup, readType readType, options *options) {
 	done := false
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(enterChar)
@@ -117,6 +95,11 @@ func read(pipe io.ReadCloser, checker *sync.WaitGroup, readType readType, option
 			}
 		}
 		line, err = reader.ReadString(enterChar)
+	}
+
+	// 因为Checker只有一个，所以调用Done时必须先判断是不是整体已经结束，不然会导致计数为负
+	if !checker.Completed() {
+		checker.Done()
 	}
 }
 
