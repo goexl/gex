@@ -52,9 +52,12 @@ func Run(command string, opts ...option) (code int, err error) {
 		return
 	}
 
-	checkerGroup := new(guc.WaitGroup)
-	// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
-	checkerGroup.Add(1)
+	var checkerGroup *guc.WaitGroup
+	if nil != _options.checker {
+		checkerGroup = new(guc.WaitGroup)
+		// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
+		checkerGroup.Add(1)
+	}
 
 	// 读取输出流数据
 	go read(stdout, checkerGroup, readTypeStdout, _options)
@@ -98,7 +101,7 @@ func read(pipe io.ReadCloser, checker *guc.WaitGroup, readType readType, options
 	}
 
 	// 因为Checker只有一个，所以调用Done时必须先判断是不是整体已经结束，不然会导致计数为负
-	if !checker.Completed() {
+	if nil != checker && !checker.Completed() {
 		checker.Done()
 	}
 }

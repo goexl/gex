@@ -25,6 +25,8 @@ type (
 		checker   checker
 		collector collector
 		charset   string
+
+		notifiers []notifier
 	}
 )
 
