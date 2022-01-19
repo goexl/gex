@@ -1,5 +1,5 @@
 package gex
 
 type notifier interface {
-	notify()
+	notify(code int, err error)
 }
