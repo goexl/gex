@@ -81,6 +81,11 @@ func Run(command string, opts ...option) (code int, err error) {
 		}
 	}
 
+	// 通知
+	for _, _notifier := range _options.notifiers {
+		_notifier.notify(code, err)
+	}
+
 	return
 }
 
