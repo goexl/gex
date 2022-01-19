@@ -7,8 +7,9 @@ import (
 )
 
 func TestRunWithChecker(t *testing.T) {
+	t.Parallel()
 	_, err := gex.Run(
-		`ping`, gex.Args(`www.163.com`, `-n`, `1`),
+		`ping`, gex.Args(`www.163.com`),
 		gex.ContainsChecker(`Ping statistics for`), gex.Async(), gex.Quiet(),
 	)
 	if nil != err {
@@ -17,16 +18,18 @@ func TestRunWithChecker(t *testing.T) {
 }
 
 func TestRunWithSync(t *testing.T) {
-	_, err := gex.Run(`ping`, gex.Args(`www.163.com`, `-n`, `1`), gex.Sync())
+	t.Parallel()
+	_, err := gex.Run(`ping`, gex.Args(`www.163.com`), gex.Sync())
 	if nil != err {
 		t.FailNow()
 	}
 }
 
 func TestRunWithStringCollector(t *testing.T) {
+	t.Parallel()
 	output := ``
 	_, err := gex.Run(
-		`ping`, gex.Args(`www.163.com`, `-n`, `1`),
+		`ping`, gex.Args(`www.163.com`),
 		gex.Sync(), gex.Quiet(), gex.StringCollector(&output),
 	)
 	if nil != err || `` == output {
