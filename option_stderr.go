@@ -21,5 +21,10 @@ func Stderr(stderr io.Writer) *optionStderr {
 }
 
 func (s *optionStderr) apply(options *options) {
-	options.errs = append(options.errs, s.stderr)
+	options.collectors[keyStderr] = &writerCollector{
+		writer: s.stderr,
+		options: &collectorOptions{
+			mode: CollectorModeStderr,
+		},
+	}
 }

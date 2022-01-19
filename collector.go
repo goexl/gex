@@ -1,5 +1,6 @@
 package gex
 
 type collector interface {
-	collect(line string)
+	key() string
+	collect(line string, mode CollectorMode) (err error)
 }

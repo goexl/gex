@@ -7,17 +7,17 @@ import (
 type containsAllChecker struct {
 	items []string
 
-	cache bool
-	all   strings.Builder
+	options *checkerOptions
+	all     strings.Builder
 }
 
 func (cac *containsAllChecker) check(line string) (checked bool, err error) {
-	if cac.cache {
+	if cac.options.cache {
 		cac.all.WriteString(line)
 	}
 
 	checked = cac.containsAll(line, cac.items...)
-	if !checked && cac.cache {
+	if !checked && cac.options.cache {
 		checked = cac.containsAll(cac.all.String(), cac.items...)
 	}
 

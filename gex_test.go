@@ -23,3 +23,11 @@ func TestRunWithSync(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestRunWithStringCollector(t *testing.T) {
+	output := ``
+	_, err := gex.Run(`ping`, gex.Args(`www.163.com`), gex.Sync(), gex.Quiet(), gex.StringCollector(&output))
+	if nil != err || `` == output {
+		t.FailNow()
+	}
+}

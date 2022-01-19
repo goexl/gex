@@ -1,9 +1,5 @@
 package gex
 
-import (
-	`io`
-)
-
 var (
 	_        = Quiet
 	_ option = (*optionQuiet)(nil)
@@ -17,6 +13,5 @@ func Quiet() *optionQuiet {
 }
 
 func (q *optionQuiet) apply(options *options) {
-	options.outs = make([]io.Writer, 0)
-	options.errs = make([]io.Writer, 0)
+	delete(options.collectors, keyTerminal)
 }

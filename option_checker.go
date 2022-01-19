@@ -31,8 +31,8 @@ func EqualChecker(equal string, opts ...checkerOption) *optionChecker {
 
 	return &optionChecker{
 		checker: &equalChecker{
-			equal: equal,
-			cache: _options.cache,
+			equal:   equal,
+			options: _options,
 		},
 	}
 }
@@ -47,7 +47,7 @@ func ContainsChecker(contains string, opts ...checkerOption) *optionChecker {
 	return &optionChecker{
 		checker: &containsChecker{
 			contains: contains,
-			cache:    _options.cache,
+			options:  _options,
 		},
 	}
 }
@@ -61,8 +61,8 @@ func ContainsAllChecker(items []string, opts ...checkerOption) *optionChecker {
 
 	return &optionChecker{
 		checker: &containsAllChecker{
-			items: items,
-			cache: _options.cache,
+			items:   items,
+			options: _options,
 		},
 	}
 }
@@ -76,8 +76,8 @@ func ContainsAnyChecker(items []string, opts ...checkerOption) *optionChecker {
 
 	return &optionChecker{
 		checker: &containsAnyChecker{
-			items: items,
-			cache: _options.cache,
+			items:   items,
+			options: _options,
 		},
 	}
 }
@@ -92,7 +92,7 @@ func PathMatchChecker(pattern string, opts ...checkerOption) *optionChecker {
 	return &optionChecker{
 		checker: &pathMatchChecker{
 			pattern: pattern,
-			cache:   _options.cache,
+			options: _options,
 		},
 	}
 }
@@ -106,8 +106,8 @@ func RegexpChecker(regexp string, opts ...checkerOption) *optionChecker {
 
 	return &optionChecker{
 		checker: &regexpChecker{
-			regexp: regexp,
-			cache:  _options.cache,
+			regexp:  regexp,
+			options: _options,
 		},
 	}
 }

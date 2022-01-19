@@ -21,5 +21,10 @@ func Stdout(stdout io.Writer) *optionStdout {
 }
 
 func (s *optionStdout) apply(options *options) {
-	options.outs = append(options.errs, s.stdout)
+	options.collectors[keyStdout] = &writerCollector{
+		writer: s.stdout,
+		options: &collectorOptions{
+			mode: CollectorModeStdout,
+		},
+	}
 }
