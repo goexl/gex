@@ -20,11 +20,19 @@ func Run(command string, opts ...option) (code int, err error) {
 		opt.apply(_options)
 	}
 
+	// 通知
+	defer notify(_options, &code, err)
+
 	// 当出错时，打印到控制台
 	if _options.pwe {
 		output := ``
-		_options.collectors[keyPWE] = newOutputStringCollector(&output, _options.max)
+		_options.collectors[keyPwe] = newOutputStringCollector(&output, _options.max)
 		defer printWhenError(&output, err)
+	}
+
+	// 将所有的收集器加入到通知器中
+	for _, _collector := range _options.collectors {
+		_options.notifiers = append(_options.notifiers, _collector)
 	}
 
 	// 创建真正的命令
@@ -88,17 +96,18 @@ func Run(command string, opts ...option) (code int, err error) {
 		}
 	}
 
-	// 通知
-	for _, _notifier := range _options.notifiers {
-		_notifier.notify(code, err)
-	}
-
 	return
 }
 
 func printWhenError(output *string, err error) {
 	if nil != err {
 		_, _ = os.Stderr.WriteString(*output)
+	}
+}
+
+func notify(options *options, code *int, err error) {
+	for _, _notifier := range options.notifiers {
+		_notifier.notify(*code, err)
 	}
 }
 

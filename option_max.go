@@ -7,11 +7,11 @@ var (
 )
 
 type optionMax struct {
-	max int64
+	max int
 }
 
 // MaxLines 配置最大收集行数
-func MaxLines(max int64) *optionMax {
+func MaxLines(max int) *optionMax {
 	return &optionMax{
 		max: max,
 	}

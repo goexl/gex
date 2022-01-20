@@ -2,7 +2,6 @@ package gex
 
 import (
 	`fmt`
-	`strings`
 )
 
 var _ collector = (*stringCollector)(nil)
@@ -12,12 +11,12 @@ type stringCollector struct {
 	options *collectorOptions
 }
 
-func newOutputStringCollector(output *string, maxLines int64) *stringCollector {
+func newOutputStringCollector(output *string, max int) *stringCollector {
 	return &stringCollector{
 		string: output,
 		options: &collectorOptions{
 			mode: CollectorModeAny,
-			max:  maxLines,
+			max:  max,
 		},
 	}
 }
@@ -27,15 +26,14 @@ func (s *stringCollector) key() string {
 }
 
 func (s *stringCollector) collect(line string, mode CollectorMode) (err error) {
-	if !s.options.canCollect() || CollectorModeAny != s.options.mode && mode != s.options.mode {
+	if CollectorModeAny != s.options.mode && mode != s.options.mode {
 		return
 	}
-
-	var sb strings.Builder
-	sb.WriteString(*s.string)
-	sb.WriteString(line)
-	*s.string = sb.String()
-	s.options.current++
+	s.options.write(line)
 
 	return
+}
+
+func (s *stringCollector) notify(_ int, _ error) {
+	*s.string = s.options.string()
 }

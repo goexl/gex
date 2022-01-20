@@ -28,7 +28,7 @@ type (
 		notifiers []notifier
 
 		pwe bool
-		max int64
+		max int
 	}
 )
 
