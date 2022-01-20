@@ -1,5 +1,9 @@
 package gex
 
+import (
+	`context`
+)
+
 var _ = NewOptions
 
 type (
@@ -8,6 +12,7 @@ type (
 	}
 
 	options struct {
+		context    context.Context
 		args       []string
 		dir        string
 		envs       []*env
