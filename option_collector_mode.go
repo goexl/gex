@@ -32,6 +32,6 @@ func CollectAny() *optionCollectorMode {
 	}
 }
 
-func (m *optionCollectorMode) apply(options *collectorOptions) {
+func (m *optionCollectorMode) applyCollector(options *collectorOptions) {
 	options.mode = m.mode
 }

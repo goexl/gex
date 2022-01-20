@@ -20,6 +20,13 @@ func Run(command string, opts ...option) (code int, err error) {
 		opt.apply(_options)
 	}
 
+	// 当出错时，打印到控制台
+	if _options.pwe {
+		output := ``
+		_options.collectors[keyPWE] = newOutputStringCollector(&output, _options.max)
+		defer printWhenError(&output, err)
+	}
+
 	// 创建真正的命令
 	cmd := exec.Command(command, _options.args...)
 	// 配置运行时目录
@@ -87,6 +94,12 @@ func Run(command string, opts ...option) (code int, err error) {
 	}
 
 	return
+}
+
+func printWhenError(output *string, err error) {
+	if nil != err {
+		_, _ = os.Stderr.WriteString(*output)
+	}
 }
 
 func read(pipe io.ReadCloser, checker *guc.WaitGroup, mode CollectorMode, options *options) {

@@ -18,13 +18,17 @@ type (
 		envs       []*env
 		systemEnvs bool
 
-		async      bool
-		wait       bool
+		async bool
+		wait  bool
+
 		checker    checker
 		collectors map[string]collector
 		charset    string
 
 		notifiers []notifier
+
+		pwe bool
+		max int64
 	}
 )
 
@@ -41,5 +45,8 @@ func defaultOptions() *options {
 
 		systemEnvs: true,
 		async:      false,
+
+		pwe: true,
+		max: 15,
 	}
 }

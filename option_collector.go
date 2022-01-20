@@ -28,7 +28,7 @@ func Collector(collector collector) *optionCollector {
 func StringCollector(string *string, opts ...collectorOption) *optionCollector {
 	_options := defaultCollectorOptions()
 	for _, opt := range opts {
-		opt.apply(_options)
+		opt.applyCollector(_options)
 	}
 
 	return &optionCollector{
@@ -43,7 +43,7 @@ func StringCollector(string *string, opts ...collectorOption) *optionCollector {
 func FileCollector(file *os.File, opts ...collectorOption) *optionCollector {
 	_options := defaultCollectorOptions()
 	for _, opt := range opts {
-		opt.apply(_options)
+		opt.applyCollector(_options)
 	}
 
 	return &optionCollector{

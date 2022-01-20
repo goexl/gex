@@ -27,10 +27,11 @@ func (w *writerCollector) key() string {
 }
 
 func (w *writerCollector) collect(line string, mode CollectorMode) (err error) {
-	if CollectorModeAny != w.options.mode && mode != w.options.mode {
+	if !w.options.canCollect() || CollectorModeAny != w.options.mode && mode != w.options.mode {
 		return
 	}
 	_, err = w.writer.Write([]byte(line))
+	w.options.current++
 
 	return
 }
