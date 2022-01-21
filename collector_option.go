@@ -1,7 +1,6 @@
 package gex
 
 import (
-	`math`
 	`strings`
 )
 
@@ -20,7 +19,7 @@ type (
 func defaultCollectorOptions() *collectorOptions {
 	return &collectorOptions{
 		mode:  CollectorModeAny,
-		max:   math.MaxInt32,
+		max:   1000,
 		lines: make([]string, 0),
 	}
 }
@@ -34,10 +33,5 @@ func (c *collectorOptions) write(line string) {
 }
 
 func (c *collectorOptions) string() string {
-	var sb strings.Builder
-	for _, line := range c.lines {
-		sb.WriteString(line)
-	}
-
-	return sb.String()
+	return strings.Join(c.lines, ``)
 }
