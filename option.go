@@ -47,6 +47,6 @@ func defaultOptions() *options {
 		async:      false,
 
 		pwe: true,
-		max: 15,
+		max: 100,
 	}
 }

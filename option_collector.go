@@ -2,6 +2,7 @@ package gex
 
 import (
 	`bufio`
+	`fmt`
 	`os`
 )
 
@@ -70,5 +71,5 @@ func FilenameCollector(filename string, opts ...fileOption) (collector *optionCo
 }
 
 func (c *optionCollector) apply(options *options) {
-	options.collectors[c.collector.key()] = c.collector
+	options.collectors[fmt.Sprintf(`%p`, c.collector)] = c.collector
 }

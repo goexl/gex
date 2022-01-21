@@ -20,15 +20,15 @@ func Run(command string, opts ...option) (code int, err error) {
 		opt.apply(_options)
 	}
 
-	// 通知
-	defer notify(_options, &code, err)
-
 	// 当出错时，打印到控制台
 	if _options.pwe {
 		output := ``
 		_options.collectors[keyPwe] = newOutputStringCollector(&output, _options.max)
-		defer printWhenError(&output, err)
+		defer printWhenError(&output, &err)
 	}
+
+	// 通知
+	defer notify(_options, &code, err)
 
 	// 将所有的收集器加入到通知器中
 	for _, _collector := range _options.collectors {
@@ -99,8 +99,8 @@ func Run(command string, opts ...option) (code int, err error) {
 	return
 }
 
-func printWhenError(output *string, err error) {
-	if nil != err {
+func printWhenError(output *string, err *error) {
+	if nil != err && nil != *err && `` != *output {
 		_, _ = os.Stderr.WriteString(*output)
 	}
 }

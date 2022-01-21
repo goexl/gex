@@ -1,7 +1,6 @@
 package gex
 
 import (
-	`fmt`
 	`io`
 	`os`
 )
@@ -20,10 +19,6 @@ func newTerminalCollector() *writerCollector {
 			mode: CollectorModeAny,
 		},
 	}
-}
-
-func (w *writerCollector) key() string {
-	return fmt.Sprintf(`%p`, w.writer)
 }
 
 func (w *writerCollector) collect(line string, mode CollectorMode) (err error) {

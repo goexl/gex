@@ -1,9 +1,5 @@
 package gex
 
-import (
-	`fmt`
-)
-
 var _ collector = (*stringCollector)(nil)
 
 type stringCollector struct {
@@ -19,10 +15,6 @@ func newOutputStringCollector(output *string, max int) *stringCollector {
 			max:  max,
 		},
 	}
-}
-
-func (s *stringCollector) key() string {
-	return fmt.Sprintf(`%p`, s.string)
 }
 
 func (s *stringCollector) collect(line string, mode CollectorMode) (err error) {
