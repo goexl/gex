@@ -24,7 +24,7 @@ func (s *optionStdout) apply(options *options) {
 	options.collectors[keyStdout] = &writerCollector{
 		writer: s.stdout,
 		options: &collectorOptions{
-			mode: CollectorModeStdout,
+			typ: CollectorTypeStdout,
 		},
 	}
 }

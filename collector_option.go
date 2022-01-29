@@ -10,6 +10,7 @@ type (
 	}
 
 	collectorOptions struct {
+		typ   CollectorType
 		mode  CollectorMode
 		max   int
 		lines []string
@@ -18,7 +19,8 @@ type (
 
 func defaultCollectorOptions() *collectorOptions {
 	return &collectorOptions{
-		mode:  CollectorModeAny,
+		typ:   CollectorTypeAny,
+		mode:  CollectorModeCache,
 		max:   1000,
 		lines: make([]string, 0),
 	}

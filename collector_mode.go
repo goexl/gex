@@ -1,12 +1,10 @@
 package gex
 
 const (
-	// CollectorModeStdout 输出流
-	CollectorModeStdout CollectorMode = 1
-	// CollectorModeStderr 错误流
-	CollectorModeStderr CollectorMode = 2
-	// CollectorModeAny 所有输出
-	CollectorModeAny CollectorMode = 3
+	// CollectorModeCache 缓存
+	CollectorModeCache CollectorMode = 1
+	// CollectorModeDirect 直接输出
+	CollectorModeDirect CollectorMode = 2
 )
 
 // CollectorMode 收集模式

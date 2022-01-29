@@ -16,20 +16,29 @@ func newTerminalCollector() *writerCollector {
 	return &writerCollector{
 		writer: os.Stdout,
 		options: &collectorOptions{
-			mode: CollectorModeAny,
+			mode: CollectorModeDirect,
+			typ:  CollectorTypeAny,
 		},
 	}
 }
 
-func (w *writerCollector) collect(line string, mode CollectorMode) (err error) {
-	if CollectorModeAny != w.options.mode && mode != w.options.mode {
+func (w *writerCollector) collect(line string, typ CollectorType) (err error) {
+	if CollectorTypeAny != w.options.typ && typ != w.options.typ {
 		return
 	}
-	w.options.write(line)
+
+	switch w.options.mode {
+	case CollectorModeDirect:
+		_, _ = w.writer.Write([]byte(line))
+	default:
+		w.options.write(line)
+	}
 
 	return
 }
 
 func (w *writerCollector) notify(_ int, _ error) {
-	_, _ = w.writer.Write([]byte(w.options.string()))
+	if CollectorModeCache == w.options.mode {
+		_, _ = w.writer.Write([]byte(w.options.string()))
+	}
 }

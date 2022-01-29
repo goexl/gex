@@ -11,21 +11,29 @@ func newOutputStringCollector(output *string, max int) *stringCollector {
 	return &stringCollector{
 		string: output,
 		options: &collectorOptions{
-			mode: CollectorModeAny,
-			max:  max,
+			typ: CollectorTypeAny,
+			max: max,
 		},
 	}
 }
 
-func (s *stringCollector) collect(line string, mode CollectorMode) (err error) {
-	if CollectorModeAny != s.options.mode && mode != s.options.mode {
+func (s *stringCollector) collect(line string, typ CollectorType) (err error) {
+	if CollectorTypeAny != s.options.typ && typ != s.options.typ {
 		return
 	}
-	s.options.write(line)
+
+	switch s.options.mode {
+	case CollectorModeDirect:
+		*s.string = line
+	default:
+		s.options.write(line)
+	}
 
 	return
 }
 
 func (s *stringCollector) notify(_ int, _ error) {
-	*s.string = s.options.string()
+	if CollectorModeCache == s.options.mode {
+		*s.string = s.options.string()
+	}
 }

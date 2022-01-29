@@ -75,9 +75,9 @@ func Run(command string, opts ...option) (code int, err error) {
 	}
 
 	// 读取输出流数据
-	go read(stdout, checkerGroup, CollectorModeStdout, _options)
+	go read(stdout, checkerGroup, CollectorTypeStdout, _options)
 	// 读取错误流数据
-	go read(stderr, checkerGroup, CollectorModeStderr, _options)
+	go read(stderr, checkerGroup, CollectorTypeStderr, _options)
 
 	// 如果有检查器，等待检查器结束
 	if nil != _options.checker {
@@ -111,12 +111,12 @@ func notify(options *options, code *int, err error) {
 	}
 }
 
-func read(pipe io.ReadCloser, checker *guc.WaitGroup, mode CollectorMode, options *options) {
+func read(pipe io.ReadCloser, checker *guc.WaitGroup, typ CollectorType, options *options) {
 	done := false
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(enterChar)
 	for nil == err {
-		collect(line, mode, options)
+		collect(line, typ, options)
 
 		if nil != options.checker {
 			if checked, _ := options.checker.check(line); checked && !done {
@@ -133,8 +133,8 @@ func read(pipe io.ReadCloser, checker *guc.WaitGroup, mode CollectorMode, option
 	}
 }
 
-func collect(line string, mode CollectorMode, options *options) {
+func collect(line string, typ CollectorType, options *options) {
 	for _, _collector := range options.collectors {
-		_ = _collector.collect(line, mode)
+		_ = _collector.collect(line, typ)
 	}
 }
