@@ -6,9 +6,9 @@ import (
 	`github.com/storezhang/gex`
 )
 
-func TestRunWithChecker(t *testing.T) {
+func TestExecWithChecker(t *testing.T) {
 	t.Parallel()
-	_, err := gex.Run(
+	_, err := gex.Exec(
 		`ping`, gex.Args(`www.163.com`),
 		gex.ContainsChecker(`Ping statistics for`), gex.Async(), gex.Quiet(),
 	)
@@ -17,18 +17,18 @@ func TestRunWithChecker(t *testing.T) {
 	}
 }
 
-func TestRunWithSync(t *testing.T) {
+func TestExecWithSync(t *testing.T) {
 	t.Parallel()
-	_, err := gex.Run(`ping`, gex.Args(`www.163.com`), gex.Sync())
+	_, err := gex.Exec(`ping`, gex.Args(`www.163.com`), gex.Sync())
 	if nil != err {
 		t.FailNow()
 	}
 }
 
-func TestRunWithStringCollector(t *testing.T) {
+func TestExecWithStringCollector(t *testing.T) {
 	t.Parallel()
 	output := ``
-	_, err := gex.Run(
+	_, err := gex.Exec(
 		`ping`, gex.Args(`www.163.com`),
 		gex.Sync(), gex.Quiet(), gex.StringCollector(&output),
 	)
