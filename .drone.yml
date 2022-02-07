@@ -16,10 +16,10 @@ trigger:
 steps:
   - name: 拉代码
     image: plugins/git
-    pull: if-not-exists
+    pull: always
 
   - name: 编译
     image: pangum/drone
-    pull: if-not-exists
+    pull: always
     settings:
       output: gfx
