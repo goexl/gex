@@ -15,7 +15,7 @@ trigger:
 
 steps:
   - name: 拉代码
-    image: plugins/git
+    image: dronestock/git
     pull: always
 
   - name: 编译
