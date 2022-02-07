@@ -16,16 +16,14 @@ const enterChar = '\n'
 
 var mutex sync.Mutex
 
-// Command 命令封装
-type Command struct {
+type command struct {
 	name    string
 	options *options
 
-	wait guc.WaitGroup
+	checker *guc.WaitGroup
 }
 
-// NewCommand 创建命令
-func NewCommand(name string, opts ...option) *Command {
+func newCommand(name string, opts ...option) *command {
 	mutex.Lock()
 	defer mutex.Unlock()
 
@@ -34,15 +32,13 @@ func NewCommand(name string, opts ...option) *Command {
 		opt.apply(_options)
 	}
 
-	return &Command{
+	return &command{
 		name:    name,
 		options: _options,
-
-		wait: guc.WaitGroup{},
 	}
 }
 
-func (c *Command) Exec() (code int, err error) {
+func (c *command) Exec() (code int, err error) {
 	// 当出错时，打印到控制台
 	if c.options.pwe {
 		output := ``
@@ -90,21 +86,20 @@ func (c *Command) Exec() (code int, err error) {
 		return
 	}
 
-	var checkerGroup *guc.WaitGroup
 	if nil != c.options.checker {
-		checkerGroup = new(guc.WaitGroup)
+		c.checker = new(guc.WaitGroup)
 		// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
-		checkerGroup.Add(1)
+		c.checker.Add(1)
 	}
 
 	// 读取输出流数据
-	go c.read(stdout, checkerGroup, CollectorTypeStdout, c.options)
+	go c.read(stdout, CollectorTypeStdout, c.options)
 	// 读取错误流数据
-	go c.read(stderr, checkerGroup, CollectorTypeStderr, c.options)
+	go c.read(stderr, CollectorTypeStderr, c.options)
 
 	// 如果有检查器，等待检查器结束
 	if nil != c.options.checker {
-		checkerGroup.Wait()
+		c.checker.Wait()
 	}
 
 	// 如果是同步模式，等待命令执行完成
@@ -122,19 +117,19 @@ func (c *Command) Exec() (code int, err error) {
 	return
 }
 
-func (c *Command) printWhenError(output *string, err *error) {
+func (c *command) printWhenError(output *string, err *error) {
 	if nil != err && nil != *err && `` != *output {
 		_, _ = os.Stderr.WriteString(*output)
 	}
 }
 
-func (c *Command) notify(options *options, code *int, err error) {
+func (c *command) notify(options *options, code *int, err error) {
 	for _, _notifier := range options.notifiers {
 		_notifier.notify(*code, err)
 	}
 }
 
-func (c *Command) read(pipe io.ReadCloser, checker *guc.WaitGroup, typ CollectorType, options *options) {
+func (c *command) read(pipe io.ReadCloser, typ CollectorType, options *options) {
 	done := false
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(enterChar)
@@ -143,7 +138,7 @@ func (c *Command) read(pipe io.ReadCloser, checker *guc.WaitGroup, typ Collector
 
 		if nil != options.checker {
 			if checked, _ := options.checker.check(line); checked && !done {
-				checker.Done()
+				c.checker.Done()
 				done = true
 			}
 		}
@@ -151,12 +146,12 @@ func (c *Command) read(pipe io.ReadCloser, checker *guc.WaitGroup, typ Collector
 	}
 
 	// 因为Checker只有一个，所以调用Done时必须先判断是不是整体已经结束，不然会导致计数为负
-	if nil != checker && !checker.Completed() {
-		checker.Done()
+	if nil != c.checker && !c.checker.Completed() {
+		c.checker.Done()
 	}
 }
 
-func (c *Command) collect(line string, typ CollectorType, options *options) {
+func (c *command) collect(line string, typ CollectorType, options *options) {
 	for _, _collector := range options.collectors {
 		_ = _collector.collect(line, typ)
 	}

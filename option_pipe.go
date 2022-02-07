@@ -17,5 +17,5 @@ func Pipe(pipe ...string) *optionPipe {
 }
 
 func (a *optionPipe) apply(options *options) {
-	options.pipe = a.pipe
+	// options.pipe = a.pipe
 }
