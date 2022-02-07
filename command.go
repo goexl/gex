@@ -8,8 +8,6 @@ import (
 	`os/exec`
 	`sync`
 	`syscall`
-
-	`github.com/storezhang/guc`
 )
 
 const enterChar = '\n'
@@ -20,7 +18,7 @@ type command struct {
 	name    string
 	options *options
 
-	checker *guc.WaitGroup
+	checker *waitGroup
 }
 
 func newCommand(name string, opts ...option) *command {
@@ -87,7 +85,7 @@ func (c *command) Exec() (code int, err error) {
 	}
 
 	if nil != c.options.checker {
-		c.checker = new(guc.WaitGroup)
+		c.checker = new(waitGroup)
 		// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
 		c.checker.Add(1)
 	}
@@ -145,8 +143,7 @@ func (c *command) read(pipe io.ReadCloser, typ CollectorType, options *options) 
 		line, err = reader.ReadString(enterChar)
 	}
 
-	// 因为Checker只有一个，所以调用Done时必须先判断是不是整体已经结束，不然会导致计数为负
-	if nil != c.checker && !c.checker.Completed() {
+	if nil != c.checker {
 		c.checker.Done()
 	}
 }

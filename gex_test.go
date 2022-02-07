@@ -6,11 +6,22 @@ import (
 	`github.com/storezhang/gex`
 )
 
-func TestExecWithChecker(t *testing.T) {
+func TestExecWithCheckerSuccess(t *testing.T) {
 	t.Parallel()
 	_, err := gex.Exec(
 		`ping`, gex.Args(`www.163.com`),
 		gex.ContainsChecker(`Ping statistics for`), gex.Async(), gex.Quiet(),
+	)
+	if nil != err {
+		t.FailNow()
+	}
+}
+
+func TestExecWithCheckerFailed(t *testing.T) {
+	t.Parallel()
+	_, err := gex.Exec(
+		`ping`, gex.Args(`www.163.com`),
+		gex.ContainsChecker(`xxx`), gex.Async(), gex.Quiet(),
 	)
 	if nil != err {
 		t.FailNow()
