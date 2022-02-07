@@ -21,6 +21,9 @@ type (
 		async bool
 		wait  bool
 
+		stdinType stdinType
+		stdinArgs []interface{}
+
 		checker    checker
 		collectors map[string]collector
 		charset    string
