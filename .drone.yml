@@ -1,0 +1,25 @@
+kind: pipeline
+type: docker
+name: Golang文件系统扩展
+
+
+clone:
+  disable: true
+
+
+trigger:
+  event:
+    exclude:
+      - pull_request
+
+
+steps:
+  - name: 拉代码
+    image: plugins/git
+    pull: if-not-exists
+
+  - name: 编译
+    image: dronestock/pangu
+    pull: if-not-exists
+    settings:
+      output: gfx
