@@ -135,7 +135,7 @@ func (c *command) read(pipe io.ReadCloser, typ CollectorType, options *options) 
 		c.collect(line, typ, options)
 
 		if nil != options.checker {
-			if checked, _ := options.checker.check(line); checked && !done {
+			if checked, _ := options.checker.Check(line); checked && !done {
 				c.checker.Done()
 				done = true
 			}
@@ -150,6 +150,6 @@ func (c *command) read(pipe io.ReadCloser, typ CollectorType, options *options) 
 
 func (c *command) collect(line string, typ CollectorType, options *options) {
 	for _, _collector := range options.collectors {
-		_ = _collector.collect(line, typ)
+		_ = _collector.Collect(line, typ)
 	}
 }

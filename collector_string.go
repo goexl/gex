@@ -17,7 +17,7 @@ func newOutputStringCollector(output *string, max int) *stringCollector {
 	}
 }
 
-func (s *stringCollector) collect(line string, typ CollectorType) (err error) {
+func (s *stringCollector) Collect(line string, typ CollectorType) (err error) {
 	if CollectorTypeAny != s.options.typ && typ != s.options.typ {
 		return
 	}

@@ -12,7 +12,7 @@ type regexpChecker struct {
 	all     strings.Builder
 }
 
-func (rc *regexpChecker) check(line string) (checked bool, err error) {
+func (rc *regexpChecker) Check(line string) (checked bool, err error) {
 	if rc.options.cache {
 		rc.all.WriteString(line)
 	}

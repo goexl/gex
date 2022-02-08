@@ -12,7 +12,7 @@ type pathMatchChecker struct {
 	all     strings.Builder
 }
 
-func (pmc *pathMatchChecker) check(line string) (checked bool, err error) {
+func (pmc *pathMatchChecker) Check(line string) (checked bool, err error) {
 	if pmc.options.cache {
 		pmc.all.WriteString(line)
 	}

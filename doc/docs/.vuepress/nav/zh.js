@@ -2,11 +2,11 @@ module.exports = [{
     text: '指南',
     link: '/guide/'
 }, {
-    text: '配置',
-    link: '/config/'
+    text: '检查器',
+    link: '/checker/'
 }, {
-    text: '插件',
-    link: '/plugin/'
+    text: '收集器',
+    link: '/collector/'
 }, {
     text: '了解更多',
     ariaLabel: '了解更多',

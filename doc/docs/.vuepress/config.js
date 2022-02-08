@@ -53,8 +53,8 @@ module.exports = ctx => ({
                 sidebar: {
                     '/api/': getApiSidebar(),
                     '/guide/': getGuideSidebar('指南', '深入'),
-                    '/config/': getConfigSidebar('系统', '命令行'),
-                    '/plugin/': getPluginSidebar('插件', '官方插件'),
+                    '/checker/': getCheckerSidebar('基础', '进阶'),
+                    '/collector/': getCollectorSidebar('基础', '进阶'),
                 }
             }
         }
@@ -119,43 +119,44 @@ function getGuideSidebar(groupA, groupB) {
     }]
 }
 
-function getConfigSidebar(groupA, groupB) {
+function getCheckerSidebar(groupA, groupB) {
     return [{
         title: groupA,
         collapsable: false,
         children: [
             '',
-            'banner',
-            'default',
-            'validator'
+            'contains',
+            'equal',
+            'contains.all',
+            'contains.any',
+            'path.match',
+            'regexp',
         ]
     }, {
         title: groupB,
         collapsable: false,
         children: [
-            'name',
+            'concept',
+            'interface',
             'usage',
-            'description',
-            'authors',
-            'copyright'
         ]
     }]
 }
 
-function getPluginSidebar(groupA, groupB) {
+function getCollectorSidebar(groupA, groupB) {
     return [{
         title: groupA,
         collapsable: false,
         children: [
             '',
-            'using',
-            'writing'
         ]
     }, {
         title: groupB,
         collapsable: false,
         children: [
-            'database'
+            'concept',
+            'interface',
+            'usage',
         ]
     }]
 }

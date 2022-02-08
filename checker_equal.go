@@ -11,7 +11,7 @@ type equalChecker struct {
 	all     strings.Builder
 }
 
-func (ec *equalChecker) check(line string) (checked bool, err error) {
+func (ec *equalChecker) Check(line string) (checked bool, err error) {
 	if ec.options.cache {
 		ec.all.WriteString(line)
 	}

@@ -11,7 +11,7 @@ type containsAllChecker struct {
 	all     strings.Builder
 }
 
-func (cac *containsAllChecker) check(line string) (checked bool, err error) {
+func (cac *containsAllChecker) Check(line string) (checked bool, err error) {
 	if cac.options.cache {
 		cac.all.WriteString(line)
 	}

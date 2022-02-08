@@ -11,7 +11,7 @@ Golang exec extension library，Golang外部命令执行扩展库，有如下功
 
 ## 文档
 
-[文档](https://gex.storezhang.tech)
+[点击这里查看最新文档](https://gex.storezhang.tech)
 
 ## 捐助
 

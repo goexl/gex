@@ -113,5 +113,6 @@ func RegexpChecker(regexp string, opts ...checkerOption) *optionChecker {
 }
 
 func (c *optionChecker) apply(options *options) {
+	options.async = true
 	options.checker = c.checker
 }

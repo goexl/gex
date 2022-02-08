@@ -22,7 +22,7 @@ func newTerminalCollector() *writerCollector {
 	}
 }
 
-func (w *writerCollector) collect(line string, typ CollectorType) (err error) {
+func (w *writerCollector) Collect(line string, typ CollectorType) (err error) {
 	if CollectorTypeAny != w.options.typ && typ != w.options.typ {
 		return
 	}
