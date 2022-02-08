@@ -22,6 +22,7 @@ steps:
     image: pangum/drone
     pull: always
     settings:
+      debug: true
       output: gfx
 
   - name: 文档
