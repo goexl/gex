@@ -11,28 +11,28 @@ module.exports = [{
     text: '了解更多',
     ariaLabel: '了解更多',
     items: [{
-        text: '客户',
+        text: '使用者',
         items: [{
-            text: 'Archtech',
-            link: 'https://archtech.studio'
+            text: 'Docker插件',
+            link: 'https://github.com/dronestock/docker'
+        }, {
+            text: 'Git插件',
+            link: 'https://github.com/dronestock/git'
+        }, {
+            text: 'Maven插件',
+            link: 'https://github.com/dronestock/maven'
+        }, {
+            text: 'Node插件',
+            link: 'https://github.com/dronestock/node'
         }]
     }, {
-        text: '官方插件',
+        text: '其它框架推荐',
         items: [{
-            text: '数据库',
-            link: 'https://github.com/pangum/pangu-database'
+            text: '盘古',
+            link: 'https://pangu.pangum.tech'
         }, {
-            text: '统一对象存储',
-            link: 'https://github.com/storezhang/uoa'
-        }, {
-            text: '统一直播',
-            link: 'https://github.com/storezhang/ula'
-        }, {
-            text: '统一通知',
-            link: 'https://github.com/storezhang/una'
-        }, {
-            text: 'Echox',
-            link: 'https://github.com/storezhang/echox'
+            text: 'Gfx',
+            link: 'https://gfx.storezhang.tech'
         }]
     }]
 }]

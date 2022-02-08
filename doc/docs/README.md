@@ -3,15 +3,15 @@
 # @formatter:off
 home: true
 heroImage: /hero.png
-heroText: Pangu（盘古）
-tagline: Golang应用程序快速开发框架
-actionText: 快速上手 →
+heroText: Gex
+tagline: Golang外部程序调用扩展库
+actionText: 快速下手 →
 actionLink: /guide/
 features:
-  - title: 开箱即用
-    details: 内置快速开发框架，引入模块即可快速开发自己的应用
+  - title: 简单的API封装
+    details: 对外只暴露了Exec这一个方法就可以完成最简单的命令调用
   - title: 丰富的内置特性
-    details: 内置支持版本输出、数据迁移、服务以及命令
+    details: 内置支持输出编码转换以及自动解决乱码问题
   - title: 强大的扩展性
     details: 可以很方便的扩展整个框架而不侵入代码
   - title: 非常易于配置
@@ -20,10 +20,12 @@ features:
     details: 应用内单例，可以很方便的任何地方获得整个框架入口并作出配置而不用担心线程安全
   - title: 语义化
     details: 不需要记太多命令和参数以及配置项，语义化设计
-  - title: 内置支持配置文件加载
-    details: 支持Yaml、Toml、Json以及XML配置文件，且配置文件类型还在扩展中
-  - title: 内置支持数据验证
-    details: 配置文件内置支持数据验证，防止错误的配置被系统使用使系统问题越来越重
+  - title: 检查器
+    details: 方便调用命令时在合适的时机继续往下执行而不阻塞
+  - title: 收集器
+    details: 方便对命令执行结果进行分析
+  - title: 生命周期
+    details: 方便在命令执行过期中接管生命周期回调
 footer: MIT Licensed | Copyright © 2021-present Storezhang
 # @formatter:on
 ---
@@ -34,6 +36,6 @@ footer: MIT Licensed | Copyright © 2021-present Storezhang
 
 ::: warning 警告
 <!--@formatter:off-->
-Golang需要1.16及以上版本
+Golang最好是使用1.16及以上版本
 <!--@formatter:on-->
 :::

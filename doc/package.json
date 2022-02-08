@@ -2,13 +2,13 @@
     "name": "pangu-doc",
     "version": "1.0.0",
     "main": "index.js",
-    "license": "MIT",
+    "license": "Apache",
     "devDependencies": {
         "vuepress-theme-reco": "^1.6.6",
         "vuepress": "^1.8.2"
     },
     "scripts": {
-        "docs:dev": "vuepress dev docs",
-        "docs:build": "vuepress build docs"
+        "dev": "vuepress dev docs",
+        "build": "vuepress build docs"
     }
 }

@@ -101,20 +101,20 @@ function getGuideSidebar(groupA, groupB) {
         children: [
             '',
             'start',
-            'concept',
-            'config',
-            'migration',
+            'args',
+            'dir',
+            'envs',
         ]
     }, {
         title: groupB,
         collapsable: false,
         children: [
-            'di',
-            'serve',
-            'command',
-            'arg',
-            'version',
-            'plugin'
+            'async',
+            'quiet',
+            'pwe',
+            'terminal',
+            'stdout',
+            'stderr',
         ]
     }]
 }
