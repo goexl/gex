@@ -15,5 +15,5 @@ Golang exec extension library，Golang外部命令执行扩展库，有如下功
 
 ## 捐助
 
-![支持宝](doc/docs/.vuepress/public/donate/alipay-medium.jpg)
-![支持宝](doc/docs/.vuepress/public/donate/weipay-medium.jpg)
+![支持宝](doc/docs/.vuepress/public/donate/alipay-small.jpg)
+![支持宝](doc/docs/.vuepress/public/donate/weipay-small.jpg)
