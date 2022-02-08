@@ -2,7 +2,7 @@ package gex
 
 const (
 	stdinTypeUnknown stdinType = 0
-	stdinTypePipe    stdinType = 1
+	stdinTypeCommand stdinType = 1
 	stdinTypeFile    stdinType = 2
 )
 
