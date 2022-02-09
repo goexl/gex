@@ -1,11 +1,11 @@
 # gex
 
 [![Sourcegraph](https://sourcegraph.com/github.com/storezhang/gex/-/badge.svg?style=flat-square)](https://sourcegraph.com/github.com/storezhang/gex?badge)
-[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/storezhang/gex/v4)
+[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/storezhang/gex)
 [![Go Report Card](https://goreportcard.com/badge/github.com/storezhang/gex?style=flat-square)](https://goreportcard.com/report/github.com/storezhang/gex)
 [![Build Status](https://github.ruijc.com:20443/api/badges/storezhang/gex/status.svg)](https://github.ruijc.com:20443/storezhang/gex)
 [![Codecov](https://img.shields.io/codecov/c/github/storezhang/gex.svg?style=flat-square)](https://codecov.io/gh/storezhang/gex)
-[![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/storezhang/gex/master/LICENSE)
+[![License](https://img.shields.io/github/license/storezhang/gex)](https://raw.githubusercontent.com/storezhang/gex/master/LICENSE)
 
 Golang exec extension library，Golang外部命令执行扩展库，有如下功能
 
