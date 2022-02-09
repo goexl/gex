@@ -19,6 +19,8 @@ Golang exec extension library，Golang外部命令执行扩展库，有如下功
   - 路径模式匹配`PathMatch`
   - 正则匹配`Regexp`
 - 通知器
+  - 应用内方法通知`Func`
+  - 其它通知器，通过额外代码库实现，不增加`Gex`的复杂度
 - 收集器
   - 字符串`String`
   - 文件`File`
