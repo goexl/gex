@@ -7,7 +7,6 @@ import (
 )
 
 func TestExecWithCheckerSuccess(t *testing.T) {
-	t.Parallel()
 	_, err := gex.Exec(
 		`ping`, gex.Args(`www.163.com`),
 		gex.ContainsChecker(`Ping statistics for`), gex.Async(), gex.Quiet(),
@@ -18,7 +17,6 @@ func TestExecWithCheckerSuccess(t *testing.T) {
 }
 
 func TestExecWithCheckerFailed(t *testing.T) {
-	t.Parallel()
 	_, err := gex.Exec(
 		`ping`, gex.Args(`www.163.com`),
 		gex.ContainsChecker(`xxx`), gex.Async(), gex.Quiet(),
@@ -29,7 +27,6 @@ func TestExecWithCheckerFailed(t *testing.T) {
 }
 
 func TestExecWithSync(t *testing.T) {
-	t.Parallel()
 	_, err := gex.Exec(`ping`, gex.Args(`www.163.com`), gex.Sync())
 	if nil != err {
 		t.FailNow()
@@ -37,7 +34,6 @@ func TestExecWithSync(t *testing.T) {
 }
 
 func TestExecWithStringCollector(t *testing.T) {
-	t.Parallel()
 	output := ``
 	_, err := gex.Exec(
 		`ping`, gex.Args(`www.163.com`),

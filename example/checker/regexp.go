@@ -1,4 +1,4 @@
-package guide
+package checker
 
 import (
 	`github.com/storezhang/gex`

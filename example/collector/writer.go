@@ -1,4 +1,4 @@
-package guide
+package collector
 
 import (
 	`os`

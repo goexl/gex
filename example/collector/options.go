@@ -1,4 +1,4 @@
-package guide
+package collector
 
 import (
 	`github.com/storezhang/gex`
@@ -11,7 +11,7 @@ func options() (code int, err error) {
 	code, err = gex.Exec(`redis`, gex.StringCollector(
 		&output,
 		// 只收集100行数据
-		gex.MaxLines(100),
+		gex.Max(100),
 		// 只收集标准流出
 		// gex.CollectStdout(),
 		// 只收集标准错误

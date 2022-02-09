@@ -32,7 +32,7 @@ func (s *stringCollector) Collect(line string, ot OutputType) (err error) {
 	return
 }
 
-func (s *stringCollector) notify(_ int, _ error) {
+func (s *stringCollector) Notify(_ int, _ error) {
 	if CollectorModeCache == s.options.mode {
 		*s.string = s.options.string()
 	}

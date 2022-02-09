@@ -125,7 +125,7 @@ func (c *command) printWhenError(output *string, err *error) {
 
 func (c *command) notify(options *options, code *int, err error) {
 	for _, _notifier := range options.notifiers {
-		_notifier.notify(*code, err)
+		_notifier.Notify(*code, err)
 	}
 }
 

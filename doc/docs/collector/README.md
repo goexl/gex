@@ -14,7 +14,9 @@
 `Gex`内置了常见收集器，包括
 
 - 字符串`String`
-- 写入器`Writer`
+- 文件`File`
+- 文件名`Filename`
+- 写入者`Writer`
 
 ## 使用
 

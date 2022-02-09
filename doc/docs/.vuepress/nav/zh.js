@@ -8,6 +8,9 @@ module.exports = [{
     text: '收集器',
     link: '/collector/'
 }, {
+    text: '通知器',
+    link: '/notifier/'
+}, {
     text: '了解更多',
     ariaLabel: '了解更多',
     items: [{

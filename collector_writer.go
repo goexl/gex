@@ -37,7 +37,7 @@ func (w *writerCollector) Collect(line string, ot OutputType) (err error) {
 	return
 }
 
-func (w *writerCollector) notify(_ int, _ error) {
+func (w *writerCollector) Notify(_ int, _ error) {
 	if CollectorModeCache == w.options.mode {
 		_, _ = w.writer.Write([]byte(w.options.string()))
 	}

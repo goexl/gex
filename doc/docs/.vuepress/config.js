@@ -55,6 +55,7 @@ module.exports = ctx => ({
                     '/guide/': getGuideSidebar('指南', '深入'),
                     '/checker/': getCheckerSidebar('基础', '进阶'),
                     '/collector/': getCollectorSidebar('基础', '进阶'),
+                    '/notifier/': getNotifierSidebar('基础', '进阶'),
                 }
             }
         }
@@ -153,6 +154,25 @@ function getCollectorSidebar(groupA, groupB) {
             'string',
             'file',
             'writer',
+        ]
+    }, {
+        title: groupB,
+        collapsable: false,
+        children: [
+            'concept',
+            'interface',
+            'usage',
+        ]
+    }]
+}
+
+function getNotifierSidebar(groupA, groupB) {
+    return [{
+        title: groupA,
+        collapsable: false,
+        children: [
+            '',
+            'func',
         ]
     }, {
         title: groupB,

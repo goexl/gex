@@ -1,7 +1,7 @@
 package gex
 
 var (
-	_                 = MaxLines
+	_                 = Max
 	_ option          = (*optionMax)(nil)
 	_ collectorOption = (*optionMax)(nil)
 )
@@ -10,17 +10,17 @@ type optionMax struct {
 	max int
 }
 
-// MaxLines 配置最大收集行数
-func MaxLines(max int) *optionMax {
+// Max 配置最大收集行数
+func Max(max int) *optionMax {
 	return &optionMax{
 		max: max,
 	}
 }
 
-func (ml *optionMax) apply(options *options) {
-	options.max = ml.max
+func (m *optionMax) apply(options *options) {
+	options.max = m.max
 }
 
-func (ml *optionMax) applyCollector(options *collectorOptions) {
-	options.max = ml.max
+func (m *optionMax) applyCollector(options *collectorOptions) {
+	options.max = m.max
 }

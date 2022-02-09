@@ -12,8 +12,18 @@ Golang exec extension library，Golang外部命令执行扩展库，有如下功
 - 非常容易使用
 - 一切皆可配置
 - 检查器
-- 生命周期
+  - 字符串包含`Contains`
+  - 字符串全包含`ContainsAll`
+  - 字符串任何包含`ContainsAny`
+  - 字符串相等`Equal`
+  - 路径模式匹配`PathMatch`
+  - 正则匹配`Regexp`
+- 通知器
 - 收集器
+  - 字符串`String`
+  - 文件`File`
+  - 文件名`Filename`
+  - 写入者`Writer`
 - 自动解决乱码
 
 ## 快速开始
@@ -28,7 +38,7 @@ import (
 )
 
 func main() {
-  _, _ = gex.Exec(`ping`, gex.Args(`www.163.com`))
+  _, _ = gex.Exec(`ping`, gex.Args(`www.163.com`, `-c`, 10))
 }
 ```
 
