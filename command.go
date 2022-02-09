@@ -49,7 +49,9 @@ func (c *command) Exec() (code int, err error) {
 
 	// 将所有的收集器加入到通知器中
 	for _, _collector := range c.options.collectors {
-		c.options.notifiers = append(c.options.notifiers, _collector)
+		if _notifier, ok := _collector.(notifier); ok {
+			c.options.notifiers = append(c.options.notifiers, _notifier)
+		}
 	}
 
 	// 创建真正的命令
@@ -91,9 +93,9 @@ func (c *command) Exec() (code int, err error) {
 	}
 
 	// 读取输出流数据
-	go c.read(stdout, CollectorTypeStdout, c.options)
+	go c.read(stdout, OutputTypeStdout, c.options)
 	// 读取错误流数据
-	go c.read(stderr, CollectorTypeStderr, c.options)
+	go c.read(stderr, OutputTypeStderr, c.options)
 
 	// 如果有检查器，等待检查器结束
 	if nil != c.options.checker {
@@ -127,7 +129,7 @@ func (c *command) notify(options *options, code *int, err error) {
 	}
 }
 
-func (c *command) read(pipe io.ReadCloser, typ CollectorType, options *options) {
+func (c *command) read(pipe io.ReadCloser, typ OutputType, options *options) {
 	done := false
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(enterChar)
@@ -148,7 +150,7 @@ func (c *command) read(pipe io.ReadCloser, typ CollectorType, options *options) 
 	}
 }
 
-func (c *command) collect(line string, typ CollectorType, options *options) {
+func (c *command) collect(line string, typ OutputType, options *options) {
 	for _, _collector := range options.collectors {
 		_ = _collector.Collect(line, typ)
 	}

@@ -11,14 +11,14 @@ func newOutputStringCollector(output *string, max int) *stringCollector {
 	return &stringCollector{
 		string: output,
 		options: &collectorOptions{
-			typ: CollectorTypeAny,
+			typ: OutputTypeAny,
 			max: max,
 		},
 	}
 }
 
-func (s *stringCollector) Collect(line string, typ CollectorType) (err error) {
-	if CollectorTypeAny != s.options.typ && typ != s.options.typ {
+func (s *stringCollector) Collect(line string, ot OutputType) (err error) {
+	if OutputTypeAny != s.options.typ && ot != s.options.typ {
 		return
 	}
 

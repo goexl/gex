@@ -2,10 +2,12 @@ package gex
 
 import (
 	`io`
+	`os`
 )
 
 var (
 	_        = Stderr
+	_        = FileStderr
 	_ option = (*optionStderr)(nil)
 )
 
@@ -20,11 +22,18 @@ func Stderr(stderr io.Writer) *optionStderr {
 	}
 }
 
+// FileStderr 文件输出
+func FileStderr(file *os.File) *optionStderr {
+	return &optionStderr{
+		stderr: file,
+	}
+}
+
 func (s *optionStderr) apply(options *options) {
 	options.collectors[keyStderr] = &writerCollector{
 		writer: s.stderr,
 		options: &collectorOptions{
-			typ: CollectorTypeStderr,
+			typ: OutputTypeStderr,
 		},
 	}
 }

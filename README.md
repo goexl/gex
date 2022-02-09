@@ -9,6 +9,22 @@ Golang exec extension library，Golang外部命令执行扩展库，有如下功
 - 收集器
 - 自动解决乱码
 
+## 快速开始
+
+`Gex`使用非常简单
+
+```go
+package main
+
+import (
+  `github.com/storezhang/gex`
+)
+
+func main() {
+  _, _ = gex.Exec(`ping`, gex.Args(`www.163.com`))
+}
+```
+
 ## 文档
 
 [点击这里查看最新文档](https://gex.storezhang.tech)

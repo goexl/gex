@@ -28,7 +28,7 @@ module.exports = ctx => ({
         repo: 'storezhang/gex',
         editLinks: true,
         docsDir: 'doc/docs',
-        record: '蜀ICP备2021013439号-1',
+        record: '蜀ICP备2021013439号-3',
         recordLink: 'https://beian.miit.gov.cn/',
         // cyberSecurityRecord: '公安部备案文案',
         // cyberSecurityLink: '公安部备案指向链接',
@@ -149,6 +149,10 @@ function getCollectorSidebar(groupA, groupB) {
         collapsable: false,
         children: [
             '',
+            'options',
+            'string',
+            'file',
+            'writer',
         ]
     }, {
         title: groupB,

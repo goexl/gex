@@ -17,13 +17,13 @@ func newTerminalCollector() *writerCollector {
 		writer: os.Stdout,
 		options: &collectorOptions{
 			mode: CollectorModeDirect,
-			typ:  CollectorTypeAny,
+			typ:  OutputTypeAny,
 		},
 	}
 }
 
-func (w *writerCollector) Collect(line string, typ CollectorType) (err error) {
-	if CollectorTypeAny != w.options.typ && typ != w.options.typ {
+func (w *writerCollector) Collect(line string, ot OutputType) (err error) {
+	if OutputTypeAny != w.options.typ && ot != w.options.typ {
 		return
 	}
 

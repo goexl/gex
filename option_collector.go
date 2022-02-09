@@ -3,6 +3,7 @@ package gex
 import (
 	`bufio`
 	`fmt`
+	`io`
 	`os`
 )
 
@@ -11,6 +12,7 @@ var (
 	_        = StringCollector
 	_        = FileCollector
 	_        = FilenameCollector
+	_        = WriterCollector
 	_ option = (*optionCollector)(nil)
 )
 
@@ -49,7 +51,22 @@ func FileCollector(file *os.File, opts ...collectorOption) *optionCollector {
 
 	return &optionCollector{
 		collector: &writerCollector{
-			writer:  bufio.NewWriter(file),
+			writer:  file,
+			options: _options,
+		},
+	}
+}
+
+// WriterCollector 配置输出到文件
+func WriterCollector(writer io.Writer, opts ...collectorOption) *optionCollector {
+	_options := defaultCollectorOptions()
+	for _, opt := range opts {
+		opt.applyCollector(_options)
+	}
+
+	return &optionCollector{
+		collector: &writerCollector{
+			writer:  writer,
 			options: _options,
 		},
 	}

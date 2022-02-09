@@ -2,10 +2,12 @@ package gex
 
 import (
 	`io`
+	`os`
 )
 
 var (
 	_        = Stdout
+	_        = FileStdout
 	_ option = (*optionStdout)(nil)
 )
 
@@ -20,11 +22,18 @@ func Stdout(stdout io.Writer) *optionStdout {
 	}
 }
 
+// FileStdout 文件输出
+func FileStdout(file *os.File) *optionStdout {
+	return &optionStdout{
+		stdout: file,
+	}
+}
+
 func (s *optionStdout) apply(options *options) {
 	options.collectors[keyStdout] = &writerCollector{
 		writer: s.stdout,
 		options: &collectorOptions{
-			typ: CollectorTypeStdout,
+			typ: OutputTypeStdout,
 		},
 	}
 }

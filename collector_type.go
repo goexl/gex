@@ -1,13 +1,13 @@
 package gex
 
 const (
-	// CollectorTypeStdout 输出流
-	CollectorTypeStdout CollectorType = 1
-	// CollectorTypeStderr 错误流
-	CollectorTypeStderr CollectorType = 2
-	// CollectorTypeAny 所有输出
-	CollectorTypeAny CollectorType = 3
+	// OutputTypeStdout 输出流
+	OutputTypeStdout OutputType = 1
+	// OutputTypeStderr 错误流
+	OutputTypeStderr OutputType = 2
+	// OutputTypeAny 所有输出
+	OutputTypeAny OutputType = 3
 )
 
-// CollectorType 收集类型
-type CollectorType uint8
+// OutputType 输出类型
+type OutputType uint8
