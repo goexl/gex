@@ -42,6 +42,8 @@ func main() {
 }
 ```
 
+or
+
 ```go
 package main
 
