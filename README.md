@@ -65,4 +65,4 @@ func main() {
 ## 捐助
 
 ![支持宝](doc/docs/.vuepress/public/donate/alipay-small.jpg)
-![支持宝](doc/docs/.vuepress/public/donate/weipay-small.jpg)
+![微信](doc/docs/.vuepress/public/donate/weipay-small.jpg)
