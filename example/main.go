@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	_, _ = gex.Exec(`ping`, gex.Args(`www.163.com`))
+	_, _ = gex.Exec(`ping`, gex.Args(`www.163.com`, `-c`, 10))
 }
