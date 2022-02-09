@@ -1,6 +1,8 @@
 package gex_test
 
 import (
+	`io/ioutil`
+	`os`
 	`testing`
 
 	`github.com/storezhang/gex`
@@ -40,6 +42,23 @@ func TestExecWithStringCollector(t *testing.T) {
 		gex.Sync(), gex.Quiet(), gex.StringCollector(&output),
 	)
 	if nil != err || `` == output {
+		t.FailNow()
+	}
+}
+
+func TestPwe(t *testing.T) {
+	stdout := os.Stdout
+	reader, writer, _ := os.Pipe()
+	os.Stdout = writer
+
+	// 执行命令，该命令一定是错误的
+	_, _ = gex.Exec(`ping`, gex.Args(`abc.c`))
+
+	_ = writer.Close()
+	out, _ := ioutil.ReadAll(reader)
+	os.Stdout = stdout
+
+	if `` == string(out) {
 		t.FailNow()
 	}
 }
