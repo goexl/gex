@@ -42,6 +42,18 @@ func main() {
 }
 ```
 
+```go
+package main
+
+import (
+  `github.com/storezhang/gex`
+)
+
+func main() {
+  _, _ = gex.Exec(`ping`, gex.Cli(`www.163.com -c 10`))
+}
+```
+
 > `Gex`有非常多的配置项，请参看文档
 
 ## 文档
