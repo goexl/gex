@@ -1,7 +1,6 @@
 package gex
 
 import (
-	`fmt`
 	`strings`
 )
 
@@ -23,22 +22,10 @@ func Cli(cli string) *optionArgs {
 }
 
 // Args 配置命令运行的参数
-func Args(args ...interface{}) (a *optionArgs) {
-	a = new(optionArgs)
-	for _, arg := range args {
-		switch arg.(type) {
-		case int8, *int8, uint8, *uint8, int, *int, uint, *uint, int32, *int32, uint32, *uint32, int64, *int64, uint64, *uint64:
-			a.args = append(a.args, fmt.Sprintf(`%d`, arg))
-		case float32, *float32, float64, *float64:
-			a.args = append(a.args, fmt.Sprintf(`%f`, arg))
-		case bool, *bool:
-			a.args = append(a.args, fmt.Sprintf(`%b`, arg))
-		case string, *string:
-			a.args = append(a.args, fmt.Sprintf(`%s`, arg))
-		}
+func Args(args ...interface{}) *optionArgs {
+	return &optionArgs{
+		args: toString(args...),
 	}
-
-	return
 }
 
 func (a *optionArgs) apply(options *options) {

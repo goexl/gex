@@ -15,10 +15,10 @@ type env struct {
 }
 
 // NewEnv 创建环境变量
-func NewEnv(key string, value string) *env {
+func NewEnv(key string, value interface{}) *env {
 	return &env{
 		key:   key,
-		value: value,
+		value: toString(value)[0],
 	}
 }
 

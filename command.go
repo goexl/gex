@@ -54,6 +54,13 @@ func (c *command) Exec() (code int, err error) {
 		}
 	}
 
+	// 真正执行命令
+	code, err = c.exec()
+
+	return
+}
+
+func (c *command) exec() (code int, err error) {
 	// 创建真正的命令
 	cmd := exec.Command(c.name, c.options.args...)
 	// 配置运行时目录
