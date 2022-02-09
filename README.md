@@ -1,5 +1,4 @@
-<a href="https://gex.storezhang.tech"><img height="80" src="https://github.com/storezhang/gex/raw/master/doc/docs/.vuepress/public/icons/logo.png">
-gex</a>
+# gex
 
 [![Sourcegraph](https://sourcegraph.com/github.com/storezhang/gex/-/badge.svg?style=flat-square)](https://sourcegraph.com/github.com/storezhang/gex?badge)
 [![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/storezhang/gex/v4)
