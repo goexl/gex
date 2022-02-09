@@ -25,6 +25,8 @@ func main() {
 }
 ```
 
+> `Gex`有非常多的配置项，请参看文档
+
 ## 文档
 
 [点击这里查看最新文档](https://gex.storezhang.tech)
