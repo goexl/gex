@@ -7,5 +7,5 @@ import (
 var _ = slice
 
 func slice() (int, error) {
-	return gex.Exec(`ping`, gex.Args(`www.163.com`))
+	return gex.Exec(`ping`, gex.Args(`www.163.com`, `-c`, 10))
 }
