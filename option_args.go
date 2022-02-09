@@ -2,15 +2,24 @@ package gex
 
 import (
 	`fmt`
+	`strings`
 )
 
 var (
 	_        = Args
+	_        = Cli
 	_ option = (*optionArgs)(nil)
 )
 
 type optionArgs struct {
 	args []string
+}
+
+// Cli 使用命令行参数
+func Cli(cli string) *optionArgs {
+	return &optionArgs{
+		args: strings.Split(cli, ` `),
+	}
 }
 
 // Args 配置命令运行的参数

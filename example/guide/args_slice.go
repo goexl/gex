@@ -4,8 +4,8 @@ import (
 	`github.com/storezhang/gex`
 )
 
-var _ = args
+var _ = slice
 
-func args() (int, error) {
+func slice() (int, error) {
 	return gex.Exec(`ping`, gex.Args(`www.163.com`))
 }
