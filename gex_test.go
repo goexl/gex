@@ -9,6 +9,7 @@ import (
 )
 
 func TestExecWithCheckerSuccess(t *testing.T) {
+	t.Parallel()
 	_, err := gex.Exec(
 		`ping`, gex.Args(`www.163.com`),
 		gex.ContainsChecker(`Ping statistics for`), gex.Async(), gex.Quiet(),
@@ -19,6 +20,7 @@ func TestExecWithCheckerSuccess(t *testing.T) {
 }
 
 func TestExecWithCheckerFailed(t *testing.T) {
+	t.Parallel()
 	_, err := gex.Exec(
 		`ping`, gex.Args(`www.163.com`),
 		gex.ContainsChecker(`xxx`), gex.Async(), gex.Quiet(),
@@ -29,6 +31,7 @@ func TestExecWithCheckerFailed(t *testing.T) {
 }
 
 func TestExecWithSync(t *testing.T) {
+	t.Parallel()
 	_, err := gex.Exec(`ping`, gex.Args(`www.163.com`), gex.Sync())
 	if nil != err {
 		t.FailNow()
@@ -36,6 +39,7 @@ func TestExecWithSync(t *testing.T) {
 }
 
 func TestExecWithStringCollector(t *testing.T) {
+	t.Parallel()
 	output := ``
 	_, err := gex.Exec(
 		`ping`, gex.Args(`www.163.com`),
@@ -47,18 +51,19 @@ func TestExecWithStringCollector(t *testing.T) {
 }
 
 func TestPwe(t *testing.T) {
-	stdout := os.Stdout
+	t.Parallel()
+	stderr := os.Stderr
 	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	os.Stderr = writer
 
 	// 执行命令，该命令一定是错误的
-	_, _ = gex.Exec(`ping`, gex.Args(`abc.c`))
+	_, _ = gex.Exec(`ping`, gex.Args(`abc.c`), gex.Quiet())
 
 	_ = writer.Close()
-	out, _ := ioutil.ReadAll(reader)
-	os.Stdout = stdout
+	err, _ := ioutil.ReadAll(reader)
+	os.Stderr = stderr
 
-	if `` == string(out) {
+	if `` == string(err) {
 		t.FailNow()
 	}
 }

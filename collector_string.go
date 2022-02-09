@@ -11,8 +11,9 @@ func newOutputStringCollector(output *string, max int) *stringCollector {
 	return &stringCollector{
 		string: output,
 		options: &collectorOptions{
-			typ: OutputTypeAny,
-			max: max,
+			typ:  OutputTypeAny,
+			mode: CollectorModeCache,
+			max:  max,
 		},
 	}
 }
