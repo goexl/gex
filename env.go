@@ -18,7 +18,7 @@ type env struct {
 func NewEnv(key string, value interface{}) *env {
 	return &env{
 		key:   key,
-		value: toString(value)[0],
+		value: str(value)[0],
 	}
 }
 

@@ -24,7 +24,7 @@ func Cli(cli string) *optionArgs {
 // Args 配置命令运行的参数
 func Args(args ...interface{}) *optionArgs {
 	return &optionArgs{
-		args: toString(args...),
+		args: str(args...),
 	}
 }
 

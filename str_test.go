@@ -5,7 +5,7 @@ import (
 	`testing`
 )
 
-func TestToString(t *testing.T) {
+func TestStr(t *testing.T) {
 	toStringTests := []struct {
 		in       []interface{}
 		expected []string
@@ -19,9 +19,9 @@ func TestToString(t *testing.T) {
 	}
 
 	for _, test := range toStringTests {
-		actual := toString(test.in...)
+		actual := str(test.in...)
 		if !reflect.DeepEqual(actual, test.expected) {
-			t.Errorf("toString(%v) = %v；期望：%v", test.in, actual, test.expected)
+			t.Errorf("str(%v) = %v；期望：%v", test.in, actual, test.expected)
 		}
 	}
 }
