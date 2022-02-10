@@ -22,6 +22,9 @@ steps:
     image: pangum/drone
     pull: always
     failure: ignore
+    volumes:
+      - name: go
+        path: /go
 
   - name: 文档
     image: dronestock/node
@@ -32,8 +35,6 @@ steps:
   - name: 部署
     image: dronestock/cos
     pull: always
-    depends_on:
-      - 文档
     settings:
       folder: doc/dist
       secret_id:
@@ -41,3 +42,9 @@ steps:
       secret_key:
         from_secret: secret_key_cos
       base_url: https://gex-1253228583.cos.ap-chengdu.myqcloud.com
+
+
+volumes:
+  - name: go
+    host:
+      path: /var/lib/cache/go
