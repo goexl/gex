@@ -34,6 +34,7 @@ steps:
     pull: always
     when:
       branch:
+        - doc
         - doc/*
     settings:
       folder: doc
@@ -43,6 +44,7 @@ steps:
     pull: always
     when:
       branch:
+        - doc
         - doc/*
     settings:
       folder: doc/dist

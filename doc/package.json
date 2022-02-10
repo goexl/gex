@@ -1,8 +1,8 @@
 {
-    "name": "pangu-doc",
+    "name": "gex",
     "version": "1.0.0",
     "main": "index.js",
-    "license": "Apache",
+    "license": "Apache License",
     "devDependencies": {
         "vuepress-theme-reco": "^1.6.6",
         "vuepress": "^1.8.2"
