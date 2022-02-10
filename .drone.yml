@@ -21,6 +21,7 @@ steps:
   - name: 编译
     image: pangum/drone
     pull: always
+    failure: ignore
 
   - name: 文档
     image: dronestock/node
