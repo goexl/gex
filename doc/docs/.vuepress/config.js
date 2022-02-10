@@ -110,6 +110,7 @@ function getGuideSidebar(groupA, groupB) {
         title: groupB,
         collapsable: false,
         children: [
+            'context',
             'async',
             'quiet',
             'pwe',

@@ -34,6 +34,8 @@ steps:
   - name: 部署
     image: dronestock/cos
     pull: always
+    depends_on:
+      - 文档
     settings:
       folder: doc/dist
       secret_id:

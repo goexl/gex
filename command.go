@@ -62,7 +62,13 @@ func (c *command) Exec() (code int, err error) {
 
 func (c *command) exec() (code int, err error) {
 	// 创建真正的命令
-	cmd := exec.Command(c.name, c.options.args...)
+	var cmd *exec.Cmd
+	if nil == c.options.context {
+		cmd = exec.Command(c.name, c.options.args...)
+	} else {
+		cmd = exec.CommandContext(c.options.context, c.name, c.options.args...)
+	}
+
 	// 配置运行时目录
 	if `` != c.options.dir {
 		cmd.Dir = c.options.dir
