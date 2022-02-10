@@ -64,6 +64,23 @@ func (c *command) Exec() (code int, err error) {
 func (c *command) exec() (code int, err error) {
 	// 创建命令
 	c.make()
+	// 处理输入/输出
+	if err = c.io(); nil != err {
+		return
+	}
+	// 等待命令结束并取得返回码
+	code, err = c.run()
+
+	return
+}
+
+func (c *command) make() {
+	if nil == c.options.context {
+		c.cmd = exec.Command(c.name, c.options.args...)
+	} else {
+		c.cmd = exec.CommandContext(c.options.context, c.name, c.options.args...)
+	}
+
 	// 配置运行时目录
 	if `` != c.options.dir {
 		c.cmd.Dir = c.options.dir
@@ -77,6 +94,10 @@ func (c *command) exec() (code int, err error) {
 		c.cmd.Env = append(c.cmd.Env, fmt.Sprintf(`%s=%s`, _env.key, _env.value))
 	}
 
+	return
+}
+
+func (c *command) io() (err error) {
 	// 设置输入流
 	if nil != c.options.stdin {
 		c.cmd.Stdin = c.options.stdin
@@ -91,11 +112,6 @@ func (c *command) exec() (code int, err error) {
 	// 找到错误流
 	var stderr io.ReadCloser
 	if stderr, err = c.cmd.StderrPipe(); nil != err {
-		return
-	}
-
-	// 执行命令
-	if err = c.cmd.Start(); nil != err {
 		return
 	}
 
@@ -115,6 +131,15 @@ func (c *command) exec() (code int, err error) {
 	// 读取错误流数据
 	go c.read(stderr, OutputTypeStderr, c.options)
 
+	return
+}
+
+func (c *command) run() (code int, err error) {
+	// 执行命令
+	if err = c.cmd.Start(); nil != err {
+		return
+	}
+
 	// 如果有检查器，等待检查器结束
 	if nil != c.options.checker {
 		c.checker.Wait()
@@ -130,16 +155,6 @@ func (c *command) exec() (code int, err error) {
 				}
 			}
 		}
-	}
-
-	return
-}
-
-func (c *command) make() {
-	if nil == c.options.context {
-		c.cmd = exec.Command(c.name, c.options.args...)
-	} else {
-		c.cmd = exec.CommandContext(c.options.context, c.name, c.options.args...)
 	}
 
 	return
