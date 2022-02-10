@@ -34,7 +34,7 @@ footer: MIT Licensed | Copyright © 2021-present Storezhang
 
 <<< @/../example/main.go
 
-::: warning 警告
+::: warning 注意
 <!--@formatter:off-->
 Golang最好是使用最新的版本
 <!--@formatter:on-->
