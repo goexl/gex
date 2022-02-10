@@ -17,8 +17,6 @@ steps:
   - name: 拉代码
     image: dronestock/git
     pull: always
-    commands:
-      - env
 
   - name: 编译
     image: pangum/drone
