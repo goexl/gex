@@ -29,12 +29,18 @@ steps:
   - name: 文档
     image: dronestock/node
     pull: always
+    when:
+      event:
+        - tag
     settings:
       folder: doc
 
   - name: 部署
     image: dronestock/cos
     pull: always
+    when:
+      event:
+        - tag
     settings:
       folder: doc/dist
       secret_id:

@@ -11,6 +11,10 @@ Golang exec extension library，Golang外部命令执行扩展库，有如下功
 
 - 非常容易使用
 - 一切皆可配置
+- 可变参数
+- 运行时目录
+- 环境变量
+- 管道
 - 检查器
   - 字符串包含`Contains`
   - 字符串全包含`ContainsAll`
@@ -58,7 +62,7 @@ func main() {
 }
 ```
 
-> `Gex`有非常多的配置项，请参看文档
+> `Gex`有非常多的配置项，请参看[**使用文档**](https://gex.storezhang.tech)
 
 ## 文档
 
