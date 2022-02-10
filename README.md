@@ -64,6 +64,8 @@ func main() {
 
 [点击这里查看最新文档](https://gex.storezhang.tech)
 
+## 交流
+
 ## 捐助
 
 ![支持宝](doc/docs/.vuepress/public/donate/alipay-small.jpg)
