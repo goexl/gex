@@ -1,8 +1,9 @@
 package gex
 
 var (
-	_        = DisableSystemEnvs
-	_ option = (*optionSystemEnvs)(nil)
+	_            = DisableSystemEnvs
+	_ option     = (*optionSystemEnvs)(nil)
+	_ pipeOption = (*optionSystemEnvs)(nil)
 )
 
 type optionSystemEnvs struct{}
@@ -12,6 +13,10 @@ func DisableSystemEnvs() *optionSystemEnvs {
 	return &optionSystemEnvs{}
 }
 
-func (a *optionSystemEnvs) apply(options *options) {
+func (se *optionSystemEnvs) apply(options *options) {
+	options.systemEnvs = false
+}
+
+func (se *optionSystemEnvs) applyPipe(options *pipeOptions) {
 	options.systemEnvs = false
 }

@@ -7,6 +7,7 @@ import (
 var (
 	_        = Context
 	_ option = (*optionContext)(nil)
+	_ option = (*optionContext)(nil)
 )
 
 type optionContext struct {
@@ -21,5 +22,9 @@ func Context(context context.Context) *optionContext {
 }
 
 func (c *optionContext) apply(options *options) {
+	options.context = c.context
+}
+
+func (c *optionContext) applyPipe(options *pipeOptions) {
 	options.context = c.context
 }

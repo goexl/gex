@@ -5,9 +5,10 @@ import (
 )
 
 var (
-	_        = Args
-	_        = Cli
-	_ option = (*optionArgs)(nil)
+	_            = Args
+	_            = Cli
+	_ option     = (*optionArgs)(nil)
+	_ pipeOption = (*optionArgs)(nil)
 )
 
 type optionArgs struct {
@@ -29,5 +30,9 @@ func Args(args ...interface{}) *optionArgs {
 }
 
 func (a *optionArgs) apply(options *options) {
+	options.args = a.args
+}
+
+func (a *optionArgs) applyPipe(options *pipeOptions) {
 	options.args = a.args
 }

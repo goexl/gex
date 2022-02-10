@@ -18,6 +18,7 @@ type command struct {
 	name    string
 	options *options
 
+	cmd     *exec.Cmd
 	checker *waitGroup
 }
 
@@ -61,41 +62,45 @@ func (c *command) Exec() (code int, err error) {
 }
 
 func (c *command) exec() (code int, err error) {
-	// 创建真正的命令
-	var cmd *exec.Cmd
-	if nil == c.options.context {
-		cmd = exec.Command(c.name, c.options.args...)
-	} else {
-		cmd = exec.CommandContext(c.options.context, c.name, c.options.args...)
-	}
-
+	// 创建命令
+	c.make()
 	// 配置运行时目录
 	if `` != c.options.dir {
-		cmd.Dir = c.options.dir
+		c.cmd.Dir = c.options.dir
 	}
 
 	// 配置运行时的环境变量
 	if c.options.systemEnvs {
-		cmd.Env = os.Environ()
+		c.cmd.Env = os.Environ()
 	}
 	for _, _env := range c.options.envs {
-		cmd.Env = append(cmd.Env, fmt.Sprintf(`%s=%s`, _env.key, _env.value))
+		c.cmd.Env = append(c.cmd.Env, fmt.Sprintf(`%s=%s`, _env.key, _env.value))
+	}
+
+	// 设置输入流
+	if nil != c.options.stdin {
+		c.cmd.Stdin = c.options.stdin
 	}
 
 	// 找到输出流
 	var stdout io.ReadCloser
-	if stdout, err = cmd.StdoutPipe(); nil != err {
+	if stdout, err = c.cmd.StdoutPipe(); nil != err {
 		return
 	}
 
 	// 找到错误流
 	var stderr io.ReadCloser
-	if stderr, err = cmd.StderrPipe(); nil != err {
+	if stderr, err = c.cmd.StderrPipe(); nil != err {
 		return
 	}
 
 	// 执行命令
-	if err = cmd.Start(); nil != err {
+	if err = c.cmd.Start(); nil != err {
+		return
+	}
+
+	// 处理管理
+	if err = c.pipe(); nil != err {
 		return
 	}
 
@@ -118,12 +123,65 @@ func (c *command) exec() (code int, err error) {
 	// 如果是同步模式，等待命令执行完成
 	if !c.options.async {
 		// 取得退出代码
-		if err = cmd.Wait(); err != nil {
+		if err = c.cmd.Wait(); err != nil {
 			if exitErr, ok := err.(*exec.ExitError); ok {
 				if status, statsOk := exitErr.Sys().(syscall.WaitStatus); statsOk {
 					code = status.ExitStatus()
 				}
 			}
+		}
+	}
+
+	return
+}
+
+func (c *command) make() {
+	if nil == c.options.context {
+		c.cmd = exec.Command(c.name, c.options.args...)
+	} else {
+		c.cmd = exec.CommandContext(c.options.context, c.name, c.options.args...)
+	}
+
+	return
+}
+
+func (c *command) pipe() (err error) {
+	pipes := c.options.pipes
+	size := len(pipes)
+	if 0 == size {
+		return
+	}
+
+	commands := make([]*exec.Cmd, 0, size)
+	// 创建管道的所有命令
+	for index := 0; index < size; index++ {
+		commands = append(commands, pipes[index].cmd())
+	}
+
+	// 依次将管理输入/输出连接起来
+	for index := 0; index < size; index++ {
+		if index == size-1 {
+			c.cmd.Stdin, err = commands[index].StdoutPipe()
+		} else {
+			commands[index+1].Stdin, err = commands[index].StdoutPipe()
+		}
+
+		if nil != err {
+			return
+		}
+	}
+
+	// 第一个命令等待结束，其它命令异步执行
+	for index := 0; index < size; index++ {
+		cmd := commands[index]
+		if 0 == index {
+			err = cmd.Run()
+		} else {
+			err = cmd.Start()
+		}
+
+		if nil != err {
+			return
 		}
 	}
 

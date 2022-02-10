@@ -50,7 +50,7 @@ func TestExecWithStringCollector(t *testing.T) {
 	}
 }
 
-func TestPwe(t *testing.T) {
+func TestExecPwe(t *testing.T) {
 	t.Parallel()
 	stderr := os.Stderr
 	reader, writer, _ := os.Pipe()

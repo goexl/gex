@@ -2,6 +2,7 @@ package gex
 
 import (
 	`context`
+	`io`
 )
 
 var _ = NewOptions
@@ -21,8 +22,8 @@ type (
 		async bool
 		wait  bool
 
-		stdinType stdinType
-		stdinArgs []interface{}
+		stdin io.Reader
+		pipes []*pipe
 
 		checker    checker
 		collectors map[string]collector

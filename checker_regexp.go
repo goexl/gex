@@ -12,16 +12,16 @@ type regexpChecker struct {
 	all     strings.Builder
 }
 
-func (rc *regexpChecker) Check(line string) (checked bool, err error) {
-	if rc.options.cache {
-		rc.all.WriteString(line)
+func (r *regexpChecker) Check(line string) (checked bool, err error) {
+	if r.options.cache {
+		r.all.WriteString(line)
 	}
 
-	if checked, err = regexp.MatchString(rc.regexp, line); nil != err {
+	if checked, err = regexp.MatchString(r.regexp, line); nil != err {
 		return
 	}
-	if !checked && rc.options.cache {
-		checked, err = regexp.MatchString(rc.regexp, rc.all.String())
+	if !checked && r.options.cache {
+		checked, err = regexp.MatchString(r.regexp, r.all.String())
 	}
 
 	return

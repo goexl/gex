@@ -1,8 +1,9 @@
 package gex
 
 var (
-	_        = Dir
-	_ option = (*optionDir)(nil)
+	_            = Dir
+	_ option     = (*optionDir)(nil)
+	_ pipeOption = (*optionDir)(nil)
 )
 
 type optionDir struct {
@@ -17,5 +18,9 @@ func Dir(dir string) *optionDir {
 }
 
 func (d *optionDir) apply(options *options) {
+	options.dir = d.dir
+}
+
+func (d *optionDir) applyPipe(options *pipeOptions) {
 	options.dir = d.dir
 }

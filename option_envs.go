@@ -1,8 +1,9 @@
 package gex
 
 var (
-	_        = Envs
-	_ option = (*optionEnvs)(nil)
+	_            = Envs
+	_ option     = (*optionEnvs)(nil)
+	_ pipeOption = (*optionEnvs)(nil)
 )
 
 type optionEnvs struct {
@@ -17,5 +18,9 @@ func Envs(envs ...*env) *optionEnvs {
 }
 
 func (e *optionEnvs) apply(options *options) {
+	options.envs = e.envs
+}
+
+func (e *optionEnvs) applyPipe(options *pipeOptions) {
 	options.envs = e.envs
 }
