@@ -21,7 +21,10 @@ steps:
   - name: 编译
     image: pangum/drone
     pull: always
-    failure: ignore
+    when:
+      branch:
+        - master
+        - develop
     volumes:
       - name: go
         path: /go
@@ -30,8 +33,8 @@ steps:
     image: dronestock/node
     pull: always
     when:
-      event:
-        - tag
+      branch:
+        - doc/*
     settings:
       folder: doc
 
@@ -39,8 +42,8 @@ steps:
     image: dronestock/cos
     pull: always
     when:
-      event:
-        - tag
+      branch:
+        - doc/*
     settings:
       folder: doc/dist
       secret_id:
