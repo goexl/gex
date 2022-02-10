@@ -17,13 +17,12 @@ steps:
   - name: 拉代码
     image: dronestock/git
     pull: always
+    commands:
+      - env
 
   - name: 编译
     image: pangum/drone
     pull: always
-    settings:
-      debug: true
-      output: gfx
 
   - name: 文档
     image: dronestock/node
