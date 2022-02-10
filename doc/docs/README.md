@@ -36,6 +36,6 @@ footer: MIT Licensed | Copyright © 2021-present Storezhang
 
 ::: warning 警告
 <!--@formatter:off-->
-Golang最好是使用1.16及以上版本
+Golang最好是使用最新的版本
 <!--@formatter:on-->
 :::
