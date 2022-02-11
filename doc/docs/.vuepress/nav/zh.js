@@ -11,6 +11,9 @@ module.exports = [{
     text: '通知器',
     link: '/notifier/'
 }, {
+    text: '管道',
+    link: '/pipe/'
+}, {
     text: '了解更多',
     ariaLabel: '了解更多',
     items: [{
@@ -27,6 +30,12 @@ module.exports = [{
         }, {
             text: 'Node插件',
             link: 'https://github.com/dronestock/node'
+        }, {
+            text: 'Npm插件',
+            link: 'https://github.com/dronestock/npm'
+        }, {
+            text: 'Protobuf插件',
+            link: 'https://github.com/dronestock/protobuf'
         }]
     }, {
         text: '其它框架推荐',

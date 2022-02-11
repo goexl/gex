@@ -13,13 +13,13 @@
 
 在`Gex`里面很方便使用参数
 
-<<< @/../example/guide/args_slice.go
+<<< @/../example/pipe/args_slice.go
 
 ## 命令行
 
 为了方便调试用（很多情况下，大家都是在控制台先执行一次命令再写代码，使用列表会人为增加一次转换），`Gex`可以使用命令行来完成参数的传入
 
-<<< @/../example/guide/args_cli.go
+<<< @/../example/pipe/args_cli.go
 
 ## 参数类型
 

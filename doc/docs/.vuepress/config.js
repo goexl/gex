@@ -56,6 +56,7 @@ module.exports = ctx => ({
                     '/checker/': getCheckerSidebar('基础', '进阶'),
                     '/collector/': getCollectorSidebar('基础', '进阶'),
                     '/notifier/': getNotifierSidebar('基础', '进阶'),
+                    '/pipe/': getPipeSidebar('使用', '配置'),
                 }
             }
         }
@@ -105,13 +106,13 @@ function getGuideSidebar(groupA, groupB) {
             'args',
             'dir',
             'envs',
+            'async',
         ]
     }, {
         title: groupB,
         collapsable: false,
         children: [
             'context',
-            'async',
             'quiet',
             'pwe',
             'terminal',
@@ -182,6 +183,25 @@ function getNotifierSidebar(groupA, groupB) {
             'concept',
             'interface',
             'usage',
+        ]
+    }]
+}
+
+function getPipeSidebar(groupA, groupB) {
+    return [{
+        title: groupA,
+        collapsable: false,
+        children: [
+            '',
+            'concept',
+        ]
+    }, {
+        title: groupB,
+        collapsable: false,
+        children: [
+            'args',
+            'dir',
+            'envs',
         ]
     }]
 }
