@@ -28,6 +28,8 @@ steps:
     volumes:
       - name: go
         path: /go
+    settings:
+      test: false
 
   - name: 文档
     image: dronestock/node
