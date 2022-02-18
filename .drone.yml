@@ -30,6 +30,7 @@ steps:
         path: /go
     settings:
       test: false
+      upx: false
 
   - name: 文档
     image: dronestock/node
