@@ -26,6 +26,8 @@ func FuncNotifier(fun notifyFunc) *optionNotifier {
 	}
 }
 
-func (n *optionNotifier) apply(options *options) {
+func (n *optionNotifier) apply(options *options) (err error) {
 	options.notifiers = append(options.notifiers, n.notifier)
+
+	return
 }

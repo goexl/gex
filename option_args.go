@@ -29,8 +29,10 @@ func Args(args ...interface{}) *optionArgs {
 	}
 }
 
-func (a *optionArgs) apply(options *options) {
+func (a *optionArgs) apply(options *options) (err error) {
 	options.args = a.args
+
+	return
 }
 
 func (a *optionArgs) applyPipe(options *pipeOptions) {

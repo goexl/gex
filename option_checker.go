@@ -112,7 +112,9 @@ func RegexpChecker(regexp string, opts ...checkerOption) *optionChecker {
 	}
 }
 
-func (c *optionChecker) apply(options *options) {
+func (c *optionChecker) apply(options *options) (err error) {
 	options.async = true
 	options.checker = c.checker
+
+	return
 }

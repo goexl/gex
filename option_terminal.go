@@ -12,6 +12,8 @@ func Terminal() *optionTerminal {
 	return &optionTerminal{}
 }
 
-func (t *optionTerminal) apply(options *options) {
+func (t *optionTerminal) apply(options *options) (err error) {
 	options.collectors[keyTerminal] = newTerminalCollector()
+
+	return
 }

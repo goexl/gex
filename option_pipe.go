@@ -17,6 +17,8 @@ func Pipe(name string, opts ...pipeOption) *optionPipe {
 	}
 }
 
-func (p *optionPipe) apply(options *options) {
+func (p *optionPipe) apply(options *options) (err error) {
 	options.pipes = append(options.pipes, p.pipe)
+
+	return
 }

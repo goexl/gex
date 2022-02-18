@@ -24,6 +24,8 @@ func DisablePwe() *optionPwe {
 	}
 }
 
-func (p *optionPwe) apply(options *options) {
+func (p *optionPwe) apply(options *options) (err error) {
 	options.pwe = p.pwe
+
+	return
 }

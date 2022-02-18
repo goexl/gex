@@ -29,6 +29,8 @@ func FileStdin(file *os.File) *optionStdin {
 	}
 }
 
-func (s *optionStdin) apply(options *options) {
+func (s *optionStdin) apply(options *options) (err error) {
 	options.stdin = s.reader
+
+	return
 }

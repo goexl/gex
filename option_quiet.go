@@ -12,6 +12,8 @@ func Quiet() *optionQuiet {
 	return &optionQuiet{}
 }
 
-func (q *optionQuiet) apply(options *options) {
+func (q *optionQuiet) apply(options *options) (err error) {
 	delete(options.collectors, keyTerminal)
+
+	return
 }

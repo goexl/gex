@@ -9,7 +9,7 @@ var _ = NewOptions
 
 type (
 	option interface {
-		apply(options *options)
+		apply(options *options) (err error)
 	}
 
 	options struct {

@@ -13,8 +13,10 @@ func DisableSystemEnvs() *optionSystemEnvs {
 	return &optionSystemEnvs{}
 }
 
-func (se *optionSystemEnvs) apply(options *options) {
+func (se *optionSystemEnvs) apply(options *options) (err error) {
 	options.systemEnvs = false
+
+	return
 }
 
 func (se *optionSystemEnvs) applyPipe(options *pipeOptions) {

@@ -14,7 +14,7 @@ const enterChar = '\n'
 
 var mutex sync.Mutex
 
-type command struct {
+type _command struct {
 	name    string
 	options *options
 
@@ -22,22 +22,26 @@ type command struct {
 	checker *waitGroup
 }
 
-func newCommand(name string, opts ...option) *command {
+func newCommand(name string, opts ...option) (cmd *_command, err error) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
 	_options := defaultOptions()
 	for _, opt := range opts {
-		opt.apply(_options)
+		if err = opt.apply(_options); nil != err {
+			return
+		}
 	}
 
-	return &command{
+	cmd = &_command{
 		name:    name,
 		options: _options,
 	}
+
+	return
 }
 
-func (c *command) Exec() (code int, err error) {
+func (c *_command) Exec() (code int, err error) {
 	// 当出错时，打印到控制台
 	if c.options.pwe {
 		output := ``
@@ -61,7 +65,7 @@ func (c *command) Exec() (code int, err error) {
 	return
 }
 
-func (c *command) exec() (code int, err error) {
+func (c *_command) exec() (code int, err error) {
 	// 创建命令
 	c.make()
 	// 处理输入/输出
@@ -74,7 +78,7 @@ func (c *command) exec() (code int, err error) {
 	return
 }
 
-func (c *command) make() {
+func (c *_command) make() {
 	if nil == c.options.context {
 		c.cmd = exec.Command(c.name, c.options.args...)
 	} else {
@@ -97,7 +101,7 @@ func (c *command) make() {
 	return
 }
 
-func (c *command) io() (err error) {
+func (c *_command) io() (err error) {
 	// 设置输入流
 	if nil != c.options.stdin {
 		c.cmd.Stdin = c.options.stdin
@@ -134,7 +138,7 @@ func (c *command) io() (err error) {
 	return
 }
 
-func (c *command) run() (code int, err error) {
+func (c *_command) run() (code int, err error) {
 	// 执行命令
 	if err = c.cmd.Start(); nil != err {
 		return
@@ -160,7 +164,7 @@ func (c *command) run() (code int, err error) {
 	return
 }
 
-func (c *command) pipe() (err error) {
+func (c *_command) pipe() (err error) {
 	pipes := c.options.pipes
 	size := len(pipes)
 	if 0 == size {
@@ -203,19 +207,19 @@ func (c *command) pipe() (err error) {
 	return
 }
 
-func (c *command) printWhenError(output *string, err *error) {
+func (c *_command) printWhenError(output *string, err *error) {
 	if nil != err && nil != *err && `` != *output {
 		_, _ = os.Stderr.WriteString(*output)
 	}
 }
 
-func (c *command) notify(options *options, code *int, err error) {
+func (c *_command) notify(options *options, code *int, err error) {
 	for _, _notifier := range options.notifiers {
 		_notifier.Notify(*code, err)
 	}
 }
 
-func (c *command) read(pipe io.ReadCloser, typ OutputType, options *options) {
+func (c *_command) read(pipe io.ReadCloser, typ OutputType, options *options) {
 	done := false
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(enterChar)
@@ -236,7 +240,7 @@ func (c *command) read(pipe io.ReadCloser, typ OutputType, options *options) {
 	}
 }
 
-func (c *command) collect(line string, typ OutputType, options *options) {
+func (c *_command) collect(line string, typ OutputType, options *options) {
 	for _, _collector := range options.collectors {
 		_ = _collector.Collect(line, typ)
 	}

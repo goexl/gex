@@ -17,8 +17,10 @@ func Max(max int) *optionMax {
 	}
 }
 
-func (m *optionMax) apply(options *options) {
+func (m *optionMax) apply(options *options) (err error) {
 	options.max = m.max
+
+	return
 }
 
 func (m *optionMax) applyCollector(options *collectorOptions) {

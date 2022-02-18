@@ -24,6 +24,8 @@ func Sync() *optionAsync {
 	}
 }
 
-func (a *optionAsync) apply(options *options) {
+func (a *optionAsync) apply(options *options) (err error) {
 	options.async = a.async
+
+	return
 }

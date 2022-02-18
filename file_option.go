@@ -6,11 +6,12 @@ import (
 
 type (
 	fileOption interface {
-		applyFile(options *options)
+		applyFile(options *fileOptions)
 	}
 
 	fileOptions struct {
-		mode os.FileMode
+		mode      os.FileMode
+		writeMode writeMode
 	}
 )
 

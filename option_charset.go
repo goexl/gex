@@ -16,6 +16,8 @@ func Charset(charset string) *optionCharset {
 	}
 }
 
-func (c *optionCharset) apply(options *options) {
+func (c *optionCharset) apply(options *options) (err error) {
 	options.charset = c.charset
+
+	return
 }

@@ -17,8 +17,10 @@ func Envs(envs ...*env) *optionEnvs {
 	}
 }
 
-func (e *optionEnvs) apply(options *options) {
+func (e *optionEnvs) apply(options *options) (err error) {
 	options.envs = e.envs
+
+	return
 }
 
 func (e *optionEnvs) applyPipe(options *pipeOptions) {

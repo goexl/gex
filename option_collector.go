@@ -18,6 +18,7 @@ var (
 
 type optionCollector struct {
 	collector collector
+	err       error
 }
 
 // Collector 配置输出
@@ -74,11 +75,10 @@ func WriterCollector(writer io.Writer, opts ...collectorOption) *optionCollector
 
 // FilenameCollector 配置输出到文件
 func FilenameCollector(filename string, opts ...fileOption) (collector *optionCollector) {
-	file, err := parseFile(filename, opts...)
-	if nil == err {
-		panic(err)
-	} else if nil != file {
-		collector = new(optionCollector)
+	collector = new(optionCollector)
+	if file, err := parseFile(filename, opts...); nil != err {
+		collector.err = err
+	} else {
 		collector.collector = &writerCollector{
 			writer: bufio.NewWriter(file),
 		}
@@ -87,6 +87,11 @@ func FilenameCollector(filename string, opts ...fileOption) (collector *optionCo
 	return
 }
 
-func (c *optionCollector) apply(options *options) {
+func (c *optionCollector) apply(options *options) (err error) {
+	if err = c.err; nil != err {
+		return
+	}
 	options.collectors[fmt.Sprintf(`%p`, c.collector)] = c.collector
+
+	return
 }

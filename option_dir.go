@@ -17,8 +17,10 @@ func Dir(dir string) *optionDir {
 	}
 }
 
-func (d *optionDir) apply(options *options) {
+func (d *optionDir) apply(options *options) (err error) {
 	options.dir = d.dir
+
+	return
 }
 
 func (d *optionDir) applyPipe(options *pipeOptions) {

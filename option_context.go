@@ -21,8 +21,10 @@ func Context(context context.Context) *optionContext {
 	}
 }
 
-func (c *optionContext) apply(options *options) {
+func (c *optionContext) apply(options *options) (err error) {
 	options.context = c.context
+
+	return
 }
 
 func (c *optionContext) applyPipe(options *pipeOptions) {
