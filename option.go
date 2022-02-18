@@ -20,7 +20,6 @@ type (
 		systemEnvs bool
 
 		async bool
-		wait  bool
 
 		stdin io.Reader
 		pipes []*pipe

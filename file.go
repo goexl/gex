@@ -1,7 +1,6 @@
 package gex
 
 import (
-	`errors`
 	`fmt`
 	`os`
 	`path/filepath`
@@ -17,7 +16,7 @@ func parseFile(filename string, opts ...fileOption) (file *os.File, err error) {
 	if exist(filename) {
 		switch _options.writeMode {
 		case WriteModeError:
-			err = errors.New(`文件已存在`)
+			err = errFileExist
 		case WriteModeSkip:
 			return
 		case WriteModeOverride:

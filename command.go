@@ -97,8 +97,6 @@ func (c *_command) make() {
 	for _, _env := range c.options.envs {
 		c.cmd.Env = append(c.cmd.Env, fmt.Sprintf(`%s=%s`, _env.key, _env.value))
 	}
-
-	return
 }
 
 func (c *_command) io() (err error) {
