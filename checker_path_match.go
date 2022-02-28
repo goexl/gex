@@ -1,4 +1,4 @@
-package gex
+package exec
 
 import (
 	`path/filepath`

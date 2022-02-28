@@ -1,4 +1,4 @@
-package gex
+package exec
 
 const (
 	// WriteModeSkip 跳过

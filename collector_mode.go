@@ -1,4 +1,4 @@
-package gex
+package exec
 
 const (
 	// CollectorModeCache 缓存
