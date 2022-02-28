@@ -58,7 +58,7 @@ import (
 )
 
 func main() {
-  _, _ = exec.Start(`ping`, gex.Cli(`www.163.com -c 10`))
+  _, _ = exec.Start(`ping`, exec.Cli(`www.163.com -c 10`))
 }
 ```
 
@@ -67,6 +67,10 @@ func main() {
 ## 文档
 
 [点击这里查看最新文档](https://gex.storezhang.tech)
+
+## 使用示例
+
+[点击这里查看最新的代码示例](https://github.com/golangex/example)
 
 ## 交流
 
