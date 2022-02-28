@@ -44,7 +44,7 @@ import (
 )
 
 func main() {
-  _, _ = gex.Exec(`ping`, gex.Args(`www.163.com`, `-c`, 10))
+  _, _ = exec.Start(`ping`, gex.Args(`www.163.com`, `-c`, 10))
 }
 ```
 
@@ -58,7 +58,7 @@ import (
 )
 
 func main() {
-  _, _ = gex.Exec(`ping`, gex.Cli(`www.163.com -c 10`))
+  _, _ = exec.Start(`ping`, gex.Cli(`www.163.com -c 10`))
 }
 ```
 
@@ -72,5 +72,5 @@ func main() {
 
 ## 捐助
 
-![支持宝](doc/docs/.vuepress/public/donate/alipay-small.jpg)
-![微信](doc/docs/.vuepress/public/donate/weipay-small.jpg)
+![支持宝](https://github.com/storezhang/donate/raw/master/alipay-small.jpg)
+![微信](https://github.com/storezhang/donate/raw/master/weipay-small.jpg)
