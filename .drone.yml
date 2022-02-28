@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: Golang文件系统扩展
+name: Golang外部调用扩展
 
 
 clone:
@@ -31,31 +31,6 @@ steps:
     settings:
       test: false
       compress: false
-
-  - name: 文档
-    image: dronestock/node
-    pull: always
-    when:
-      branch:
-        - doc
-        - doc/*
-    settings:
-      folder: doc
-
-  - name: 部署
-    image: dronestock/cos
-    pull: always
-    when:
-      branch:
-        - doc
-        - doc/*
-    settings:
-      folder: doc/dist
-      secret_id:
-        from_secret: secret_id_cos
-      secret_key:
-        from_secret: secret_key_cos
-      base_url: https://gex-1253228583.cos.ap-chengdu.myqcloud.com
 
 
 volumes:
