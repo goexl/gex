@@ -70,7 +70,7 @@ func main() {
 
 ## 使用示例
 
-[点击这里查看最新的代码示例](https://github.com/golangex/example)
+[点击这里查看最新的代码示例](example)
 
 ## 交流
 
