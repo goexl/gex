@@ -14,7 +14,7 @@ trigger:
 
 
 steps:
-  - name: 拉代码
+  - name: 代码
     image: dronestock/git
     pull: always
 
@@ -32,7 +32,7 @@ steps:
       test: false
       compress: false
 
-  - name: 代码
+  - name: 文档
     image: dronestock/node
     pull: always
 
