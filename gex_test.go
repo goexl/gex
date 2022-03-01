@@ -1,18 +1,18 @@
-package exec_test
+package gex_test
 
 import (
 	`io/ioutil`
 	`os`
 	`testing`
 
-	`github.com/golangex/exec`
+	`github.com/goexl/gex`
 )
 
 func TestStartWithCheckerSuccess(t *testing.T) {
 	t.Parallel()
-	_, err := exec.Start(
-		`ping`, exec.Args(`www.163.com`),
-		exec.ContainsChecker(`Ping statistics for`), exec.Async(), exec.Quiet(),
+	_, err := gex.Exec(
+		`ping`, gex.Args(`www.163.com`),
+		gex.ContainsChecker(`Ping statistics for`), gex.Async(), gex.Quiet(),
 	)
 	if nil != err {
 		t.FailNow()
@@ -21,9 +21,9 @@ func TestStartWithCheckerSuccess(t *testing.T) {
 
 func TestStartWithCheckerFailed(t *testing.T) {
 	t.Parallel()
-	_, err := exec.Start(
-		`ping`, exec.Args(`www.163.com`),
-		exec.ContainsChecker(`xxx`), exec.Async(), exec.Quiet(),
+	_, err := gex.Exec(
+		`ping`, gex.Args(`www.163.com`),
+		gex.ContainsChecker(`xxx`), gex.Async(), gex.Quiet(),
 	)
 	if nil != err {
 		t.FailNow()
@@ -32,7 +32,7 @@ func TestStartWithCheckerFailed(t *testing.T) {
 
 func TestStartWithSync(t *testing.T) {
 	t.Parallel()
-	_, err := exec.Start(`ping`, exec.Args(`www.163.com`), exec.Sync())
+	_, err := gex.Exec(`ping`, gex.Args(`www.163.com`), gex.Sync())
 	if nil != err {
 		t.FailNow()
 	}
@@ -41,9 +41,9 @@ func TestStartWithSync(t *testing.T) {
 func TestStartWithStringCollector(t *testing.T) {
 	t.Parallel()
 	output := ``
-	_, err := exec.Start(
-		`ping`, exec.Args(`www.163.com`),
-		exec.Sync(), exec.Quiet(), exec.StringCollector(&output),
+	_, err := gex.Exec(
+		`ping`, gex.Args(`www.163.com`),
+		gex.Sync(), gex.Quiet(), gex.StringCollector(&output),
 	)
 	if nil != err || `` == output {
 		t.FailNow()
@@ -57,7 +57,7 @@ func TestStartPwe(t *testing.T) {
 	os.Stderr = writer
 
 	// 执行命令，该命令一定是错误的
-	_, _ = exec.Start(`ping`, exec.Args(`abc.c`), exec.Quiet())
+	_, _ = gex.Exec(`ping`, gex.Args(`abc.c`), gex.Quiet())
 
 	_ = writer.Close()
 	err, _ := ioutil.ReadAll(reader)

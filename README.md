@@ -1,11 +1,11 @@
 # Gex
 
-[![Sourcegraph](https://sourcegraph.com/github.com/golangex/exec/-/badge.svg?style=flat-square)](https://sourcegraph.com/github.com/golangex/exec?badge)
-[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/golangex/exec)
-[![Go Report Card](https://goreportcard.com/badge/github.com/golangex/exec?style=flat-square)](https://goreportcard.com/report/github.com/golangex/exec)
-[![Build Status](https://github.ruijc.com:20443/api/badges/golangex/exec/status.svg)](https://github.ruijc.com:20443/golangex/exec)
-[![Codecov](https://img.shields.io/codecov/c/github/golangex/exec.svg?style=flat-square)](https://codecov.io/gh/golangex/exec)
-[![License](https://img.shields.io/github/license/golangex/exec)](https://raw.githubusercontent.com/golangex/exec/master/LICENSE)
+[![Sourcegraph](https://sourcegraph.com/github.com/goexl/gex/-/badge.svg?style=flat-square)](https://sourcegraph.com/github.com/goexl/gex?badge)
+[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/goexl/gex)
+[![Go Report Card](https://goreportcard.com/badge/github.com/goexl/gex?style=flat-square)](https://goreportcard.com/report/github.com/goexl/gex)
+[![Build Status](https://github.ruijc.com:20443/api/badges/goexl/gex/status.svg)](https://github.ruijc.com:20443/goexl/gex)
+[![Codecov](https://img.shields.io/codecov/c/github/golangex/gex.svg?style=flat-square)](https://codecov.io/gh/goexl/gex)
+[![License](https://img.shields.io/github/license/goexl/gex)](https://raw.githubusercontent.com/goexl/gex/master/LICENSE)
 
 Golang exec extension library，Golang外部命令执行扩展库，有如下功能
 
@@ -40,11 +40,11 @@ Golang exec extension library，Golang外部命令执行扩展库，有如下功
 package main
 
 import (
-  `github.com/golangex/exec`
+  `github.com/goexl/gex`
 )
 
 func main() {
-  _, _ = exec.Start(`ping`, gex.Args(`www.163.com`, `-c`, 10))
+  _, _ = gex.Exec(`ping`, gex.Args(`www.163.com`, `-c`, 10))
 }
 ```
 
@@ -54,11 +54,11 @@ or
 package main
 
 import (
-  `github.com/golangex/exec`
+  `github.com/goexl/gex`
 )
 
 func main() {
-  _, _ = exec.Start(`ping`, exec.Cli(`www.163.com -c 10`))
+  _, _ = gex.Exec(`ping`, gex.Cli(`www.163.com -c 10`))
 }
 ```
 

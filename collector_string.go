@@ -1,4 +1,4 @@
-package exec
+package gex
 
 var _ collector = (*stringCollector)(nil)
 

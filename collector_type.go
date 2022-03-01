@@ -1,4 +1,4 @@
-package exec
+package gex
 
 const (
 	// OutputTypeStdout 输出流

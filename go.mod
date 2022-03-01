@@ -1,3 +1,3 @@
-module github.com/golangex/exec
+module github.com/goexl/gex
 
 go 1.17

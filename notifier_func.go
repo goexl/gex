@@ -1,4 +1,4 @@
-package exec
+package gex
 
 type funcNotifier struct {
 	fun notifyFunc
