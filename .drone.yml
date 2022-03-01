@@ -21,10 +21,6 @@ steps:
   - name: 编译
     image: pangum/drone
     pull: always
-    when:
-      branch:
-        - master
-        - develop
     volumes:
       - name: go
         path: /go
