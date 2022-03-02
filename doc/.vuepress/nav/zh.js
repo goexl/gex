@@ -17,15 +17,6 @@ module.exports = [{
     text: '了解更多',
     ariaLabel: '了解更多',
     items: [{
-        text: 'Gex',
-        items: [{
-            text: '框架',
-            link: 'https://github.com/goexl/gex'
-        }, {
-            text: '使用示例',
-            link: 'https://github.com/golangex/example'
-        }]
-    }, {
         text: '使用者',
         items: [{
             text: 'Docker插件',
