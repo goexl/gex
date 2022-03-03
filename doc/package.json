@@ -2,14 +2,14 @@
     "name": "gex",
     "version": "1.0.0",
     "main": "index.js",
-    "license": "Apache License",
-    "dependencies": {
-        "moment": "^2.29.1",
-        "vuepress": "^1.8.2",
-        "vuepress-theme-reco": "^1.6.6"
-    },
+    "license": "Apache-2.0",
     "scripts": {
         "dev": "vuepress dev",
         "build": "vuepress build"
+    },
+    "devDependencies": {
+        "moment": "^2.29.1",
+        "vuepress": "^1.9.7",
+        "vuepress-theme-reco": "^1.6.6"
     }
 }

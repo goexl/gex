@@ -25,7 +25,7 @@ module.exports = ctx => ({
     },
     theme: 'reco',
     themeConfig: {
-        logo: '/icons/logo.png',
+        logo: '/logo.png',
         repo: 'goexl/gex',
         docsDir: 'doc',
         editLinks: true,
