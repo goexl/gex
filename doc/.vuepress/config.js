@@ -75,8 +75,7 @@ module.exports = ctx => ({
 
                 return datetime.format('yyyy-MM-DD hh:mm:ss')
             }
-        }
-        ],
+        }],
         ['@vuepress/back-to-top', true],
         ['@vuepress/pwa', {
             serviceWorker: true,
