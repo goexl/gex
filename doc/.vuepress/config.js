@@ -83,7 +83,7 @@ module.exports = ctx => ({
         }],
         ['@vuepress/medium-zoom', true],
         ['@vuepress/google-analytics', {
-            ga: 'G-RJRHHSRXT8'
+            ga: 'G-WSN78F7HZR'
         }],
         ['container', {
             type: 'vue',
