@@ -2,7 +2,7 @@
 
 # @formatter:off
 home: true
-heroImage: /hero.png
+heroImage: /logo.png
 heroText: Gex
 tagline: Golang外部程序调用扩展库
 actionText: 快速下手 →
