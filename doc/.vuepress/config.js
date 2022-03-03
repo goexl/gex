@@ -63,6 +63,20 @@ module.exports = ctx => ({
         }
     },
     plugins: [
+        ['sitemap', {
+            hostname: "https://gex.storezhang.tech",
+            exclude: ["/404.html"]
+        }],
+        ['@vuepress/last-updated', {
+            transformer: (timestamp, lang) => {
+                const moment = require('moment')
+                moment.locale(lang)
+                const datetime = moment(timestamp)
+
+                return datetime.format('yyyy-MM-DD hh:mm:ss')
+            }
+        }
+        ],
         ['@vuepress/back-to-top', true],
         ['@vuepress/pwa', {
             serviceWorker: true,
