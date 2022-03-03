@@ -64,8 +64,8 @@ module.exports = ctx => ({
     },
     plugins: [
         ['sitemap', {
-            hostname: "https://gex.storezhang.tech",
-            exclude: ["/404.html"]
+            hostname: 'https://gex.storezhang.tech',
+            exclude: ['/404.html']
         }],
         ['@vuepress/last-updated', {
             transformer: (timestamp, lang) => {
@@ -83,7 +83,7 @@ module.exports = ctx => ({
         }],
         ['@vuepress/medium-zoom', true],
         ['@vuepress/google-analytics', {
-            ga: 'UA-128189152-1'
+            ga: 'G-RJRHHSRXT8'
         }],
         ['container', {
             type: 'vue',
