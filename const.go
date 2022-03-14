@@ -5,4 +5,7 @@ const (
 	keyStdout   = `stdout`
 	keyStderr   = `stderr`
 	keyPwe      = `pwe`
+
+	envSeparator = `=`
+	envCount     = 2
 )
