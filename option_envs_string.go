@@ -3,28 +3,28 @@ package gex
 var (
 	_        = StringEnv
 	_        = StringEnvs
-	_ option = (*optionStringEnv)(nil)
+	_ option = (*optionStringEnvs)(nil)
 )
 
-type optionStringEnv struct {
+type optionStringEnvs struct {
 	envs []string
 }
 
 // StringEnv 环境变量
-func StringEnv(env string) *optionStringEnv {
-	return &optionStringEnv{
+func StringEnv(env string) *optionStringEnvs {
+	return &optionStringEnvs{
 		envs: []string{env},
 	}
 }
 
 // StringEnvs 环境变量列表
-func StringEnvs(envs ...string) *optionStringEnv {
-	return &optionStringEnv{
+func StringEnvs(envs ...string) *optionStringEnvs {
+	return &optionStringEnvs{
 		envs: envs,
 	}
 }
 
-func (se *optionStringEnv) apply(options *options) (err error) {
+func (se *optionStringEnvs) apply(options *options) (err error) {
 	for _, _env := range se.envs {
 		options.envs = append(options.envs, parseEnv(_env))
 	}
@@ -32,7 +32,7 @@ func (se *optionStringEnv) apply(options *options) (err error) {
 	return
 }
 
-func (se *optionStringEnv) applyPipe(options *pipeOptions) {
+func (se *optionStringEnvs) applyPipe(options *pipeOptions) {
 	for _, _env := range se.envs {
 		options.envs = append(options.envs, parseEnv(_env))
 	}
