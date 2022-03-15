@@ -119,7 +119,7 @@ function getGuideSidebar(groupA, groupB) {
             'start',
             'args',
             'dir',
-            'envs',
+            'env',
             'async',
         ]
     }, {

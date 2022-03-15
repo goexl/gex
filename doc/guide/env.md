@@ -9,16 +9,16 @@
 
 系统本身内置了很多环境变量，比如最著名的应该就是`PATH`变量了，`Gex`默认导入了系统变量，如果系统变量会干扰命令的执行的话，可以很方便的禁用系统变量
 
-<<< @/../example/guide/envs_disable_system.go
+<<< @/../example/guide/env_disable_system.go
 
 ## 添加环境变量
 
 明确使用`键`和`值`来添加变量
 
-<<< @/../example/guide/envs_add.go
+<<< @/../example/guide/env_add.go
 
 ## 解析环境变量
 
 有时候，环境变量的表现形式可能是一个字符串形式的`键值对`，`Gex`对此也做了支持
 
-<<< @/../example/guide/envs_parse.go
+<<< @/../example/guide/env_string.go
