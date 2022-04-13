@@ -1,13 +1,13 @@
 package gex
 
 import (
-	`bufio`
-	`fmt`
-	`io`
-	`os`
-	`os/exec`
-	`sync`
-	`syscall`
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"os/exec"
+	"sync"
+	"syscall"
 )
 
 const enterChar = '\n'
@@ -46,7 +46,7 @@ func (c *_command) Exec() (code int, err error) {
 	if c.options.pwe {
 		output := ``
 		c.options.collectors[keyPwe] = newOutputStringCollector(&output, c.options.max)
-		defer c.printWhenError(&output, &err)
+		defer c.errorHandler(&output, &err, c.options)
 	}
 
 	// 通知
@@ -91,7 +91,7 @@ func (c *_command) make() {
 	}
 
 	// 配置运行时的环境变量
-	if c.options.systemEnvs {
+	if c.options.system.envs {
 		c.cmd.Env = os.Environ()
 	}
 	for _, _env := range c.options.envs {
@@ -205,7 +205,7 @@ func (c *_command) pipe() (err error) {
 	return
 }
 
-func (c *_command) printWhenError(output *string, err *error) {
+func (c *_command) errorHandler(output *string, err *error, options *options) {
 	if nil != err && nil != *err && `` != *output {
 		_, _ = os.Stderr.WriteString(*output)
 	}

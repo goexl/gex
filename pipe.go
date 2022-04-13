@@ -1,9 +1,9 @@
 package gex
 
 import (
-	`fmt`
-	`os`
-	`os/exec`
+	"fmt"
+	"os"
+	"os/exec"
 )
 
 type pipe struct {
@@ -36,7 +36,7 @@ func (p *pipe) cmd() (cmd *exec.Cmd) {
 	}
 
 	// 配置运行时的环境变量
-	if p.options.systemEnvs {
+	if p.options.system.envs {
 		cmd.Env = os.Environ()
 	}
 	for _, _env := range p.options.envs {

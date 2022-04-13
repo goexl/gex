@@ -1,8 +1,8 @@
 package gex
 
 import (
-	`context`
-	`io`
+	"context"
+	"io"
 )
 
 var _ = NewOptions
@@ -13,11 +13,12 @@ type (
 	}
 
 	options struct {
-		context    context.Context
-		args       []string
-		dir        string
-		envs       []*env
-		systemEnvs bool
+		context context.Context
+		args    []string
+		dir     string
+		envs    []*env
+		system  system
+		code    code
 
 		async bool
 
@@ -46,8 +47,13 @@ func defaultOptions() *options {
 			keyTerminal: newTerminalCollector(),
 		},
 
-		systemEnvs: true,
-		async:      false,
+		system: system{
+			envs: true,
+		},
+		code: code{
+			ok: defaultCodeOk,
+		},
+		async: false,
 
 		pwe: true,
 		max: 100,

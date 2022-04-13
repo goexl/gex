@@ -14,11 +14,11 @@ func DisableSystemEnv() *optionSystemEnv {
 }
 
 func (se *optionSystemEnv) apply(options *options) (err error) {
-	options.systemEnvs = false
+	options.system.envs = false
 
 	return
 }
 
 func (se *optionSystemEnv) applyPipe(options *pipeOptions) {
-	options.systemEnvs = false
+	options.system.envs = false
 }

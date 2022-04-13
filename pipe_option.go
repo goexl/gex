@@ -1,7 +1,7 @@
 package gex
 
 import (
-	`context`
+	"context"
 )
 
 type (
@@ -10,16 +10,18 @@ type (
 	}
 
 	pipeOptions struct {
-		context    context.Context
-		args       []string
-		dir        string
-		envs       []*env
-		systemEnvs bool
+		context context.Context
+		args    []string
+		dir     string
+		envs    []*env
+		system  system
 	}
 )
 
 func defaultPipeOptions() *pipeOptions {
 	return &pipeOptions{
-		systemEnvs: true,
+		system: system{
+			envs: true,
+		},
 	}
 }
