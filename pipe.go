@@ -27,7 +27,7 @@ func (p *pipe) cmd() (cmd *exec.Cmd) {
 	if nil == p.options.context {
 		cmd = exec.Command(p.name, p.options.args...)
 	} else {
-		cmd = exec.CommandContext(p.options.context, p.name, p.options.args...)
+		cmd = exec.CommandContext(p.options.context, p.name, append(p.options.args)...)
 	}
 
 	// 配置运行时目录

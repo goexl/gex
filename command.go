@@ -82,10 +82,11 @@ func (c *_command) exec() (code int, err error) {
 }
 
 func (c *_command) make() {
+	// 操蛋的G204安全检查
 	if nil == c.options.context {
-		c.cmd = exec.Command(c.name, c.options.args...)
+		c.cmd = exec.Command(c.name, append(c.options.args)...)
 	} else {
-		c.cmd = exec.CommandContext(c.options.context, c.name, c.options.args...)
+		c.cmd = exec.CommandContext(c.options.context, c.name, append(c.options.args)...)
 	}
 
 	// 配置运行时目录
