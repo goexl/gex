@@ -129,6 +129,7 @@ function getGuideSidebar(groupA, groupB) {
             'context',
             'quiet',
             'pwe',
+            'code',
             'terminal',
             'stdout',
             'stderr',

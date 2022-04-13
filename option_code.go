@@ -11,17 +11,21 @@ type optionCode struct {
 }
 
 // Code 配置状态码
-func Code(code *code) *optionCode {
+func Code(ok int) *optionCode {
 	return &optionCode{
-		code: code,
+		code: &code{
+			ok: ok,
+		},
 	}
 }
 
 // OkCode 正常退出状态码
-func OkCode(c int) *optionCode {
-	return Code(&code{
-		ok: c,
-	})
+func OkCode(ok int) *optionCode {
+	return &optionCode{
+		code: &code{
+			ok: ok,
+		},
+	}
 }
 
 func (c *optionCode) apply(options *options) (err error) {
