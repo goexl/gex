@@ -17,8 +17,8 @@ type (
 		args    []string
 		dir     string
 		envs    []*env
-		system  system
-		code    code
+		system  *system
+		code    *code
 
 		async bool
 
@@ -47,10 +47,10 @@ func defaultOptions() *options {
 			keyTerminal: newTerminalCollector(),
 		},
 
-		system: system{
+		system: &system{
 			envs: true,
 		},
-		code: code{
+		code: &code{
 			ok: defaultCodeOk,
 		},
 		async: false,

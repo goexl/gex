@@ -14,13 +14,13 @@ type (
 		args    []string
 		dir     string
 		envs    []*env
-		system  system
+		system  *system
 	}
 )
 
 func defaultPipeOptions() *pipeOptions {
 	return &pipeOptions{
-		system: system{
+		system: &system{
 			envs: true,
 		},
 	}

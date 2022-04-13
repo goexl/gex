@@ -1,10 +1,13 @@
 package gex
 
 import (
-	`fmt`
-	`os`
-	`path/filepath`
-	`strings`
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+
+	"github.com/goexl/exc"
+	"github.com/goexl/gox/field"
 )
 
 func parseFile(filename string, opts ...fileOption) (file *os.File, err error) {
@@ -16,7 +19,7 @@ func parseFile(filename string, opts ...fileOption) (file *os.File, err error) {
 	if exist(filename) {
 		switch _options.writeMode {
 		case WriteModeError:
-			err = errFileExist
+			err = exc.NewField(exceptionFileExist, field.String(`filename`, filename))
 		case WriteModeSkip:
 			return
 		case WriteModeOverride:

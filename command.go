@@ -8,6 +8,9 @@ import (
 	"os/exec"
 	"sync"
 	"syscall"
+
+	"github.com/goexl/exc"
+	"github.com/goexl/gox/field"
 )
 
 const enterChar = '\n'
@@ -46,7 +49,7 @@ func (c *_command) Exec() (code int, err error) {
 	if c.options.pwe {
 		output := ``
 		c.options.collectors[keyPwe] = newOutputStringCollector(&output, c.options.max)
-		defer c.errorHandler(&output, &err, c.options)
+		defer c.errorHandler(&output, &code, &err, c.options)
 	}
 
 	// 通知
@@ -205,7 +208,12 @@ func (c *_command) pipe() (err error) {
 	return
 }
 
-func (c *_command) errorHandler(output *string, err *error, options *options) {
+func (c *_command) errorHandler(output *string, code *int, err *error, options *options) {
+	// 检查状态码
+	if options.code.ok != *code {
+		*err = exc.NewException(*code, exceptionCommandExitError, field.String(`error`, *output))
+	}
+
 	if nil != err && nil != *err && `` != *output {
 		_, _ = os.Stderr.WriteString(*output)
 	}

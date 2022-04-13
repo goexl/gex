@@ -1,11 +1,11 @@
 package gex_test
 
 import (
-	`io/ioutil`
-	`os`
-	`testing`
+	"io/ioutil"
+	"os"
+	"testing"
 
-	`github.com/goexl/gex`
+	"github.com/goexl/gex"
 )
 
 func TestStartWithCheckerSuccess(t *testing.T) {
@@ -64,6 +64,14 @@ func TestStartPwe(t *testing.T) {
 	os.Stderr = stderr
 
 	if `` == string(err) {
+		t.FailNow()
+	}
+}
+
+func TestWithoutOkCode(t *testing.T) {
+	t.Parallel()
+	_, err := gex.Exec(`ping`, gex.Args(`xx`))
+	if nil == err {
 		t.FailNow()
 	}
 }
