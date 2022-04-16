@@ -12,8 +12,8 @@ func newLineCounter(total *int64, options *counterOptions) *lineCounter {
 	}
 }
 
-func (c *lineCounter) Count(line string, typ OutputType) (err error) {
-	if `` == line {
+func (c *lineCounter) Count(line string, ot OutputType) (err error) {
+	if `` == line || OutputTypeAny != c.options.typ && ot != c.options.typ {
 		return
 	}
 	*c.total++
