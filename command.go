@@ -256,6 +256,6 @@ func (c *_command) line(line string, typ OutputType, options *options) {
 
 	// 计数器
 	for _, _counter := range options.counters {
-		_ = _counter.Count(line)
+		_ = _counter.Count(line, typ)
 	}
 }
