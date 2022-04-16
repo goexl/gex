@@ -30,6 +30,7 @@ type (
 		charset    string
 
 		notifiers []notifier
+		counters  []counter
 
 		pwe bool
 		max int

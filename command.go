@@ -232,7 +232,7 @@ func (c *_command) read(pipe io.ReadCloser, typ OutputType, options *options) {
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(enterChar)
 	for nil == err {
-		c.collect(line, typ, options)
+		c.line(line, typ, options)
 
 		if nil != options.checker {
 			if checked, _ := options.checker.Check(line); checked && !done {
@@ -248,8 +248,14 @@ func (c *_command) read(pipe io.ReadCloser, typ OutputType, options *options) {
 	}
 }
 
-func (c *_command) collect(line string, typ OutputType, options *options) {
+func (c *_command) line(line string, typ OutputType, options *options) {
+	// 收集器
 	for _, _collector := range options.collectors {
 		_ = _collector.Collect(line, typ)
+	}
+
+	// 计数器
+	for _, _counter := range options.counters {
+		_ = _counter.Count(line)
 	}
 }
