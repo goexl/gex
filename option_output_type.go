@@ -5,6 +5,7 @@ var (
 	_                 = CollectStderr
 	_                 = CollectAny
 	_ collectorOption = (*optionOutputType)(nil)
+	_ counterOption   = (*optionOutputType)(nil)
 )
 
 type optionOutputType struct {
@@ -33,5 +34,9 @@ func CollectAny() *optionOutputType {
 }
 
 func (ot *optionOutputType) applyCollector(options *collectorOptions) {
+	options.typ = ot.typ
+}
+
+func (ot *optionOutputType) applyCounter(options *counterOptions) {
 	options.typ = ot.typ
 }
