@@ -1,7 +1,7 @@
 package gex
 
 import (
-	`strings`
+	"strings"
 )
 
 type (
@@ -24,6 +24,15 @@ func defaultCollectorOptions() *collectorOptions {
 		max:   1000,
 		lines: make([]string, 0),
 	}
+}
+
+func newCollectorOptions(opts ...collectorOption) (_options *collectorOptions) {
+	_options = defaultCollectorOptions()
+	for _, opt := range opts {
+		opt.applyCollector(_options)
+	}
+
+	return
 }
 
 func (c *collectorOptions) write(line string) {

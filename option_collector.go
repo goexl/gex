@@ -1,10 +1,10 @@
 package gex
 
 import (
-	`bufio`
-	`fmt`
-	`io`
-	`os`
+	"bufio"
+	"fmt"
+	"io"
+	"os"
 )
 
 var (
@@ -30,45 +30,30 @@ func Collector(collector collector) *optionCollector {
 
 // StringCollector 配置输出到字符串
 func StringCollector(string *string, opts ...collectorOption) *optionCollector {
-	_options := defaultCollectorOptions()
-	for _, opt := range opts {
-		opt.applyCollector(_options)
-	}
-
 	return &optionCollector{
 		collector: &stringCollector{
 			string:  string,
-			options: _options,
+			options: newCollectorOptions(opts...),
 		},
 	}
 }
 
 // FileCollector 配置输出到文件
 func FileCollector(file *os.File, opts ...collectorOption) *optionCollector {
-	_options := defaultCollectorOptions()
-	for _, opt := range opts {
-		opt.applyCollector(_options)
-	}
-
 	return &optionCollector{
 		collector: &writerCollector{
 			writer:  file,
-			options: _options,
+			options: newCollectorOptions(opts...),
 		},
 	}
 }
 
 // WriterCollector 配置输出到文件
 func WriterCollector(writer io.Writer, opts ...collectorOption) *optionCollector {
-	_options := defaultCollectorOptions()
-	for _, opt := range opts {
-		opt.applyCollector(_options)
-	}
-
 	return &optionCollector{
 		collector: &writerCollector{
 			writer:  writer,
-			options: _options,
+			options: newCollectorOptions(opts...),
 		},
 	}
 }
