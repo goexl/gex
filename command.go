@@ -213,7 +213,7 @@ func (c *_command) pipe() (err error) {
 func (c *_command) errorHandler(output *string, code *int, err *error, options *options) {
 	// 检查状态码
 	if options.code.ok != *code {
-		*err = exc.NewException(*code, exceptionCommandExitError, field.String(`error`, *output))
+		*err = exc.NewException(*code, exceptionCommandExitError, field.New("error", *output))
 	}
 
 	if nil != err && nil != *err && `` != *output {

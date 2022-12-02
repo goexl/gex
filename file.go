@@ -19,7 +19,7 @@ func parseFile(filename string, opts ...fileOption) (file *os.File, err error) {
 	if exist(filename) {
 		switch _options.writeMode {
 		case WriteModeError:
-			err = exc.NewField(exceptionFileExist, field.String(`filename`, filename))
+			err = exc.NewField(exceptionFileExist, field.New("filename", filename))
 		case WriteModeSkip:
 			return
 		case WriteModeOverride:
