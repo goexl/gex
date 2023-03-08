@@ -1,23 +1,30 @@
 package gex
 
 import (
-	`strings`
+	"strings"
 )
 
-type equalChecker struct {
+type checkerEqual struct {
 	equal string
 
-	options *checkerOptions
+	params *checkerParams
 	all     strings.Builder
 }
 
-func (ec *equalChecker) Check(line string) (checked bool, err error) {
-	if ec.options.cache {
+func newEqualChecker(equal string, params *checkerParams) *checkerEqual{
+	return &checkerEqual{
+		equal: equal,
+		params: params,
+	}
+}
+
+func (ec *checkerEqual) Check(line string) (checked bool, err error) {
+	if ec.params.cache {
 		ec.all.WriteString(line)
 	}
 
 	checked = ec.equal == line
-	if !checked && ec.options.cache {
+	if !checked && ec.params.cache {
 		checked = ec.all.String() == ec.equal
 	}
 

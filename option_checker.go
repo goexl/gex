@@ -30,7 +30,7 @@ func EqualChecker(equal string, opts ...checkerOption) *optionChecker {
 	}
 
 	return &optionChecker{
-		checker: &equalChecker{
+		checker: &checkerEqual{
 			equal:   equal,
 			options: _options,
 		},
@@ -45,9 +45,9 @@ func ContainsChecker(contains string, opts ...checkerOption) *optionChecker {
 	}
 
 	return &optionChecker{
-		checker: &containsChecker{
+		checker: &checkerContains{
 			contains: contains,
-			options:  _options,
+			params:   _options,
 		},
 	}
 }
@@ -60,7 +60,7 @@ func ContainsAllChecker(items []string, opts ...checkerOption) *optionChecker {
 	}
 
 	return &optionChecker{
-		checker: &containsAllChecker{
+		checker: &checkerContainsAll{
 			items:   items,
 			options: _options,
 		},
@@ -75,9 +75,9 @@ func ContainsAnyChecker(items []string, opts ...checkerOption) *optionChecker {
 	}
 
 	return &optionChecker{
-		checker: &containsAnyChecker{
-			items:   items,
-			options: _options,
+		checker: &checkerContainsAny{
+			items:  items,
+			params: _options,
 		},
 	}
 }
@@ -90,7 +90,7 @@ func PathMatchChecker(pattern string, opts ...checkerOption) *optionChecker {
 	}
 
 	return &optionChecker{
-		checker: &pathMatchChecker{
+		checker: &checkerFilepathMatch{
 			pattern: pattern,
 			options: _options,
 		},
@@ -105,7 +105,7 @@ func RegexpChecker(regexp string, opts ...checkerOption) *optionChecker {
 	}
 
 	return &optionChecker{
-		checker: &regexpChecker{
+		checker: &checkerRegexp{
 			regexp:  regexp,
 			options: _options,
 		},

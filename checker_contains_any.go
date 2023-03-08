@@ -1,30 +1,37 @@
 package gex
 
 import (
-	`strings`
+	"strings"
 )
 
-type containsAnyChecker struct {
+type checkerContainsAny struct {
 	items []string
 
-	options *checkerOptions
-	all     strings.Builder
+	params *checkerParams
+	all    strings.Builder
 }
 
-func (cac *containsAnyChecker) Check(line string) (checked bool, err error) {
-	if cac.options.cache {
+func newContainsAnyChecker(params *checkerParams, items ...string) *checkerContainsAny {
+	return &checkerContainsAny{
+		params: params,
+		items:  items,
+	}
+}
+
+func (cac *checkerContainsAny) Check(line string) (checked bool, err error) {
+	if cac.params.cache {
 		cac.all.WriteString(line)
 	}
 
 	checked = cac.containsAny(line, cac.items...)
-	if !checked && cac.options.cache {
+	if !checked && cac.params.cache {
 		checked = cac.containsAny(cac.all.String(), cac.items...)
 	}
 
 	return
 }
 
-func (cac *containsAnyChecker) containsAny(content string, items ...string) (contains bool) {
+func (cac *checkerContainsAny) containsAny(content string, items ...string) (contains bool) {
 	for _, item := range items {
 		contains = strings.Contains(content, item)
 		if contains {

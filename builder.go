@@ -45,3 +45,15 @@ func (b *builder) Async() *builder {
 
 	return b
 }
+
+func (b *builder) Charset(charset string) *builder {
+	b.params.charset = charset
+
+	return b
+}
+
+func (b *builder) Charset(charset string) *builder {
+	b.params.charset = charset
+
+	return b
+}
