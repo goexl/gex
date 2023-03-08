@@ -47,8 +47,8 @@ func newCommand(name string, opts ...option) (cmd *_command, err error) {
 func (c *_command) Exec() (code int, err error) {
 	// 当出错时，打印到控制台
 	if c.options.pwe {
-		output := ``
-		c.options.collectors[keyPwe] = newOutputStringCollector(&output, c.options.max)
+		output := ""
+		c.options.collectors[keyPwe] = newStringCollector(&output, c.options.max)
 		defer c.errorHandler(&output, &code, &err, c.options)
 	}
 

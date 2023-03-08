@@ -6,7 +6,7 @@ const (
 	keyStderr   = `stderr`
 	keyPwe      = `pwe`
 
-	envSeparator  = `=`
+	equal         = "="
 	envCount      = 2
 	defaultCodeOk = 0
 )

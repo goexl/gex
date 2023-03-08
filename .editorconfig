@@ -11,11 +11,5 @@ trim_trailing_whitespace = true
 [*.go]
 indent_style = tab
 
-[*.mod]
-end_of_line = crlf
-
-[*.md]
-indent_size = 2
-
-[*.{yml, yaml}]
+[{*.yml,*.yaml}]
 indent_size = 2

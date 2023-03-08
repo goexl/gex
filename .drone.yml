@@ -1,51 +1,50 @@
 kind: pipeline
 type: docker
-name: Gex
+name: 发布
 
 
 clone:
   disable: true
 
 
-trigger:
-  event:
-    exclude:
-      - pull_request
+environment:
+  CHANGELOG_TAG_OUTPUT: CHANGELOG.tag.md
 
 
 steps:
   - name: 代码
-    image: dronestock/git
-    pull: always
+    image: ccr.ccs.tencentyun.com/dronestock/git
 
   - name: 编译
-    image: pangum/drone
-    pull: always
+    image: ccr.ccs.tencentyun.com/pangum/drone
     volumes:
       - name: go
-        path: /go
+        path: /var/lib/go
     settings:
-      test:
-        enabled: false
       compress:
         enabled: false
 
-  - name: 文档
-    image: dronestock/node
-    pull: always
+  - name: 改变
+    image: ccr.ccs.tencentyun.com/dronestock/changelog
+    when:
+      event:
+        - tag
     settings:
-      folder: doc
+      output: $${CHANGELOG_TAG_OUTPUT}
 
-  - name: 部署
-    image: dronestock/cos
-    pull: always
+  - name: 发布
+    image: ccr.ccs.tencentyun.com/dronestock/github
+    when:
+      event:
+        - tag
+    environment:
+      TOKEN:
+        from_secret: token_github
     settings:
-      folder: doc/dist
-      secret_id:
-        from_secret: secret_id_cos
-      secret_key:
-        from_secret: secret_key_cos
-      base_url: https://gex-1253228583.cos.ap-chengdu.myqcloud.com
+      release:
+        tag: $${DRONE_TAG}
+        token: $${TOKEN}
+        body: file("$${CHANGELOG_TAG_OUTPUT}")
 
 
 volumes:

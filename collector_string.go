@@ -7,7 +7,7 @@ type stringCollector struct {
 	options *collectorOptions
 }
 
-func newOutputStringCollector(output *string, max int) *stringCollector {
+func newStringCollector(output *string, max int) *stringCollector {
 	return &stringCollector{
 		string: output,
 		options: &collectorOptions{

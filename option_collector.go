@@ -10,6 +10,7 @@ import (
 var (
 	_        = Collector
 	_        = StringCollector
+	_        = StringsCollector
 	_        = FileCollector
 	_        = FilenameCollector
 	_        = WriterCollector
@@ -33,6 +34,16 @@ func StringCollector(string *string, opts ...collectorOption) *optionCollector {
 	return &optionCollector{
 		collector: &stringCollector{
 			string:  string,
+			options: newCollectorOptions(opts...),
+		},
+	}
+}
+
+// StringsCollector 配置输出到字符串列表
+func StringsCollector(strings *[]string, opts ...collectorOption) *optionCollector {
+	return &optionCollector{
+		collector: &stringsCollector{
+			strings: strings,
 			options: newCollectorOptions(opts...),
 		},
 	}
