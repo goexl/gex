@@ -16,9 +16,9 @@ import (
 type command struct {
 	params *params
 
-	cmd     *exec.Cmd
-	checker *guc.WaitGroup
-	enter   byte
+	cmd    *exec.Cmd
+	waiter *guc.WaitGroup
+	enter  byte
 }
 
 func newCommand(params *params) *command {
@@ -30,7 +30,7 @@ func newCommand(params *params) *command {
 
 func (c *command) Exec() (code int, err error) {
 	// 当出错时，打印到控制台
-	if c.params.pwe {
+	if !c.params.echo && c.params.pwe {
 		output := ""
 		c.params.collectors[pwe] = newTerminalCollector(&output)
 		defer c.cleanup(&output, &code, &err)
@@ -114,9 +114,9 @@ func (c *command) io() (err error) {
 	}
 
 	if nil != c.params.checks {
-		c.checker = new(guc.WaitGroup)
+		c.waiter = new(guc.WaitGroup)
 		// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
-		c.checker.Add(1)
+		c.waiter.Add(1)
 	}
 
 	return
@@ -137,7 +137,7 @@ func (c *command) run() (code int, err error) {
 
 	// 如果有检查器，等待检查器结束
 	if nil != c.params.checks {
-		c.checker.Wait()
+		c.waiter.Wait()
 	}
 
 	// 如果是同步模式，等待命令执行完成
@@ -185,14 +185,14 @@ func (c *command) read(pipe io.ReadCloser, stream string) {
 	for nil == err {
 		c.line(line, stream)
 		if checked, _ := c.params.check(line); checked && !done {
-			c.checker.Done()
+			c.waiter.Done()
 			done = true
 		}
 		line, err = reader.ReadString(c.enter)
 	}
 
-	if nil != c.checker {
-		c.checker.Done()
+	if nil != c.waiter {
+		c.waiter.Done()
 	}
 }
 

@@ -34,20 +34,26 @@ func (cb *collectorBuilder) Stderr() *collectorBuilder {
 	return cb
 }
 
-func (cb *collectorBuilder) Trim() *collectorBuilder {
-	cb.params.trim.all = true
+func (cb *collectorBuilder) TrimSpace() *collectorBuilder {
+	cb.params.trim.space = true
 
 	return cb
 }
 
-func (cb *collectorBuilder) TrimLeft() *collectorBuilder {
-	cb.params.trim.left = true
+func (cb *collectorBuilder) Trim(cut string) *collectorBuilder {
+	cb.params.trim.all = cut
 
 	return cb
 }
 
-func (cb *collectorBuilder) TrimRight() *collectorBuilder {
-	cb.params.trim.right = true
+func (cb *collectorBuilder) TrimLeft(cut string) *collectorBuilder {
+	cb.params.trim.left = cut
+
+	return cb
+}
+
+func (cb *collectorBuilder) TrimRight(cut string) *collectorBuilder {
+	cb.params.trim.right = cut
 
 	return cb
 }

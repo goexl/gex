@@ -16,6 +16,7 @@ func newStringsCollector(strings *[]string, params *collectorParams) *stringsCol
 
 func (sc *stringsCollector) Collect(line string, stream string) (err error) {
 	if "" == sc.params.stream || stream == sc.params.stream {
+		line = sc.params.process(line)
 		*sc.strings = append(*sc.strings, line)
 	}
 
