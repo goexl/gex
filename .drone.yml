@@ -23,6 +23,8 @@ steps:
     settings:
       compress:
         enabled: false
+      test:
+        enabled: false
 
   - name: 改变
     image: ccr.ccs.tencentyun.com/dronestock/changelog
