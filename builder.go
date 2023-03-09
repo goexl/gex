@@ -2,6 +2,7 @@ package gex
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/args"
@@ -67,12 +68,18 @@ func (b *Builder) Charset(charset string) *Builder {
 	return b
 }
 
+func (b *Builder) Echo() *Builder {
+	b.params.echo = true
+
+	return b
+}
+
 func (b *Builder) Checker() *checkerBuilder {
-	return newCheckerBuilder(b)
+	return newCheckerBuilder(operatorAnd, b)
 }
 
 func (b *Builder) Check(checker checker) *Builder {
-	// b.params.checker=
+	b.params.checks = append(b.params.checks, newCheck(operatorAnd, checker))
 
 	return b
 }
@@ -82,7 +89,7 @@ func (b *Builder) Collector() *collectorBuilder {
 }
 
 func (b *Builder) Collect(collector collector) *Builder {
-	b.params.collectors[collector.Name()] = collector
+	b.params.collectors[fmt.Sprintf(point, collector)] = collector
 
 	return b
 }
@@ -101,4 +108,8 @@ func (b *Builder) Notify(notifier notifier) *Builder {
 	b.params.notifiers = append(b.params.notifiers, notifier)
 
 	return b
+}
+
+func (b *Builder) Build() *command {
+	return newCommand(b.params)
 }

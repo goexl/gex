@@ -2,6 +2,7 @@ package gex
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -31,12 +32,12 @@ func (c *command) Exec() (code int, err error) {
 	// 当出错时，打印到控制台
 	if c.params.pwe {
 		output := ""
-		c.params.collectors[keyPwe] = newStringCollector(&output, c.params)
+		c.params.collectors[pwe] = newTerminalCollector(&output)
 		defer c.cleanup(&output, &code, &err)
 	}
 
 	// 通知
-	defer c.notify(c.params, &code, err)
+	defer c.notify(&code, err)
 
 	// 将所有的收集器加入到通知器中
 	for _, _collector := range c.params.collectors {
@@ -75,7 +76,7 @@ func (c *command) make() {
 	}
 
 	// 配置运行时目录
-	if `` != c.params.dir {
+	if "" != c.params.dir {
 		c.cmd.Dir = c.params.dir
 	}
 
@@ -96,7 +97,7 @@ func (c *command) io() (err error) {
 	if sop, soe := c.cmd.StdoutPipe(); nil != soe {
 		err = soe
 	} else {
-		go c.read(sop, keyStdout, c.params)
+		go c.read(sop, stdout)
 	}
 	if nil != err {
 		return
@@ -106,13 +107,13 @@ func (c *command) io() (err error) {
 	if sep, see := c.cmd.StderrPipe(); nil != see {
 		err = see
 	} else {
-		go c.read(sep, keyStderr, c.params)
+		go c.read(sep, stderr)
 	}
 	if nil != err {
 		return
 	}
 
-	if nil != c.params.checker {
+	if nil != c.params.checks {
 		c.checker = new(guc.WaitGroup)
 		// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
 		c.checker.Add(1)
@@ -122,13 +123,20 @@ func (c *command) io() (err error) {
 }
 
 func (c *command) run() (code int, err error) {
+	if c.params.echo {
+		fmt.Print(c.params.name)
+		fmt.Print(space)
+		fmt.Print(c.params.args.Cli())
+		fmt.Println()
+	}
+
 	// 执行命令
 	if err = c.cmd.Start(); nil != err {
 		return
 	}
 
 	// 如果有检查器，等待检查器结束
-	if nil != c.params.checker {
+	if nil != c.params.checks {
 		c.checker.Wait()
 	}
 
@@ -164,24 +172,21 @@ func (c *command) cleanup(output *string, code *int, err *error) {
 	}
 }
 
-func (c *command) notify(params *params, code *int, err error) {
-	for _, _notifier := range params.notifiers {
+func (c *command) notify(code *int, err error) {
+	for _, _notifier := range c.params.notifiers {
 		_notifier.Notify(*code, err)
 	}
 }
 
-func (c *command) read(pipe io.ReadCloser, stream string, params *params) {
+func (c *command) read(pipe io.ReadCloser, stream string) {
 	done := false
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(c.enter)
 	for nil == err {
-		c.line(line, stream, params)
-
-		if nil != params.checker {
-			if checked, _ := params.checker.Check(line); checked && !done {
-				c.checker.Done()
-				done = true
-			}
+		c.line(line, stream)
+		if checked, _ := c.params.check(line); checked && !done {
+			c.checker.Done()
+			done = true
 		}
 		line, err = reader.ReadString(c.enter)
 	}
@@ -191,14 +196,19 @@ func (c *command) read(pipe io.ReadCloser, stream string, params *params) {
 	}
 }
 
-func (c *command) line(line string, stream string, params *params) {
+func (c *command) line(line string, stream string) {
+	// 如果需要回显，不使用日志输出，使用最原始的打包语句
+	if c.params.echo {
+		fmt.Println(line)
+	}
+
 	// 收集器
-	for _, _collector := range params.collectors {
+	for _, _collector := range c.params.collectors {
 		_ = _collector.Collect(line, stream)
 	}
 
 	// 计数器
-	for _, _counter := range params.counters {
+	for _, _counter := range c.params.counters {
 		_ = _counter.Count(line, stream)
 	}
 }

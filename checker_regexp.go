@@ -11,10 +11,10 @@ type checkerRegexp struct {
 	all    strings.Builder
 }
 
-func newRegexpChecker(	regexp string,params *checkerParams) *checkerRegexp {
+func newRegexpChecker(regexp string, params *checkerParams) *checkerRegexp {
 	return &checkerRegexp{
-regexp: regexp,
-params: params,
+		regexp: regexp,
+		params: params,
 	}
 }
 

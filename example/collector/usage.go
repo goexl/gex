@@ -1,9 +1,9 @@
 package collector
 
 import (
-	`fmt`
+	"fmt"
 
-	`github.com/goexl/gex`
+	"github.com/goexl/gex"
 )
 
 var _ = usage

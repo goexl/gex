@@ -22,8 +22,4 @@ func (sc *stringsCollector) Collect(line string, stream string) (err error) {
 	return
 }
 
-func (sc *stringsCollector) Name() string {
-	return "strings"
-}
-
 func (sc *stringsCollector) Notify(_ int, _ error) {}

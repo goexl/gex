@@ -8,12 +8,12 @@ type checkerEqual struct {
 	equal string
 
 	params *checkerParams
-	all     strings.Builder
+	all    strings.Builder
 }
 
-func newEqualChecker(equal string, params *checkerParams) *checkerEqual{
+func newEqualChecker(equal string, params *checkerParams) *checkerEqual {
 	return &checkerEqual{
-		equal: equal,
+		equal:  equal,
 		params: params,
 	}
 }

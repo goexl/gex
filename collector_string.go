@@ -1,6 +1,7 @@
 package gex
 
 import (
+	"math"
 	"strings"
 )
 
@@ -11,6 +12,12 @@ type stringCollector struct {
 	params *collectorParams
 
 	lines []string
+}
+
+func newTerminalCollector(output *string) *stringCollector {
+	return newStringCollector(output, &collectorParams{
+		max: math.MaxInt,
+	})
 }
 
 func newStringCollector(output *string, params *collectorParams) *stringCollector {
@@ -34,10 +41,6 @@ func (sc *stringCollector) Collect(line string, stream string) (err error) {
 	}
 
 	return
-}
-
-func (sc *stringCollector) Name() string {
-	return "string"
 }
 
 func (sc *stringCollector) Notify(_ int, _ error) {

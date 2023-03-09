@@ -1,7 +1,7 @@
 package pipe
 
 import (
-	`github.com/goexl/gex`
+	"github.com/goexl/gex"
 )
 
 var _ = envsDisableSystem

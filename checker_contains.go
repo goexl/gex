@@ -6,15 +6,15 @@ import (
 
 type checkerContains struct {
 	contains string
-	params *checkerParams
-	all    strings.Builder
+	params   *checkerParams
+	all      strings.Builder
 }
 
-func newContainsChecker(contains string,params *checkerParams) *checkerContains{
-return &checkerContains{
-contains: contains,
-params: params,
-}
+func newContainsChecker(contains string, params *checkerParams) *checkerContains {
+	return &checkerContains{
+		contains: contains,
+		params:   params,
+	}
 }
 
 func (cc *checkerContains) Check(line string) (checked bool, err error) {

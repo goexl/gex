@@ -1,10 +1,10 @@
 package pipe
 
 import (
-	`context`
-	`time`
+	"context"
+	"time"
 
-	`github.com/goexl/gex`
+	"github.com/goexl/gex"
 )
 
 var _ = cancel

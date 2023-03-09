@@ -8,7 +8,7 @@ type collectorParams struct {
 
 func newCollectorParams() *collectorParams {
 	return &collectorParams{
-		max:  1000,
+		max:  1024,
 		trim: newTrim(),
 	}
 }

@@ -1,5 +1,9 @@
 package gex
 
+import (
+	"fmt"
+)
+
 type collectorBuilder struct {
 	builder *Builder
 	params  *collectorParams
@@ -19,13 +23,13 @@ func (cb *collectorBuilder) Max(max int) *collectorBuilder {
 }
 
 func (cb *collectorBuilder) Stdout() *collectorBuilder {
-	cb.params.stream = keyStdout
+	cb.params.stream = stdout
 
 	return cb
 }
 
 func (cb *collectorBuilder) Stderr() *collectorBuilder {
-	cb.params.stream = keyStderr
+	cb.params.stream = stderr
 
 	return cb
 }
@@ -49,15 +53,15 @@ func (cb *collectorBuilder) TrimRight() *collectorBuilder {
 }
 
 func (cb *collectorBuilder) Strings(strings *[]string) *Builder {
-	collector := newStringsCollector(strings, cb.params)
-	cb.builder.params.collectors[collector.Name()] = collector
-
-	return cb.builder
+	return cb.put(newStringsCollector(strings, cb.params))
 }
 
 func (cb *collectorBuilder) String(strings *string) *Builder {
-	collector := newStringCollector(strings, cb.params)
-	cb.builder.params.collectors[collector.Name()] = collector
+	return cb.put(newStringCollector(strings, cb.params))
+}
+
+func (cb *collectorBuilder) put(collector collector) *Builder {
+	cb.builder.params.collectors[fmt.Sprintf(point, collector)] = collector
 
 	return cb.builder
 }

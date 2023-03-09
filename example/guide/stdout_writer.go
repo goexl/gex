@@ -1,9 +1,9 @@
 package guide
 
 import (
-	`os`
+	"os"
 
-	`github.com/goexl/gex`
+	"github.com/goexl/gex"
 )
 
 var _ = stdoutWriter

@@ -1,13 +1,12 @@
 package gex
 
 const (
-	keyTerminal = "terminal"
-	keyStdout   = "stdout"
-	keyStderr   = "stderr"
-	keyPwe      = "pwe"
+	stdout = "stdout"
+	stderr = "stderr"
+	pwe    = "pwe"
 
-	equal         = "="
-	empty         = ""
-	envCount      = 2
-	defaultCodeOk = 0
+	equal = "="
+	empty = ""
+	space = " "
+	point = "%p"
 )

@@ -1,7 +1,7 @@
 package main
 
 import (
-	`github.com/goexl/gex`
+	"github.com/goexl/gex"
 )
 
 func main() {

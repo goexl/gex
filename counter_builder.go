@@ -13,13 +13,13 @@ func newCounterBuilder(builder *Builder) *counterBuilder {
 }
 
 func (cb *counterBuilder) Stdout() *counterBuilder {
-	cb.params.stream = keyStdout
+	cb.params.stream = stdout
 
 	return cb
 }
 
 func (cb *counterBuilder) Stderr() *counterBuilder {
-	cb.params.stream = keyStderr
+	cb.params.stream = stderr
 
 	return cb
 }

@@ -1,7 +1,7 @@
 package checker
 
 import (
-	`github.com/goexl/gex`
+	"github.com/goexl/gex"
 )
 
 var _ = contains

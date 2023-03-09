@@ -1,14 +1,16 @@
 package gex
 
 type checkerBuilder struct {
-	params  *checkerParams
-	builder *Builder
+	operator operator
+	params   *checkerParams
+	builder  *Builder
 }
 
-func newCheckerBuilder(builder *Builder) *checkerBuilder {
+func newCheckerBuilder(operator operator, builder *Builder) *checkerBuilder {
 	return &checkerBuilder{
-		params:  newCheckerParams(),
-		builder: builder,
+		operator: operator,
+		params:   newCheckerParams(),
+		builder:  builder,
 	}
 }
 
@@ -18,30 +20,30 @@ func (cb *checkerBuilder) Cached() *checkerBuilder {
 	return cb
 }
 
-func (cb *checkerBuilder) Contains(contains string) *checkerBuilder {
-	cb.builder.params.checker = newContainsChecker(contains, cb.params)
+func (cb *checkerBuilder) Contains(contains string) *Builder {
+	check := newCheck(cb.operator, newContainsChecker(contains, cb.params))
+	cb.builder.params.checks = append(cb.builder.params.checks, check)
 
-	return cb
+	return cb.builder
 }
 
-func (cb *checkerBuilder) Equal(equal string) *checkerBuilder {
-	cb.builder.params.checker = newEqualChecker(equal, cb.params)
+func (cb *checkerBuilder) Equal(equal string) *Builder {
+	check := newCheck(cb.operator, newEqualChecker(equal, cb.params))
+	cb.builder.params.checks = append(cb.builder.params.checks, check)
 
-	return cb
+	return cb.builder
 }
 
-func (cb *checkerBuilder) Filepath(pattern string) *checkerBuilder {
-	cb.builder.params.checker = newFilepathChecker(pattern, cb.params)
+func (cb *checkerBuilder) Filepath(pattern string) *Builder {
+	check := newCheck(cb.operator, newFilepathChecker(pattern, cb.params))
+	cb.builder.params.checks = append(cb.builder.params.checks, check)
 
-	return cb
+	return cb.builder
 }
 
-func (cb *checkerBuilder) Regexp(regexp string) *checkerBuilder {
-	cb.builder.params.checker = newRegexpChecker(regexp, cb.params)
+func (cb *checkerBuilder) Regexp(regexp string) *Builder {
+	check := newCheck(cb.operator, newRegexpChecker(regexp, cb.params))
+	cb.builder.params.checks = append(cb.builder.params.checks, check)
 
-	return cb
-}
-
-func (cb *checkerBuilder) Build() *Builder {
 	return cb.builder
 }

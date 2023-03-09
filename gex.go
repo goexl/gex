@@ -1,12 +1,8 @@
 package gex
 
-// Exec 执行外部命令
-func Exec(command string, opts ...option) (code int, err error) {
-	var cmd *command
-	if cmd, err = newCommand(command, opts...); nil != err {
-		return
-	}
-	code, err = cmd.Exec()
+var _ = New
 
-	return
+// New 合建命令
+func New(command string) *Builder {
+	return newBuilder(command)
 }
