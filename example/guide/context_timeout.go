@@ -13,5 +13,5 @@ func timeout() (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	return gex.Exec(`redis`, gex.Context(ctx))
+	return gex.New("redis").Context(ctx).Build().Exec()
 }

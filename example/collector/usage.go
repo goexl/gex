@@ -14,17 +14,12 @@ func newCollector() *collector {
 	return new(collector)
 }
 
-func (c *collector) Collect(line string, ot gex.OutputType) (err error) {
-	switch ot {
-	case gex.OutputTypeStderr:
-		fmt.Println(line)
-	case gex.OutputTypeStdout:
-		fmt.Println(line)
-	}
+func (c *collector) Collect(line string, stream string) (err error) {
+	fmt.Println(line)
 
 	return
 }
 
 func usage() (int, error) {
-	return gex.Exec(`redis`, gex.Collector(newCollector()))
+	return gex.New("redis").Collect(newCollector()).Build().Exec()
 }

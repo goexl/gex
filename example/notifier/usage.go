@@ -19,5 +19,5 @@ func (c *notifier) Notify(code int, err error) {
 }
 
 func usage() (int, error) {
-	return gex.Exec(`redis`, gex.Notifier(newNotifier()))
+	return gex.New("redis").Notify(newNotifier()).Build().Exec()
 }

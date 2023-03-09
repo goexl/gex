@@ -7,5 +7,5 @@ import (
 var _ = dir
 
 func dir() (int, error) {
-	return gex.Exec(`redis`, gex.Dir(`/opt/`))
+	return gex.New("redis").Dir("/opt/").Build().Exec()
 }

@@ -7,5 +7,5 @@ import (
 var _ = contains
 
 func contains() (int, error) {
-	return gex.Exec(`github`, gex.ContainsChecker(`FastGithub启动完成`))
+	return gex.New("github").Checker().Contains("FastGithub启动完成").Build().Exec()
 }

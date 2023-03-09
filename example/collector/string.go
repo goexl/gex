@@ -7,8 +7,8 @@ import (
 var _ = str
 
 func str() (code int, err error) {
-	output := ``
-	code, err = gex.Exec(`redis`, gex.StringCollector(&output))
+	output := ""
+	code, err = gex.New("redis").Collector().String(&output).Build().Exec()
 
 	return
 }

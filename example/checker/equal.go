@@ -7,5 +7,5 @@ import (
 var _ = equal
 
 func equal() (int, error) {
-	return gex.Exec(`github`, gex.EqualChecker(`FastGithub启动完成`))
+	return gex.New("github").Checker().Equal("FastGithub启动完成").Build().Exec()
 }

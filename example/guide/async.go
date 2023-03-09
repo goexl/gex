@@ -7,5 +7,5 @@ import (
 var _ = async
 
 func async() (int, error) {
-	return gex.Exec(`redis`, gex.Async())
+	return gex.New("redis").Async().Build().Exec()
 }

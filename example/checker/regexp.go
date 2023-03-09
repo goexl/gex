@@ -7,5 +7,5 @@ import (
 var _ = regexp
 
 func regexp() (int, error) {
-	return gex.Exec(`github`, gex.RegexpChecker(`FastGithub*`))
+	return gex.New("github").Checker().Regexp("FastGithub*").Build().Exec()
 }

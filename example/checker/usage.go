@@ -13,11 +13,11 @@ func newChecker() *checker {
 }
 
 func (c *checker) Check(line string) (checked bool, err error) {
-	checked = `1` == line
+	checked = "1" == line
 
 	return
 }
 
 func usage() (int, error) {
-	return gex.Exec(`github`, gex.Checker(newChecker()))
+	return gex.New("github").Check(newChecker()).Build().Exec()
 }
