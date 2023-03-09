@@ -7,5 +7,5 @@ import (
 var _ = pweEnable
 
 func pweEnable() (int, error) {
-	return gex.Exec(`redis`, gex.Pwe())
+	return gex.New("redis").Pwe().Build().Exec()
 }
