@@ -1,40 +1,45 @@
 package gex
 
+import (
+	"strings"
+)
+
 var _ collector = (*stringCollector)(nil)
 
 type stringCollector struct {
-	string  *string
-	options *collectorOptions
+	string *string
+	params *collectorParams
+
+	lines []string
 }
 
-func newStringCollector(output *string, max int) *stringCollector {
+func newStringCollector(output *string, params *collectorParams) *stringCollector {
 	return &stringCollector{
 		string: output,
-		options: &collectorOptions{
-			typ:  OutputTypeAny,
-			mode: CollectorModeCache,
-			max:  max,
-		},
+		params: params,
+
+		lines: make([]string, 0, params.max),
 	}
 }
 
-func (s *stringCollector) Collect(line string, ot OutputType) (err error) {
-	if OutputTypeAny != s.options.typ && ot != s.options.typ {
+func (sc *stringCollector) Collect(line string, stream string) (err error) {
+	if "" != sc.params.stream && stream != sc.params.stream {
 		return
 	}
 
-	switch s.options.mode {
-	case CollectorModeDirect:
-		*s.string = line
-	default:
-		s.options.write(line)
+	sc.lines = append(sc.lines, line)
+	current := len(sc.lines)
+	if current > sc.params.max {
+		sc.lines = sc.lines[current-sc.params.max:]
 	}
 
 	return
 }
 
-func (s *stringCollector) Notify(_ int, _ error) {
-	if CollectorModeCache == s.options.mode {
-		*s.string = s.options.string()
-	}
+func (sc *stringCollector) Name() string {
+	return "string"
+}
+
+func (sc *stringCollector) Notify(_ int, _ error) {
+	*sc.string = strings.Join(sc.lines, empty)
 }

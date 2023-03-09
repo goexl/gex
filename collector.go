@@ -1,5 +1,7 @@
 package gex
 
 type collector interface {
-	Collect(line string, ot OutputType) (err error)
+	Collect(line string, stream string) (err error)
+
+	Name() string
 }

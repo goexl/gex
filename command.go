@@ -2,63 +2,46 @@ package gex
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"os"
 	"os/exec"
-	"sync"
 	"syscall"
 
 	"github.com/goexl/exc"
 	"github.com/goexl/gox/field"
+	"github.com/goexl/guc"
 )
 
-const enterChar = '\n'
-
-var mutex sync.Mutex
-
-type _command struct {
-	name    string
-	options *options
+type command struct {
+	params *params
 
 	cmd     *exec.Cmd
-	checker *waitGroup
+	checker *guc.WaitGroup
+	enter   byte
 }
 
-func newCommand(name string, opts ...option) (cmd *_command, err error) {
-	mutex.Lock()
-	defer mutex.Unlock()
-
-	_options := defaultOptions()
-	for _, opt := range opts {
-		if err = opt.apply(_options); nil != err {
-			return
-		}
+func newCommand(params *params) *command {
+	return &command{
+		params: params,
+		enter:  '\n',
 	}
-
-	cmd = &_command{
-		name:    name,
-		options: _options,
-	}
-
-	return
 }
 
-func (c *_command) Exec() (code int, err error) {
+func (c *command) Exec() (code int, err error) {
 	// 当出错时，打印到控制台
-	if c.options.pwe {
+	if c.params.pwe {
 		output := ""
-		c.options.collectors[keyPwe] = newStringCollector(&output, c.options.max)
-		defer c.errorHandler(&output, &code, &err, c.options)
+		c.params.collectors[keyPwe] = newStringCollector(&output, c.params)
+		defer c.cleanup(&output, &code, &err)
 	}
 
 	// 通知
-	defer c.notify(c.options, &code, err)
+	defer c.notify(c.params, &code, err)
 
 	// 将所有的收集器加入到通知器中
-	for _, _collector := range c.options.collectors {
+	for _, _collector := range c.params.collectors {
 		if _notifier, ok := _collector.(notifier); ok {
-			c.options.notifiers = append(c.options.notifiers, _notifier)
+			c.params.notifiers = append(c.params.notifiers, _notifier)
 		}
 	}
 
@@ -68,7 +51,7 @@ func (c *_command) Exec() (code int, err error) {
 	return
 }
 
-func (c *_command) exec() (code int, err error) {
+func (c *command) exec() (code int, err error) {
 	// 创建命令
 	c.make()
 	// 处理输入/输出
@@ -81,85 +64,88 @@ func (c *_command) exec() (code int, err error) {
 	return
 }
 
-func (c *_command) make() {
-	if nil == c.options.context {
+func (c *command) make() {
+	args := c.params.args.String()
+	if nil == c.params.context {
 		// nolint: gosec
-		c.cmd = exec.Command(c.name, c.options.args...)
+		c.cmd = exec.Command(c.params.name, args...)
 	} else {
 		// nolint: gosec
-		c.cmd = exec.CommandContext(c.options.context, c.name, c.options.args...)
+		c.cmd = exec.CommandContext(c.params.context, c.params.name, args...)
 	}
 
 	// 配置运行时目录
-	if `` != c.options.dir {
-		c.cmd.Dir = c.options.dir
+	if `` != c.params.dir {
+		c.cmd.Dir = c.params.dir
 	}
 
 	// 配置运行时的环境变量
-	if c.options.system.envs {
+	if c.params.system {
 		c.cmd.Env = os.Environ()
 	}
-	for _, _env := range c.options.envs {
-		c.cmd.Env = append(c.cmd.Env, fmt.Sprintf(`%s=%s`, _env.key, _env.value))
-	}
+	c.cmd.Env = append(c.cmd.Env, c.params.envs...)
 }
 
-func (c *_command) io() (err error) {
+func (c *command) io() (err error) {
 	// 设置输入流
-	if nil != c.options.stdin {
-		c.cmd.Stdin = c.options.stdin
+	if nil != c.params.stdin {
+		c.cmd.Stdin = c.params.stdin
 	}
 
-	// 找到输出流
-	var stdout io.ReadCloser
-	if stdout, err = c.cmd.StdoutPipe(); nil != err {
+	// 读取输出流数据
+	if sop, soe := c.cmd.StdoutPipe(); nil != soe {
+		err = soe
+	} else {
+		go c.read(sop, keyStdout, c.params)
+	}
+	if nil != err {
 		return
 	}
 
-	// 找到错误流
-	var stderr io.ReadCloser
-	if stderr, err = c.cmd.StderrPipe(); nil != err {
+	// 读取错误流数据
+	if sep, see := c.cmd.StderrPipe(); nil != see {
+		err = see
+	} else {
+		go c.read(sep, keyStderr, c.params)
+	}
+	if nil != err {
 		return
 	}
 
-	// 处理管理
-	if err = c.pipe(); nil != err {
-		return
-	}
-
-	if nil != c.options.checker {
-		c.checker = new(waitGroup)
+	if nil != c.params.checker {
+		c.checker = new(guc.WaitGroup)
 		// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
 		c.checker.Add(1)
 	}
 
-	// 读取输出流数据
-	go c.read(stdout, OutputTypeStdout, c.options)
-	// 读取错误流数据
-	go c.read(stderr, OutputTypeStderr, c.options)
-
 	return
 }
 
-func (c *_command) run() (code int, err error) {
+func (c *command) run() (code int, err error) {
 	// 执行命令
 	if err = c.cmd.Start(); nil != err {
 		return
 	}
 
 	// 如果有检查器，等待检查器结束
-	if nil != c.options.checker {
+	if nil != c.params.checker {
 		c.checker.Wait()
 	}
 
 	// 如果是同步模式，等待命令执行完成
-	if !c.options.async {
-		// 取得退出代码
-		if err = c.cmd.Wait(); err != nil {
-			if exitErr, ok := err.(*exec.ExitError); ok {
-				if status, statsOk := exitErr.Sys().(syscall.WaitStatus); statsOk {
-					code = status.ExitStatus()
-				}
+	if !c.params.async {
+		code, err = c.wait()
+	}
+
+	return
+}
+
+func (c *command) wait() (code int, err error) {
+	// 取得退出代码
+	if err = c.cmd.Wait(); err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			if status, statsOk := exitErr.Sys().(syscall.WaitStatus); statsOk {
+				code = status.ExitStatus()
 			}
 		}
 	}
@@ -167,80 +153,37 @@ func (c *_command) run() (code int, err error) {
 	return
 }
 
-func (c *_command) pipe() (err error) {
-	pipes := c.options.pipes
-	size := len(pipes)
-	if 0 == size {
-		return
-	}
-
-	commands := make([]*exec.Cmd, 0, size)
-	// 创建管道的所有命令
-	for index := 0; index < size; index++ {
-		commands = append(commands, pipes[index].cmd())
-	}
-
-	// 依次将管理输入/输出连接起来
-	for index := 0; index < size; index++ {
-		if index == size-1 {
-			c.cmd.Stdin, err = commands[index].StdoutPipe()
-		} else {
-			commands[index+1].Stdin, err = commands[index].StdoutPipe()
-		}
-
-		if nil != err {
-			return
-		}
-	}
-
-	// 第一个命令等待结束，其它命令异步执行
-	for index := 0; index < size; index++ {
-		cmd := commands[index]
-		if 0 == index {
-			err = cmd.Run()
-		} else {
-			err = cmd.Start()
-		}
-
-		if nil != err {
-			return
-		}
-	}
-
-	return
-}
-
-func (c *_command) errorHandler(output *string, code *int, err *error, options *options) {
+func (c *command) cleanup(output *string, code *int, err *error) {
 	// 检查状态码
-	if options.code.ok != *code {
-		*err = exc.NewException(*code, exceptionCommandExitError, field.New("error", *output))
+	if 0 != *code {
+		*err = exc.NewException(*code, "程序异常退出", field.New("error", *output))
 	}
 
-	if nil != err && nil != *err && `` != *output {
+	if nil != err && nil != *err && "" != *output {
 		_, _ = os.Stderr.WriteString(*output)
 	}
 }
 
-func (c *_command) notify(options *options, code *int, err error) {
-	for _, _notifier := range options.notifiers {
+func (c *command) notify(params *params, code *int, err error) {
+	for _, _notifier := range params.notifiers {
 		_notifier.Notify(*code, err)
 	}
 }
 
-func (c *_command) read(pipe io.ReadCloser, typ OutputType, options *options) {
+func (c *command) read(pipe io.ReadCloser, stream string, params *params) {
 	done := false
 	reader := bufio.NewReader(pipe)
-	line, err := reader.ReadString(enterChar)
+	line, err := reader.ReadString(c.enter)
 	for nil == err {
-		c.line(line, typ, options)
+		c.line(line, stream, params)
 
-		if nil != options.checker {
-			if checked, _ := options.checker.Check(line); checked && !done {
+		if nil != params.checker {
+			if checked, _ := params.checker.Check(line); checked && !done {
 				c.checker.Done()
 				done = true
 			}
 		}
-		line, err = reader.ReadString(enterChar)
+		line, err = reader.ReadString(c.enter)
 	}
 
 	if nil != c.checker {
@@ -248,14 +191,14 @@ func (c *_command) read(pipe io.ReadCloser, typ OutputType, options *options) {
 	}
 }
 
-func (c *_command) line(line string, typ OutputType, options *options) {
+func (c *command) line(line string, stream string, params *params) {
 	// 收集器
-	for _, _collector := range options.collectors {
-		_ = _collector.Collect(line, typ)
+	for _, _collector := range params.collectors {
+		_ = _collector.Collect(line, stream)
 	}
 
 	// 计数器
-	for _, _counter := range options.counters {
-		_ = _counter.Count(line, typ)
+	for _, _counter := range params.counters {
+		_ = _counter.Count(line, stream)
 	}
 }

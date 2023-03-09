@@ -4,16 +4,26 @@ var _ collector = (*stringsCollector)(nil)
 
 type stringsCollector struct {
 	strings *[]string
-	options *collectorOptions
+	params  *collectorParams
 }
 
-func (s *stringsCollector) Collect(line string, ot OutputType) (err error) {
-	if OutputTypeAny != s.options.typ && ot != s.options.typ {
-		return
+func newStringsCollector(strings *[]string, params *collectorParams) *stringsCollector {
+	return &stringsCollector{
+		strings: strings,
+		params:  params,
 	}
-	*s.strings = append(*s.strings, line)
+}
+
+func (sc *stringsCollector) Collect(line string, stream string) (err error) {
+	if "" == sc.params.stream || stream == sc.params.stream {
+		*sc.strings = append(*sc.strings, line)
+	}
 
 	return
 }
 
-func (s *stringsCollector) Notify(_ int, _ error) {}
+func (sc *stringsCollector) Name() string {
+	return "strings"
+}
+
+func (sc *stringsCollector) Notify(_ int, _ error) {}

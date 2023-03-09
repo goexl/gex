@@ -1,22 +1,21 @@
 package gex
 
-type lineCounter struct {
-	total   *int64
-	options *counterOptions
+type counterLines struct {
+	total  *int
+	params *counterParams
 }
 
-func newLineCounter(total *int64, options *counterOptions) *lineCounter {
-	return &lineCounter{
-		total:   total,
-		options: options,
+func newLineCounter(total *int, params *counterParams) *counterLines {
+	return &counterLines{
+		total:  total,
+		params: params,
 	}
 }
 
-func (c *lineCounter) Count(line string, ot OutputType) (err error) {
-	if `` == line || OutputTypeAny != c.options.typ && ot != c.options.typ {
-		return
+func (cl *counterLines) Count(line string, stream string) (err error) {
+	if "" != line && ("" == cl.params.stream || stream == cl.params.stream) {
+		*cl.total++
 	}
-	*c.total++
 
 	return
 }

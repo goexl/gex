@@ -4,21 +4,19 @@ import (
 	"context"
 	"io"
 
-	"github.com/goexl/gox"
+	"github.com/goexl/gox/args"
 )
 
 type params struct {
 	context context.Context
-	args    *gox.Args
+	name    string
+	args    *args.Args
 	dir     string
 	envs    []string
-	system  *system
-	code    *code
+	system  bool
 
 	async bool
-
 	stdin io.Reader
-	pipes []*pipe
 
 	checker    checker
 	collectors map[string]collector
@@ -27,25 +25,16 @@ type params struct {
 	notifiers []notifier
 	counters  []counter
 
-	pwe bool
 	max int
 }
 
-func newParams() *params {
+func newParams(name string) *params {
 	return &params{
+		name: name,
 		collectors: map[string]collector{
 			keyTerminal: newTerminalCollector(),
 		},
-
-		system: &system{
-			envs: true,
-		},
-		code: &code{
-			ok: defaultCodeOk,
-		},
 		async: false,
-
-		pwe: true,
-		max: 100,
+		max:   100,
 	}
 }

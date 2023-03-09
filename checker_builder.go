@@ -1,55 +1,47 @@
 package gex
 
 type checkerBuilder struct {
-	params *checkerParams
-	builder *builder
+	params  *checkerParams
+	builder *Builder
 }
 
-func newCheckerBuilder(builder *builder) *checkerBuilder {
+func newCheckerBuilder(builder *Builder) *checkerBuilder {
 	return &checkerBuilder{
-		params: newCheckerParams(),
+		params:  newCheckerParams(),
 		builder: builder,
 	}
 }
 
-func (cb *checkerBuilder) Cached() *checkerBuilder{
-	cb.params.cache=true
+func (cb *checkerBuilder) Cached() *checkerBuilder {
+	cb.params.cache = true
 
 	return cb
 }
 
-func (cb *checkerBuilder) ContainsAll(items ...string) *builder{
-	cb.builder.params.checker = newContainsAllChecker(cb.params, items...)
+func (cb *checkerBuilder) Contains(contains string) *checkerBuilder {
+	cb.builder.params.checker = newContainsChecker(contains, cb.params)
 
-	return cb.builder
+	return cb
 }
 
-func (cb *checkerBuilder) ContainsAny(items ...string) *builder{
-	cb.builder.params.checker = newContainsAnyChecker(cb.params, items...)
+func (cb *checkerBuilder) Equal(equal string) *checkerBuilder {
+	cb.builder.params.checker = newEqualChecker(equal, cb.params)
 
-	return cb.builder
+	return cb
 }
 
-func (cb *checkerBuilder) Contains(contains string) *builder{
-	cb.builder.params.checker = newContainsChecker(contains,cb.params)
+func (cb *checkerBuilder) Filepath(pattern string) *checkerBuilder {
+	cb.builder.params.checker = newFilepathChecker(pattern, cb.params)
 
-	return cb.builder
+	return cb
 }
 
-func (cb *checkerBuilder) Equal(equal string) *builder{
-	cb.builder.params.checker = newEqualChecker(equal,cb.params)
+func (cb *checkerBuilder) Regexp(regexp string) *checkerBuilder {
+	cb.builder.params.checker = newRegexpChecker(regexp, cb.params)
 
-	return cb.builder
+	return cb
 }
 
-func (cb *checkerBuilder) Filepath(pattern string) *builder{
-	cb.builder.params.checker = newFilepathChecker(pattern,cb.params)
-
-	return cb.builder
-}
-
-func (cb *checkerBuilder) Regexp(regexp string) *builder{
-	cb.builder.params.checker = newRegexpChecker(regexp,cb.params)
-
+func (cb *checkerBuilder) Build() *Builder {
 	return cb.builder
 }
