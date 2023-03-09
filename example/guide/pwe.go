@@ -4,8 +4,8 @@ import (
 	"github.com/goexl/gex"
 )
 
-var _ = pweEnable
+var _ = pwe
 
-func pweEnable() (int, error) {
+func pwe() (int, error) {
 	return gex.New("redis").Pwe().Build().Exec()
 }
