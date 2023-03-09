@@ -28,7 +28,7 @@ func (t *trim) process(line string) (final string) {
 		final = strings.TrimRight(final, t.right)
 	}
 	if t.space {
-		strings.TrimSpace(final)
+		final = strings.TrimSpace(final)
 	}
 
 	return
