@@ -52,8 +52,8 @@ func (b *Builder) StringEnvironment(environments ...string) *Builder {
 	return b
 }
 
-func (b *Builder) System() *Builder {
-	b.params.system = true
+func (b *Builder) DisableSystemEnvironments() *Builder {
+	b.params.system = false
 
 	return b
 }

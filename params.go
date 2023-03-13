@@ -29,7 +29,9 @@ type params struct {
 
 func newParams(name string) *params {
 	return &params{
-		name:       name,
+		name:   name,
+		system: true,
+
 		async:      false,
 		checks:     make([]*check, 0),
 		collectors: make(map[string]collector),
