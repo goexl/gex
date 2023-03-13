@@ -8,12 +8,11 @@ import (
 )
 
 type params struct {
-	context      context.Context
-	name         string
-	args         *args.Args
-	dir          string
-	environments []string
-	system       bool
+	context     context.Context
+	name        string
+	args        *args.Args
+	dir         string
+	environment *environmentParams
 
 	async   bool
 	pwe     bool
@@ -29,8 +28,7 @@ type params struct {
 
 func newParams(name string) *params {
 	return &params{
-		name:   name,
-		system: true,
+		name: name,
 
 		async:      false,
 		checks:     make([]*check, 0),

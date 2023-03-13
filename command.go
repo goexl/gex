@@ -81,10 +81,12 @@ func (c *command) make() {
 	}
 
 	// 配置运行时的环境变量
-	if c.params.system {
-		c.cmd.Env = os.Environ()
+	if nil != c.params.environment {
+		if c.params.environment.system {
+			c.cmd.Env = os.Environ()
+		}
+		c.cmd.Env = append(c.cmd.Env, c.params.environment.environments...)
 	}
-	c.cmd.Env = append(c.cmd.Env, c.params.environments...)
 }
 
 func (c *command) io() (err error) {

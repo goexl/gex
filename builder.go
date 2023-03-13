@@ -38,24 +38,8 @@ func (b *Builder) Dir(dir string) *Builder {
 	return b
 }
 
-func (b *Builder) Environment(key string, value any) *Builder {
-	b.params.environments = append(b.params.environments, gox.StringBuilder(key, equal, value).String())
-
-	return b
-}
-
-func (b *Builder) StringEnvironment(environments ...string) *Builder {
-	for _, environment := range environments {
-		b.params.environments = append(b.params.environments, environment)
-	}
-
-	return b
-}
-
-func (b *Builder) DisableSystemEnvironments() *Builder {
-	b.params.system = false
-
-	return b
+func (b *Builder) Environment() *environmentBuilder {
+	return newEnvironmentBuilder(b)
 }
 
 func (b *Builder) Async() *Builder {
