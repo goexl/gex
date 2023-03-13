@@ -84,7 +84,7 @@ func (c *command) make() {
 	if c.params.system {
 		c.cmd.Env = os.Environ()
 	}
-	c.cmd.Env = append(c.cmd.Env, c.params.envs...)
+	c.cmd.Env = append(c.cmd.Env, c.params.environments...)
 }
 
 func (c *command) io() (err error) {

@@ -8,12 +8,12 @@ import (
 )
 
 type params struct {
-	context context.Context
-	name    string
-	args    *args.Args
-	dir     string
-	envs    []string
-	system  bool
+	context      context.Context
+	name         string
+	args         *args.Args
+	dir          string
+	environments []string
+	system       bool
 
 	async   bool
 	pwe     bool
