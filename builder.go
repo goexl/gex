@@ -66,8 +66,11 @@ func (b *Builder) Echo() *Builder {
 	return b
 }
 
-func (b *Builder) Checker() *checkerBuilder {
-	return newCheckerBuilder(operatorAnd, b)
+func (b *Builder) Checker() (builder *checkerBuilder) {
+	b.params.async = true
+	builder = newCheckerBuilder(operatorAnd, b)
+
+	return
 }
 
 func (b *Builder) Check(checker checker) *Builder {
