@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"syscall"
 
-	"github.com/goexl/exc"
+	"github.com/goexl/exception"
 	"github.com/goexl/gox/field"
 	"github.com/goexl/guc"
 )
@@ -166,7 +166,7 @@ func (c *command) wait() (code int, err error) {
 func (c *command) cleanup(output *string, code *int, err *error) {
 	// 检查状态码
 	if 0 != *code {
-		*err = exc.NewException(*code, "程序异常退出", field.New("error", *output))
+		*err = exception.New().Code(*code).Message("程序异常退出").Field(field.New("error", *output)).Build()
 	}
 
 	if nil != err && nil != *err && "" != *output {

@@ -1,9 +1,9 @@
 module github.com/goexl/gex
 
-go 1.19
+go 1.21
 
 require (
-	github.com/goexl/exc v0.0.5
-	github.com/goexl/gox v0.2.8
+	github.com/goexl/exception v0.0.1
+	github.com/goexl/gox v0.3.8
 	github.com/goexl/guc v0.0.7
 )
