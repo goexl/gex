@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/goexl/args"
 	"github.com/goexl/gox"
-	"github.com/goexl/gox/args"
 )
 
 // Builder 构建器
@@ -20,7 +20,7 @@ func newBuilder(name string) *Builder {
 	}
 }
 
-func (b *Builder) Args(args *args.Args) *Builder {
+func (b *Builder) Args(args *args.Arguments) *Builder {
 	b.params.args = args
 
 	return b

@@ -4,13 +4,13 @@ import (
 	"context"
 	"io"
 
-	"github.com/goexl/gox/args"
+	"github.com/goexl/args"
 )
 
 type params struct {
 	context     context.Context
 	name        string
-	args        *args.Args
+	args        *args.Arguments
 	dir         string
 	environment *environmentParams
 

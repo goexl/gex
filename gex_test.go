@@ -3,8 +3,8 @@ package gex_test
 import (
 	"testing"
 
+	"github.com/goexl/args"
 	"github.com/goexl/gex"
-	"github.com/goexl/gox/args"
 )
 
 func TestContains(t *testing.T) {
