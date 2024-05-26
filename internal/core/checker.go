@@ -1,5 +1,5 @@
-package gex
+package core
 
-type checker interface {
+type Checker interface {
 	Check(line string) (checked bool, err error)
 }

@@ -1,32 +1,34 @@
-package gex
+package collector
 
 import (
 	"regexp"
 	"strings"
+
+	"github.com/goexl/gex/internal/param"
 )
 
-type checkerRegexp struct {
+type Regexp struct {
 	regexp string
-	params *checkerParams
+	params *param.Checker
 	all    strings.Builder
 }
 
-func newRegexpChecker(regexp string, params *checkerParams) *checkerRegexp {
-	return &checkerRegexp{
+func NewRegexp(regexp string, params *param.Checker) *Regexp {
+	return &Regexp{
 		regexp: regexp,
 		params: params,
 	}
 }
 
-func (r *checkerRegexp) Check(line string) (checked bool, err error) {
-	if r.params.cache {
+func (r *Regexp) Check(line string) (checked bool, err error) {
+	if r.params.Cache {
 		r.all.WriteString(line)
 	}
 
 	if checked, err = regexp.MatchString(r.regexp, line); nil != err {
 		return
 	}
-	if !checked && r.params.cache {
+	if !checked && r.params.Cache {
 		checked, err = regexp.MatchString(r.regexp, r.all.String())
 	}
 

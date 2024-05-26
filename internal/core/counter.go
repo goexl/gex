@@ -1,5 +1,5 @@
-package gex
+package core
 
-type counter interface {
+type Counter interface {
 	Count(line string, steam string) error
 }

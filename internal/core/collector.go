@@ -1,5 +1,5 @@
-package gex
+package core
 
-type collector interface {
+type Collector interface {
 	Collect(line string, stream string) (err error)
 }

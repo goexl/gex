@@ -1,4 +1,4 @@
-package gex
+package core
 
 import (
 	"bufio"
@@ -9,30 +9,33 @@ import (
 	"syscall"
 
 	"github.com/goexl/exception"
+	"github.com/goexl/gex/internal/internal/collector"
+	"github.com/goexl/gex/internal/internal/constant"
+	"github.com/goexl/gex/internal/param"
 	"github.com/goexl/gox/field"
 	"github.com/goexl/guc"
 )
 
-type command struct {
-	params *params
+type Command struct {
+	params *param.Command
 
 	cmd    *exec.Cmd
 	waiter *guc.WaitGroup
 	enter  byte
 }
 
-func newCommand(params *params) *command {
-	return &command{
+func NewCommand(params *param.Command) *Command {
+	return &Command{
 		params: params,
 		enter:  '\n',
 	}
 }
 
-func (c *command) Exec() (code int, err error) {
+func (c *Command) Exec() (code int, err error) {
 	// 当出错时，打印到控制台
-	if !c.params.echo && c.params.pwe {
+	if !c.params.Echo && c.params.Pwe {
 		output := ""
-		c.params.collectors[pwe] = newTerminalCollector(&output)
+		c.params.Collectors[constant.Pwe] = collector.NewTerminal(&output)
 		defer c.cleanup(&output, &code, &err)
 	}
 
@@ -40,9 +43,9 @@ func (c *command) Exec() (code int, err error) {
 	defer c.notify(&code, err)
 
 	// 将所有的收集器加入到通知器中
-	for _, _collector := range c.params.collectors {
-		if _notifier, ok := _collector.(notifier); ok {
-			c.params.notifiers = append(c.params.notifiers, _notifier)
+	for _, _collector := range c.params.Collectors {
+		if _notifier, ok := _collector.(Notifier); ok {
+			c.params.Notifiers = append(c.params.Notifiers, _notifier)
 		}
 	}
 
@@ -52,7 +55,7 @@ func (c *command) Exec() (code int, err error) {
 	return
 }
 
-func (c *command) exec() (code int, err error) {
+func (c *Command) exec() (code int, err error) {
 	// 创建命令
 	c.make()
 	// 处理输入/输出
@@ -65,41 +68,41 @@ func (c *command) exec() (code int, err error) {
 	return
 }
 
-func (c *command) make() {
-	args := c.params.args.String()
-	if nil == c.params.context {
+func (c *Command) make() {
+	args := c.params.Arguments.String()
+	if nil == c.params.Context {
 		// nolint: gosec
-		c.cmd = exec.Command(c.params.name, args...)
+		c.cmd = exec.Command(c.params.Name, args...)
 	} else {
 		// nolint: gosec
-		c.cmd = exec.CommandContext(c.params.context, c.params.name, args...)
+		c.cmd = exec.CommandContext(c.params.Context, c.params.Name, args...)
 	}
 
 	// 配置运行时目录
-	if "" != c.params.dir {
-		c.cmd.Dir = c.params.dir
+	if "" != c.params.Directory {
+		c.cmd.Dir = c.params.Directory
 	}
 
 	// 配置运行时的环境变量
-	if nil != c.params.environment {
-		if c.params.environment.system {
+	if nil != c.params.Environment {
+		if c.params.Environment.System {
 			c.cmd.Env = os.Environ()
 		}
-		c.cmd.Env = append(c.cmd.Env, c.params.environment.environments...)
+		c.cmd.Env = append(c.cmd.Env, c.params.Environment.Environments...)
 	}
 }
 
-func (c *command) io() (err error) {
+func (c *Command) io() (err error) {
 	// 设置输入流
-	if nil != c.params.stdin {
-		c.cmd.Stdin = c.params.stdin
+	if nil != c.params.Stdin {
+		c.cmd.Stdin = c.params.Stdin
 	}
 
 	// 读取输出流数据
 	if sop, soe := c.cmd.StdoutPipe(); nil != soe {
 		err = soe
 	} else {
-		go c.read(sop, stdout)
+		go c.read(sop, constant.Stdout)
 	}
 	if nil != err {
 		return
@@ -109,13 +112,13 @@ func (c *command) io() (err error) {
 	if sep, see := c.cmd.StderrPipe(); nil != see {
 		err = see
 	} else {
-		go c.read(sep, stderr)
+		go c.read(sep, constant.Stderr)
 	}
 	if nil != err {
 		return
 	}
 
-	if nil != c.params.checks {
+	if nil != c.params.Checks {
 		c.waiter = new(guc.WaitGroup)
 		// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
 		c.waiter.Add(1)
@@ -124,11 +127,11 @@ func (c *command) io() (err error) {
 	return
 }
 
-func (c *command) run() (code int, err error) {
-	if c.params.echo {
-		fmt.Print(c.params.name)
-		fmt.Print(space)
-		fmt.Print(c.params.args.Cli())
+func (c *Command) run() (code int, err error) {
+	if c.params.Echo {
+		fmt.Print(c.params.Name)
+		fmt.Print(constant.Space)
+		fmt.Print(c.params.Arguments.Cli())
 		fmt.Println()
 	}
 
@@ -138,19 +141,19 @@ func (c *command) run() (code int, err error) {
 	}
 
 	// 如果有检查器，等待检查器结束
-	if nil != c.params.checks {
+	if nil != c.params.Checks {
 		c.waiter.Wait()
 	}
 
 	// 如果是同步模式，等待命令执行完成
-	if !c.params.async {
+	if !c.params.Async {
 		code, err = c.wait()
 	}
 
 	return
 }
 
-func (c *command) wait() (code int, err error) {
+func (c *Command) wait() (code int, err error) {
 	// 取得退出代码
 	if err = c.cmd.Wait(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
@@ -163,7 +166,7 @@ func (c *command) wait() (code int, err error) {
 	return
 }
 
-func (c *command) cleanup(output *string, code *int, err *error) {
+func (c *Command) cleanup(output *string, code *int, err *error) {
 	// 检查状态码
 	if 0 != *code {
 		*err = exception.New().Code(*code).Message("程序异常退出").Field(field.New("error", *output)).Build()
@@ -174,19 +177,19 @@ func (c *command) cleanup(output *string, code *int, err *error) {
 	}
 }
 
-func (c *command) notify(code *int, err error) {
-	for _, _notifier := range c.params.notifiers {
+func (c *Command) notify(code *int, err error) {
+	for _, _notifier := range c.params.Notifiers {
 		_notifier.Notify(*code, err)
 	}
 }
 
-func (c *command) read(pipe io.ReadCloser, stream string) {
+func (c *Command) read(pipe io.ReadCloser, stream string) {
 	done := false
 	reader := bufio.NewReader(pipe)
 	line, err := reader.ReadString(c.enter)
 	for nil == err {
 		c.line(line, stream)
-		if checked, _ := c.params.check(line); checked && !done {
+		if checked, _ := c.params.Check(line); checked && !done {
 			c.waiter.Done()
 			done = true
 		}
@@ -198,19 +201,19 @@ func (c *command) read(pipe io.ReadCloser, stream string) {
 	}
 }
 
-func (c *command) line(line string, stream string) {
+func (c *Command) line(line string, stream string) {
 	// 如果需要回显，不使用日志输出，使用最原始的打包语句
-	if c.params.echo {
+	if c.params.Echo {
 		fmt.Println(line)
 	}
 
 	// 收集器
-	for _, _collector := range c.params.collectors {
+	for _, _collector := range c.params.Collectors {
 		_ = _collector.Collect(line, stream)
 	}
 
 	// 计数器
-	for _, _counter := range c.params.counters {
+	for _, _counter := range c.params.Counters {
 		_ = _counter.Count(line, stream)
 	}
 }
