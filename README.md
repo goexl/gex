@@ -16,20 +16,20 @@ Golang exec extension library，Golang外部命令执行扩展库，有如下功
 - 环境变量
 - 管道
 - 检查器
-  - 字符串包含`Contains`
-  - 字符串全包含`ContainsAll`
-  - 字符串任何包含`ContainsAny`
-  - 字符串相等`Equal`
-  - 路径模式匹配`PathMatch`
-  - 正则匹配`Regexp`
+    - 字符串包含`Contains`
+    - 字符串全包含`ContainsAll`
+    - 字符串任何包含`ContainsAny`
+    - 字符串相等`Equal`
+    - 路径模式匹配`PathMatch`
+    - 正则匹配`Regexp`
 - 通知器
-  - 应用内方法通知`Func`
-  - 其它通知器，通过额外代码库实现，不增加`Gex`的复杂度
+    - 应用内方法通知`Func`
+    - 其它通知器，通过额外代码库实现，不增加`Gex`的复杂度
 - 收集器
-  - 字符串`String`
-  - 文件`File`
-  - 文件名`Filename`
-  - 写入者`Writer`
+    - 字符串`String`
+    - 文件`File`
+    - 文件名`Filename`
+    - 写入者`Writer`
 - 自动解决乱码
 
 ## 快速开始

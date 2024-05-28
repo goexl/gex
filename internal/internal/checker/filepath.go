@@ -9,11 +9,11 @@ import (
 
 type Filepath struct {
 	pattern string
-	params  *param.Checker
+	params  *param.Check
 	all     strings.Builder
 }
 
-func NewFilepath(pattern string, params *param.Checker) *Filepath {
+func NewFilepath(pattern string, params *param.Check) *Filepath {
 	return &Filepath{
 		pattern: pattern,
 		params:  params,

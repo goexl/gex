@@ -5,10 +5,10 @@ import (
 )
 
 type Environment struct {
-	gox.CannotCopy
-
 	Environments []string
 	System       bool
+
+	_ gox.CannotCopy
 }
 
 func NewEnvironment() *Environment {

@@ -5,20 +5,18 @@ import (
 )
 
 type Line struct {
-	total  *int
-	params *param.Counter
+	params *param.Line
 }
 
-func NewLine(total *int, params *param.Counter) *Line {
+func NewLine(params *param.Line) *Line {
 	return &Line{
-		total:  total,
 		params: params,
 	}
 }
 
 func (l *Line) Count(line string, stream string) (err error) {
 	if "" != line && ("" == l.params.Stream || stream == l.params.Stream) {
-		*l.total++
+		*l.params.Total++
 	}
 
 	return

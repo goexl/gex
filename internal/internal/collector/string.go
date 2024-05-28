@@ -3,8 +3,8 @@ package collector
 import (
 	"strings"
 
-	"github.com/goexl/gex/internal/core"
 	"github.com/goexl/gex/internal/internal/constant"
+	"github.com/goexl/gex/internal/internal/core"
 	"github.com/goexl/gex/internal/param"
 )
 
@@ -12,18 +12,18 @@ var _ core.Collector = (*String)(nil)
 
 type String struct {
 	string *string
-	params *param.Collector
+	params *param.Collect
 
 	lines []string
 }
 
 func NewTerminal(output *string) *String {
-	return NewString(output, &param.Collector{
+	return NewString(output, &param.Collect{
 		Max: 1024,
 	})
 }
 
-func NewString(output *string, params *param.Collector) *String {
+func NewString(output *string, params *param.Collect) *String {
 	return &String{
 		string: output,
 		params: params,

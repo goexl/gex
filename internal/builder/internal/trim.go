@@ -1,4 +1,4 @@
-package builder
+package internal
 
 import (
 	"github.com/goexl/gex/internal/param"
@@ -6,15 +6,15 @@ import (
 )
 
 type Trim struct {
-	gox.CannotCopy
-
-	builder *Collector
+	collect *Collect
 	params  *param.Trim
+
+	_ gox.CannotCopy
 }
 
-func NewTrim(builder *Collector) (trim *Trim) {
+func NewTrim(collect *Collect) (trim *Trim) {
 	return &Trim{
-		builder: builder,
+		collect: collect,
 		params:  param.NewTrim(),
 	}
 }
@@ -47,9 +47,9 @@ func (t *Trim) Right(right string) (trim *Trim) {
 	return
 }
 
-func (t *Trim) Build() (collector *Collector) {
-	t.builder.params.Trim = t.params
-	collector = t.builder
+func (t *Trim) Build() (collector *Collect) {
+	t.collect.params.Trim = t.params
+	collector = t.collect
 
 	return
 }

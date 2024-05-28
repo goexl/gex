@@ -8,11 +8,11 @@ import (
 
 type Contains struct {
 	contains string
-	params   *param.Checker
+	params   *param.Check
 	all      strings.Builder
 }
 
-func NewContains(contains string, params *param.Checker) *Contains {
+func NewContains(contains string, params *param.Check) *Contains {
 	return &Contains{
 		contains: contains,
 		params:   params,

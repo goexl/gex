@@ -8,7 +8,8 @@
 之所以要写这么一个插件是因为：天朝网络Github经常抽风。而这里面其它一个功能就是Github加速
 > Github加速使用的是[FastGithub](https://github.com/dotnetcore/FastGithub)
 
-当插件启动时，首先判断是否要启动`FastGithub`，如果需要启动，则调用FastGithub命令，等待FastGithub可以正常服务时执行拉/推代码的操作。 而判断FastGithub是否正常启动就是使用的`检查器`来完成
+当插件启动时，首先判断是否要启动`FastGithub`，如果需要启动，则调用FastGithub命令，等待FastGithub可以正常服务时执行拉/推代码的操作。
+而判断FastGithub是否正常启动就是使用的`检查器`来完成
 
 `Gex`内置了常见检查器，包括
 

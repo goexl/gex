@@ -1,4 +1,4 @@
-package collector
+package checker
 
 import (
 	"regexp"
@@ -9,11 +9,11 @@ import (
 
 type Regexp struct {
 	regexp string
-	params *param.Checker
+	params *param.Check
 	all    strings.Builder
 }
 
-func NewRegexp(regexp string, params *param.Checker) *Regexp {
+func NewRegexp(regexp string, params *param.Check) *Regexp {
 	return &Regexp{
 		regexp: regexp,
 		params: params,

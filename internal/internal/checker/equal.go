@@ -9,11 +9,11 @@ import (
 type Equal struct {
 	equal string
 
-	params *param.Checker
+	params *param.Check
 	all    strings.Builder
 }
 
-func NewEqual(equal string, params *param.Checker) *Equal {
+func NewEqual(equal string, params *param.Check) *Equal {
 	return &Equal{
 		equal:  equal,
 		params: params,

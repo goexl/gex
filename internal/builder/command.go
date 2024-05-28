@@ -2,29 +2,26 @@ package builder
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/goexl/args"
-	"github.com/goexl/gex"
 	"github.com/goexl/gex/internal/core"
-	"github.com/goexl/gex/internal/internal/constant"
 	"github.com/goexl/gex/internal/param"
 	"github.com/goexl/gox"
 )
 
 type Command struct {
-	gox.CannotCopy
-
 	params *param.Command
+
+	_ gox.CannotCopy
 }
 
-func NewCommand(name string) (command *Command) {
+func NewCommand(name string) *Command {
 	return &Command{
 		params: param.NewCommand(name),
 	}
 }
 
-func (c *Command) Args(arguments *args.Arguments) (command *Command) {
+func (c *Command) Arguments(arguments *args.Arguments) (command *Command) {
 	c.params.Arguments = arguments
 	command = c
 
@@ -77,46 +74,20 @@ func (c *Command) Echo() (command *Command) {
 	return
 }
 
-func (c *Command) Checker() (builder *Checker) {
-	c.params.Async = true
-	builder = NewChecker(core.OperatorAnd, c)
-
-	return
+func (c *Command) Check() *Check {
+	return NewCheck(c)
 }
 
-func (c *Command) Check(checker core.Checker) (command *Command) {
-	c.params.Checks = append(c.params.Checks, gex.newCheck(core.OperatorAnd, checker))
-
-	return c
+func (c *Command) Collect() *Collect {
+	return NewCollect(c)
 }
 
-func (c *Command) Collector() *Collector {
-	return NewCollector(c)
+func (c *Command) Count() *Count {
+	return NewCount(c)
 }
 
-func (c *Command) Collect(collector core.Collector) (command *Command) {
-	c.params.Collectors[fmt.Sprintf(constant.Point, collector)] = collector
-	command = c
-
-	return
-}
-
-func (c *Command) Counter() *Counter {
-	return NewCounter(c)
-}
-
-func (c *Command) Count(counter core.Counter) (command *Command) {
-	c.params.Counters = append(c.params.Counters, counter)
-	command = c
-
-	return
-}
-
-func (c *Command) Notify(notifier core.Notifier) (command *Command) {
-	c.params.Notifiers = append(c.params.Notifiers, notifier)
-	command = c
-
-	return
+func (c *Command) Notify() *Notify {
+	return NewNotify(c)
 }
 
 func (c *Command) Build() *core.Command {

@@ -7,39 +7,38 @@ import (
 )
 
 type Environment struct {
-	builder *Command
+	command *Command
 	params  *param.Environment
+
+	_ gox.CannotCopy
 }
 
-func NewEnvironment(builder *Command) *Environment {
+func NewEnvironment(command *Command) *Environment {
 	return &Environment{
-		builder: builder,
+		command: command,
 		params:  param.NewEnvironment(),
 	}
 }
 
-func (e *Environment) Only() *Environment {
-	e.params.System = false
-
-	return e
-}
-
-func (e *Environment) Kv(key string, value any) *Environment {
+func (e *Environment) Kv(key string, value any) (environment *Environment) {
 	e.params.Environments = append(e.params.Environments, gox.StringBuilder(key, constant.Equal, value).String())
+	environment = e
 
-	return e
+	return
 }
 
-func (e *Environment) String(environments ...string) *Environment {
-	for _, environment := range environments {
-		e.params.Environments = append(e.params.Environments, environment)
+func (e *Environment) String(environments ...string) (environment *Environment) {
+	for _, env := range environments {
+		e.params.Environments = append(e.params.Environments, env)
 	}
+	environment = e
 
-	return e
+	return
 }
 
-func (e *Environment) Build() *Command {
-	e.builder.params.Environment = e.params
+func (e *Environment) Build() (command *Command) {
+	e.command.params.Environment = e.params
+	command = e.command
 
-	return e.builder
+	return
 }

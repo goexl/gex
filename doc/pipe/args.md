@@ -26,27 +26,27 @@
 实际上，`Gex`支持任意数据类型，包括
 
 - 整形参数
-  - `int`
-  - `int8`
-  - `int64`
-  - `int32`
-  - `uint`
-  - `uint8`
-  - `uint32`
-  - `uint64`
-  - 整形指针
+    - `int`
+    - `int8`
+    - `int64`
+    - `int32`
+    - `uint`
+    - `uint8`
+    - `uint32`
+    - `uint64`
+    - 整形指针
 - 浮点型参数
-  - `float32`
-  - `float64`
+    - `float32`
+    - `float64`
 - 字符串参数
-  - `string`
-  - 字符串指针
+    - `string`
+    - 字符串指针
 - 布尔参数
-  - `bool`
-  - 布尔指针
+    - `bool`
+    - 布尔指针
 - 结构体
-  - 实现`String`接口
-  - 结构体指针
+    - 实现`String`接口
+    - 结构体指针
 
 ## `fmt.Stringer`接口
 
