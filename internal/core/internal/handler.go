@@ -27,7 +27,10 @@ func (h *Handler) Pid() int {
 
 func (h *Handler) Kill() (err error) {
 	if se := h.cmd.Process.Signal(syscall.Signal(0)); nil == se {
-		err = h.cmd.Process.Kill()
+		err = h.kill()
+	}
+	if nil == err {
+		err = h.cmd.Process.Release()
 	}
 
 	return

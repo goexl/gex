@@ -88,6 +88,9 @@ func (c *Command) make() {
 		}
 		c.cmd.Env = append(c.cmd.Env, c.params.Environment.Environments...)
 	}
+
+	// 配置命令
+	c.setup()
 }
 
 func (c *Command) io() (err error) {
@@ -140,7 +143,7 @@ func (c *Command) run() (handler core.Handler, err error) {
 
 	handler = internal.NewHandler(c.cmd, c)
 	// 如果有检查器，等待检查器结束
-	if nil != c.params.Logics {
+	if 0 != len(c.params.Logics) {
 		c.waiter.Wait()
 	}
 
