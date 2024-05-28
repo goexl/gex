@@ -18,14 +18,14 @@ func NewLogic(operator Operator, checker Checker) *Logic {
 	}
 }
 
-func (l *Logic) Check(line string) (checked bool, err error) {
+func (l *Logic) Check(prev bool, line string) (checked bool, err error) {
 	checked = true
 	if result, ce := l.checker.Check(line); nil != ce {
 		err = ce
 	} else if OperatorAnd == l.operator {
-		checked = checked && result
+		checked = prev && result
 	} else if OperatorOr == l.operator {
-		checked = checked || result
+		checked = prev || result
 	}
 
 	return

@@ -48,13 +48,12 @@ func (c *Command) Check(line string) (checked bool, err error) {
 		return
 	}
 
-	for index, check := range c.Logics {
-		next := c.Logics[index+1]
-		if result, ce := check.Check(line); nil != ce {
-			err = ce
-		} else if nil == next {
-			checked = result
-		} else if !next.Next(result) {
+	size := len(c.Logics)
+	for index, logic := range c.Logics {
+		checked, err = logic.Check(checked, line)
+		if index == size-1 {
+			break
+		} else if !c.Logics[index+1].Next(checked) {
 			break
 		}
 	}

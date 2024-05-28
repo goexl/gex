@@ -37,7 +37,7 @@ func (s *String) Collect(line string, stream string) (err error) {
 		return
 	}
 
-	line = s.params.process(line)
+	line = s.params.Process(line)
 	s.lines = append(s.lines, line)
 	current := len(s.lines)
 	if current > s.params.Max {

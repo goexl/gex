@@ -28,7 +28,7 @@ func NewContains(command *Command, check *Check, target string) (contains *Conta
 }
 
 func (c *Contains) Build() (check *Check) {
-	logic := core.NewLogic(c.check.operator, checker.NewContains(c.target, c.params))
+	logic := core.NewLogic(c.params.Operator, checker.NewContains(c.target, c.params))
 	c.command.params.Logics = append(c.command.params.Logics, logic)
 	check = c.check
 

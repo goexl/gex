@@ -28,7 +28,7 @@ func NewFilepath(command *Command, check *Check, target string) (filepath *Filep
 }
 
 func (c *Filepath) Build() (check *Check) {
-	logic := core.NewLogic(c.check.operator, checker.NewFilepath(c.target, c.params))
+	logic := core.NewLogic(c.params.Operator, checker.NewFilepath(c.target, c.params))
 	c.command.params.Logics = append(c.command.params.Logics, logic)
 	check = c.check
 

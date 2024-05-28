@@ -28,7 +28,7 @@ func NewEqual(command *Command, check *Check, target string) (equal *Equal) {
 }
 
 func (c *Equal) Build() (check *Check) {
-	logic := core.NewLogic(c.check.operator, checker.NewEqual(c.target, c.params))
+	logic := core.NewLogic(c.params.Operator, checker.NewEqual(c.target, c.params))
 	c.command.params.Logics = append(c.command.params.Logics, logic)
 	check = c.check
 

@@ -28,7 +28,7 @@ func NewRegexp(command *Command, check *Check, target string) (regexp *Regexp) {
 }
 
 func (c *Regexp) Build() (check *Check) {
-	logic := core.NewLogic(c.check.operator, checker.NewRegexp(c.target, c.params))
+	logic := core.NewLogic(c.params.Operator, checker.NewRegexp(c.target, c.params))
 	c.command.params.Logics = append(c.command.params.Logics, logic)
 	check = c.check
 

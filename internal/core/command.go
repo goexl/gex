@@ -6,9 +6,9 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"syscall"
 
 	"github.com/goexl/exception"
+	"github.com/goexl/gex/internal/core/internal"
 	"github.com/goexl/gex/internal/internal/collector"
 	"github.com/goexl/gex/internal/internal/constant"
 	"github.com/goexl/gex/internal/internal/core"
@@ -19,7 +19,6 @@ import (
 
 type Command struct {
 	params *param.Command
-
 	cmd    *exec.Cmd
 	waiter *guc.WaitGroup
 	enter  byte
@@ -37,15 +36,15 @@ func (c *Command) Exec() (handler core.Handler, err error) {
 	if !c.params.Echo && c.params.Pwe {
 		output := ""
 		c.params.Collectors[constant.Pwe] = collector.NewTerminal(&output)
-		defer c.cleanup(&output, &handler, &err)
+		defer c.cleanup(&output, handler, &err)
 	}
 
 	// 通知
-	defer c.notify(&handler, err)
+	defer c.notify(handler, err)
 
 	// 将所有的收集器加入到通知器中
-	for _, _collector := range c.params.Collectors {
-		if _notifier, ok := _collector.(core.Notifier); ok {
+	for _, clt := range c.params.Collectors {
+		if _notifier, ok := clt.(core.Notifier); ok {
 			c.params.Notifiers = append(c.params.Notifiers, _notifier)
 		}
 	}
@@ -139,6 +138,7 @@ func (c *Command) run() (handler core.Handler, err error) {
 		return
 	}
 
+	handler = internal.NewHandler(c.cmd, c)
 	// 如果有检查器，等待检查器结束
 	if nil != c.params.Logics {
 		c.waiter.Wait()
@@ -146,29 +146,17 @@ func (c *Command) run() (handler core.Handler, err error) {
 
 	// 如果是同步模式，等待命令执行完成
 	if !c.params.Async {
-		handler, err = c.wait()
+		err = c.cmd.Wait()
 	}
 
 	return
 }
 
-func (c *Command) wait() (handler core.Handler, err error) {
-	// 取得退出代码
-	if err = c.cmd.Wait(); err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
-			if status, statsOk := exitErr.Sys().(syscall.WaitStatus); statsOk {
-				code = status.ExitStatus()
-			}
-		}
-	}
-
-	return
-}
-
-func (c *Command) cleanup(output *string, code *int, err *error) {
+func (c *Command) cleanup(output *string, handler core.Handler, err *error) {
 	// 检查状态码
-	if 0 != *code {
-		*err = exception.New().Code(*code).Message("程序异常退出").Field(field.New("error", *output)).Build()
+	code := handler.Code()
+	if 0 != code {
+		*err = exception.New().Code(code).Message("程序异常退出").Field(field.New("error", *output)).Build()
 	}
 
 	if nil != err && nil != *err && "" != *output {
@@ -176,9 +164,9 @@ func (c *Command) cleanup(output *string, code *int, err *error) {
 	}
 }
 
-func (c *Command) notify(code *int, err error) {
+func (c *Command) notify(handler core.Handler, err error) {
 	for _, notifier := range c.params.Notifiers {
-		notifier.Notify(*code, err)
+		notifier.Notify(handler.Code(), err)
 	}
 }
 

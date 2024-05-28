@@ -21,7 +21,7 @@ func NewStrings(strings *[]string, params *param.Collect) *Strings {
 
 func (s *Strings) Collect(line string, stream string) (err error) {
 	if "" == s.params.Stream || stream == s.params.Stream {
-		line = s.params.process(line)
+		line = s.params.Process(line)
 		*s.strings = append(*s.strings, line)
 	}
 
