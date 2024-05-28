@@ -8,12 +8,14 @@ import (
 )
 
 type Collect struct {
-	command *Command
+	command    *Command
+	collectors []core.Collector
 }
 
 func NewCollect(command *Command) *Collect {
 	return &Collect{
-		command: command,
+		command:    command,
+		collectors: make([]core.Collector, 0),
 	}
 }
 
@@ -25,8 +27,18 @@ func (c *Collect) String(target *string) *String {
 	return NewString(c.command, c, target)
 }
 
-func (c *Collect) By(collector core.Collector) (command *Command) {
+func (c *Collect) By(collector core.Collector) (collect *Collect) {
 	c.command.params.Collectors[fmt.Sprintf(constant.Point, collector)] = collector
+	collect = c
+
+	return
+}
+
+func (c *Collect) Build() (command *Command) {
+	for _, collector := range c.collectors {
+		c.command.params.Collectors[fmt.Sprintf(constant.Point, collector)] = collector
+	}
+	c.command.params.Async = true
 	command = c.command
 
 	return

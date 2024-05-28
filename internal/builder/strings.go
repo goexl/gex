@@ -31,6 +31,7 @@ func NewStrings(command *Command, collect *Collect, target *[]string) (strings *
 
 func (s *Strings) Build() (collect *Collect) {
 	s.command.params.Collectors[fmt.Sprintf(constant.Point, s)] = collector.NewStrings(s.target, s.params)
+	s.command.params.Async = true
 	collect = s.collect
 
 	return
