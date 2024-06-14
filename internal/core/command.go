@@ -20,7 +20,7 @@ import (
 type Command struct {
 	params *param.Command
 	cmd    *exec.Cmd
-	waiter *guc.WaitGroup
+	waiter guc.Waiter
 	enter  byte
 }
 
@@ -120,7 +120,7 @@ func (c *Command) io() (err error) {
 	}
 
 	if nil != c.params.Logics {
-		c.waiter = new(guc.WaitGroup)
+		c.waiter = guc.Wait().Group(0)
 		// 特别注意，检查器等待器，是检查两个：输出流和错误流，但是只需要其中一个检查器退出，所有检查器都不应该再继续执行
 		c.waiter.Add(1)
 	}
