@@ -36,11 +36,11 @@ func (c *Command) Exec() (handler core.Handler, err error) {
 	if !c.params.Echo && c.params.Pwe {
 		output := ""
 		c.params.Collectors[constant.Pwe] = collector.NewTerminal(&output)
-		defer c.cleanup(&output, handler, &err)
+		defer c.cleanup(&output, &handler, &err)
 	}
 
 	// 通知
-	defer c.notify(handler, err)
+	defer c.notify(&handler, err)
 
 	// 将所有的收集器加入到通知器中
 	for _, clt := range c.params.Collectors {
@@ -155,9 +155,9 @@ func (c *Command) run() (handler core.Handler, err error) {
 	return
 }
 
-func (c *Command) cleanup(output *string, handler core.Handler, err *error) {
+func (c *Command) cleanup(output *string, handler *core.Handler, err *error) {
 	// 检查状态码
-	code := handler.Code()
+	code := (*handler).Code()
 	if 0 != code {
 		*err = exception.New().Code(code).Message("程序异常退出").Field(field.New("error", *output)).Build()
 	}
@@ -167,9 +167,9 @@ func (c *Command) cleanup(output *string, handler core.Handler, err *error) {
 	}
 }
 
-func (c *Command) notify(handler core.Handler, err error) {
+func (c *Command) notify(handler *core.Handler, err error) {
 	for _, notifier := range c.params.Notifiers {
-		notifier.Notify(handler.Code(), err)
+		notifier.Notify((*handler).Code(), err)
 	}
 }
 
