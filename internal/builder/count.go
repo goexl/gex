@@ -2,14 +2,11 @@ package builder
 
 import (
 	"github.com/goexl/gex/internal/internal/core"
-	"github.com/goexl/gox"
 )
 
 type Count struct {
 	command  *Command
 	counters []core.Counter
-
-	_ gox.CannotCopy
 }
 
 func NewCount(command *Command) (counter *Count) {

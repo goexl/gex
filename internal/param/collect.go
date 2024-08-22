@@ -1,15 +1,9 @@
 package param
 
-import (
-	"github.com/goexl/gox"
-)
-
 type Collect struct {
 	Stream string
 	Max    int
 	Trim   *Trim
-
-	_ gox.CannotCopy
 }
 
 func NewCollect() *Collect {

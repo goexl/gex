@@ -2,14 +2,11 @@ package internal
 
 import (
 	"github.com/goexl/gex/internal/param"
-	"github.com/goexl/gox"
 )
 
 type Trim struct {
 	collect *Collect
 	params  *param.Trim
-
-	_ gox.CannotCopy
 }
 
 func NewTrim(collect *Collect) (trim *Trim) {

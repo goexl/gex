@@ -6,7 +6,6 @@ import (
 
 	"github.com/goexl/args"
 	"github.com/goexl/gex/internal/internal/core"
-	"github.com/goexl/gox"
 )
 
 type Command struct {
@@ -26,8 +25,6 @@ type Command struct {
 	Collectors map[string]core.Collector
 	Notifiers  []core.Notifier
 	Counters   []core.Counter
-
-	_ gox.CannotCopy
 }
 
 func NewCommand(name string) *Command {

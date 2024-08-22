@@ -6,13 +6,10 @@ import (
 	"github.com/goexl/args"
 	"github.com/goexl/gex/internal/core"
 	"github.com/goexl/gex/internal/param"
-	"github.com/goexl/gox"
 )
 
 type Command struct {
 	params *param.Command
-
-	_ gox.CannotCopy
 }
 
 func NewCommand(name string) *Command {

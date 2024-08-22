@@ -9,8 +9,6 @@ import (
 type Environment struct {
 	command *Command
 	params  *param.Environment
-
-	_ gox.CannotCopy
 }
 
 func NewEnvironment(command *Command) *Environment {

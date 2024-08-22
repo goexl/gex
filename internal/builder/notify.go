@@ -2,14 +2,11 @@ package builder
 
 import (
 	"github.com/goexl/gex/internal/internal/core"
-	"github.com/goexl/gox"
 )
 
 type Notify struct {
 	command   *Command
 	notifiers []core.Notifier
-
-	_ gox.CannotCopy
 }
 
 func NewNotify(command *Command) *Notify {

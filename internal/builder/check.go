@@ -2,14 +2,11 @@ package builder
 
 import (
 	"github.com/goexl/gex/internal/internal/core"
-	"github.com/goexl/gox"
 )
 
 type Check struct {
 	command *Command
 	logics  []*core.Logic
-
-	_ gox.CannotCopy
 }
 
 func NewCheck(builder *Command) *Check {

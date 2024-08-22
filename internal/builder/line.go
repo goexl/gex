@@ -4,14 +4,11 @@ import (
 	"github.com/goexl/gex/internal/internal/constant"
 	"github.com/goexl/gex/internal/internal/counter"
 	"github.com/goexl/gex/internal/param"
-	"github.com/goexl/gox"
 )
 
 type Line struct {
 	count  *Count
 	params *param.Line
-
-	_ gox.CannotCopy
 }
 
 func NewLine(count *Count, total *int) *Line {

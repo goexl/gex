@@ -2,8 +2,6 @@ package param
 
 import (
 	"strings"
-
-	"github.com/goexl/gox"
 )
 
 type Trim struct {
@@ -11,8 +9,6 @@ type Trim struct {
 	Right string
 	All   string
 	Space bool
-
-	_ gox.CannotCopy
 }
 
 func NewTrim() *Trim {
