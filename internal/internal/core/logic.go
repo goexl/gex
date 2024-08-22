@@ -1,14 +1,8 @@
 package core
 
-import (
-	"github.com/goexl/gox"
-)
-
 type Logic struct {
 	operator Operator
 	checker  Checker
-
-	_ gox.CannotCopy
 }
 
 func NewLogic(operator Operator, checker Checker) *Logic {
