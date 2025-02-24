@@ -18,6 +18,13 @@ func NewCommand(name string) *Command {
 	}
 }
 
+func (c *Command) Name(name string) (command *Command) {
+	c.params.Name = name
+	command = c
+
+	return
+}
+
 func (c *Command) Arguments(arguments *args.Arguments) (command *Command) {
 	c.params.Arguments = arguments
 	command = c
