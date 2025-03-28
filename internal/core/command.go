@@ -159,7 +159,7 @@ func (c *Command) cleanup(output *string, handler *core.Handler, err *error) {
 	// 检查状态码
 	code := (*handler).Code()
 	if 0 != code {
-		*err = exception.New().Code(code).Message("程序异常退出").Field(field.New("error", *output)).Build()
+		*err = exception.New().Code(exception.Code(code)).Message("程序异常退出").Field(field.New("error", *output)).Build()
 	}
 
 	if nil != err && nil != *err && "" != *output {
